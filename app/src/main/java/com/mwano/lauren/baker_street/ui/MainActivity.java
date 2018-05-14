@@ -55,21 +55,22 @@ public class MainActivity extends AppCompatActivity {
 
         RequestInterface request = retrofit.create(RequestInterface.class);
 
-        Call<RecipesResponse> call = request.getRecipes();
+        Call<List<Recipe>> call = request.getRecipes();
 
-        call.enqueue(new Callback<RecipesResponse>() {
+        call.enqueue(new Callback<List<Recipe>>() {
             @Override
-            public void onResponse(Call<RecipesResponse> call,
-                                   Response<RecipesResponse> response) {
+            public void onResponse(Call<List<Recipe>> call,
+                                   Response<List<Recipe>> response) {
 
-                RecipesResponse recipesResponse = response.body();
-                mRecipes = new ArrayList<>(recipesResponse.getRecipeList());
+                List<Recipe> recipesResponse = response.body();
+                mRecipes = recipesResponse;
+                Log.d(TAG, "mRecipes.toString()");
                 mRecipeAdapter = new RecipeAdapter(mContext, mRecipes);
                 mRecyclerView.setAdapter(mRecipeAdapter);
             }
 
             @Override
-            public void onFailure(Call<RecipesResponse> call, Throwable t) {
+            public void onFailure(Call<List<Recipe>> call, Throwable t) {
                 Log.d("Error",t.getMessage());
             }
         });
