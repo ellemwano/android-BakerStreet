@@ -45,10 +45,10 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecipeView
         return mRecipes.size();
     }
 
-//    public void setRecipeData(List<Recipe> recipeData) {
-//        mRecipes = recipeData;
-//        notifyDataSetChanged();
-//    }
+    public void setRecipeData(List<Recipe> recipeData) {
+        mRecipes = recipeData;
+        notifyDataSetChanged();
+    }
 
     public class RecipeViewHolder extends RecyclerView.ViewHolder {
 

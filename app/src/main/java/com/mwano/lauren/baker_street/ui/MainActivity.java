@@ -43,13 +43,15 @@ public class MainActivity extends AppCompatActivity {
         RecyclerView.LayoutManager layoutManager =
                 new LinearLayoutManager(getApplicationContext());
         mRecyclerView.setLayoutManager(layoutManager);
+        mRecipeAdapter = new RecipeAdapter(mContext, mRecipes);
+        mRecyclerView.setAdapter(mRecipeAdapter);
         loadRecipes();
     }
 
     public void loadRecipes() {
 
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("https://d17h27t6h515a5.cloudfront.net/")
+                .baseUrl("https://d17h27t6h515a5.cloudfront.net")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 
@@ -65,8 +67,7 @@ public class MainActivity extends AppCompatActivity {
                 List<Recipe> recipesResponse = response.body();
                 mRecipes = recipesResponse;
                 Log.d(TAG, "mRecipes.toString()");
-                mRecipeAdapter = new RecipeAdapter(mContext, mRecipes);
-                mRecyclerView.setAdapter(mRecipeAdapter);
+                mRecipeAdapter.setRecipeData(mRecipes);
             }
 
             @Override
