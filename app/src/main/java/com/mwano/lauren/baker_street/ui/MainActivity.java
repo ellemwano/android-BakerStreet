@@ -3,17 +3,16 @@ package com.mwano.lauren.baker_street.ui;
 import android.content.Context;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 
 import com.mwano.lauren.baker_street.RecipeAdapter;
 import com.mwano.lauren.baker_street.R;
-import com.mwano.lauren.baker_street.RecipesResponse;
 import com.mwano.lauren.baker_street.RequestInterface;
 import com.mwano.lauren.baker_street.model.Recipe;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import retrofit2.Call;
@@ -27,6 +26,8 @@ public class MainActivity extends AppCompatActivity {
     private RecyclerView mRecyclerView;
     private List<Recipe> mRecipes;
     private RecipeAdapter mRecipeAdapter;
+    private GridLayoutManager mGridLayoutmanager;
+    private int mColumnsNumber;
     private Context mContext;
     private final String TAG = MainActivity.class.getSimpleName();
 
@@ -38,11 +39,11 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void initViews() {
+        mColumnsNumber = (int) getResources().getInteger(R.integer.num_of_columns);
+        mGridLayoutmanager = new GridLayoutManager(this, mColumnsNumber);
         mRecyclerView = (RecyclerView) findViewById(R.id.card_recycler_view);
+        mRecyclerView.setLayoutManager(mGridLayoutmanager);
         mRecyclerView.setHasFixedSize(true);
-        RecyclerView.LayoutManager layoutManager =
-                new LinearLayoutManager(getApplicationContext());
-        mRecyclerView.setLayoutManager(layoutManager);
         mRecipeAdapter = new RecipeAdapter(mContext, mRecipes);
         mRecyclerView.setAdapter(mRecipeAdapter);
         loadRecipes();
@@ -66,7 +67,6 @@ public class MainActivity extends AppCompatActivity {
 
                 List<Recipe> recipesResponse = response.body();
                 mRecipes = recipesResponse;
-                Log.d(TAG, "mRecipes.toString()");
                 mRecipeAdapter.setRecipeData(mRecipes);
             }
 
