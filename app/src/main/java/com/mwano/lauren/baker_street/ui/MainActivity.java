@@ -26,7 +26,7 @@ public class MainActivity extends AppCompatActivity {
     private RecyclerView mRecyclerView;
     private List<Recipe> mRecipes;
     private RecipeAdapter mRecipeAdapter;
-    private GridLayoutManager mGridLayoutmanager;
+    private GridLayoutManager mGridLayoutManager;
     private int mColumnsNumber;
     private Context mContext;
     private final String TAG = MainActivity.class.getSimpleName();
@@ -35,14 +35,14 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        initViews();
+        populateUi();
     }
 
-    private void initViews() {
+    private void populateUi() {
         mColumnsNumber = (int) getResources().getInteger(R.integer.num_of_columns);
-        mGridLayoutmanager = new GridLayoutManager(this, mColumnsNumber);
+        mGridLayoutManager = new GridLayoutManager(this, mColumnsNumber);
         mRecyclerView = (RecyclerView) findViewById(R.id.card_recycler_view);
-        mRecyclerView.setLayoutManager(mGridLayoutmanager);
+        mRecyclerView.setLayoutManager(mGridLayoutManager);
         mRecyclerView.setHasFixedSize(true);
         mRecipeAdapter = new RecipeAdapter(mContext, mRecipes);
         mRecyclerView.setAdapter(mRecipeAdapter);
@@ -57,14 +57,13 @@ public class MainActivity extends AppCompatActivity {
                 .build();
 
         RequestInterface request = retrofit.create(RequestInterface.class);
-
         Call<List<Recipe>> call = request.getRecipes();
 
+        // Asynchronous request
         call.enqueue(new Callback<List<Recipe>>() {
             @Override
             public void onResponse(Call<List<Recipe>> call,
                                    Response<List<Recipe>> response) {
-
                 List<Recipe> recipesResponse = response.body();
                 mRecipes = recipesResponse;
                 mRecipeAdapter.setRecipeData(mRecipes);
@@ -72,7 +71,7 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<List<Recipe>> call, Throwable t) {
-                Log.d("Error",t.getMessage());
+                Log.d(TAG,t.getMessage());
             }
         });
     }
