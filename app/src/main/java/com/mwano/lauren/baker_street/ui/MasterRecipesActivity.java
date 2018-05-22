@@ -14,6 +14,12 @@ import com.mwano.lauren.baker_street.R;
 import java.util.ArrayList;
 import java.util.List;
 
+
+/**
+ * Code source for ViewPager (java + xml) - Codelab:
+ * https://codelabs.developers.google.com/codelabs/material-design-style/index.html?index=..%2F..%2Findex#3
+ */
+
 public class MasterRecipesActivity extends AppCompatActivity {
 
     @Override
@@ -34,8 +40,8 @@ public class MasterRecipesActivity extends AppCompatActivity {
     // Add Fragments to Tabs
     private void setupViewPager(ViewPager viewPager) {
         Adapter adapter = new Adapter(getSupportFragmentManager());
-        adapter.addFragment(new IngredientsFragment(), "Ingredients");
-        adapter.addFragment(new StepsFragment(), "Steps");
+        adapter.addFragment(new MasterIngredientsFragment(), "Ingredients");
+        adapter.addFragment(new MasterStepsFragment(), "Steps");
         viewPager.setAdapter(adapter);
     }
 

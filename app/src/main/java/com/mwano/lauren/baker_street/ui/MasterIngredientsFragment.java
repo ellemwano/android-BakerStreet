@@ -10,12 +10,16 @@ import android.view.ViewGroup;
 
 import com.mwano.lauren.baker_street.R;
 
-public class StepsFragment extends Fragment {
+
+/**
+ * Provides UI for the view with the Ingredients
+ */
+public class MasterIngredientsFragment extends Fragment {
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.item_steps, null);
+        return inflater.inflate(R.layout.item_ingredients, null);
     }
 }

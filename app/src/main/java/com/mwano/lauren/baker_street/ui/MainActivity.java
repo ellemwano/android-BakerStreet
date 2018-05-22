@@ -2,7 +2,6 @@ package com.mwano.lauren.baker_street.ui;
 
 import android.content.Context;
 import android.content.Intent;
-import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
@@ -11,7 +10,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
-import com.mwano.lauren.baker_street.RecipeAdapter;
+import com.mwano.lauren.baker_street.MainRecipeAdapter;
 import com.mwano.lauren.baker_street.R;
 import com.mwano.lauren.baker_street.json.ApiClient;
 import com.mwano.lauren.baker_street.json.ApiInterface;
@@ -27,7 +26,7 @@ public class MainActivity extends AppCompatActivity {
 
     private RecyclerView mRecyclerView;
     private List<Recipe> mRecipes;
-    private RecipeAdapter mRecipeAdapter;
+    private MainRecipeAdapter mMainRecipeAdapter;
     private GridLayoutManager mGridLayoutManager;
     private int mColumnsNumber;
     private Context mContext;
@@ -56,8 +55,8 @@ public class MainActivity extends AppCompatActivity {
         mRecyclerView.setLayoutManager(mGridLayoutManager);
         mRecyclerView.setHasFixedSize(true);
         // Adapter
-        mRecipeAdapter = new RecipeAdapter(mContext, mRecipes);
-        mRecyclerView.setAdapter(mRecipeAdapter);
+        mMainRecipeAdapter = new MainRecipeAdapter(mContext, mRecipes);
+        mRecyclerView.setAdapter(mMainRecipeAdapter);
         // Display recipes
         loadRecipes();
     }
@@ -72,7 +71,7 @@ public class MainActivity extends AppCompatActivity {
                                    Response<List<Recipe>> response) {
                 mRecipes = response.body();
                 // Log.d(TAG, "Number of recipes :" + mRecipes.size());
-                mRecipeAdapter.setRecipeData(mRecipes);
+                mMainRecipeAdapter.setRecipeData(mRecipes);
             }
             @Override
             public void onFailure(Call<List<Recipe>> call, Throwable t) {

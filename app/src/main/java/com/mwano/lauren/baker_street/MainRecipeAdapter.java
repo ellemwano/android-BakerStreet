@@ -12,13 +12,13 @@ import com.mwano.lauren.baker_street.model.Recipe;
 import java.util.List;
 
 
-public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecipeViewHolder> {
+public class MainRecipeAdapter extends RecyclerView.Adapter<MainRecipeAdapter.RecipeViewHolder> {
 
     private Context mContext;
     private List<Recipe> mRecipes;
 
-    // RecipeAdapter constructor
-    public RecipeAdapter(Context context, List<Recipe> recipes) {
+    // MainRecipeAdapter constructor
+    public MainRecipeAdapter(Context context, List<Recipe> recipes) {
         mContext = context;
         mRecipes = recipes;
     }
