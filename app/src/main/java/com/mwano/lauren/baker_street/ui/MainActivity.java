@@ -1,12 +1,14 @@
 package com.mwano.lauren.baker_street.ui;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.View;
 import android.widget.Toast;
 
 import com.mwano.lauren.baker_street.RecipeAdapter;
@@ -79,5 +81,10 @@ public class MainActivity extends AppCompatActivity {
                 Log.d(TAG, t.getMessage());
             }
         });
+    }
+
+    public void clickButton(View v) {
+        Intent intent = new Intent(this, MasterRecipesActivity.class);
+        startActivity(intent);
     }
 }
