@@ -20,7 +20,7 @@
         android:orientation="vertical">
 
         <ImageView
-            android:id="@+id/imageView"
+            android:id="@+id/recipe_iv"
             android:layout_width="36dp"
             android:layout_height="38dp"
             android:layout_marginLeft="8dp"
@@ -31,7 +31,7 @@
             card_view:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/tv_name"
+            android:id="@+id/recipe_name_tv"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginEnd="8dp"
@@ -41,32 +41,32 @@
             android:layout_marginTop="8dp"
             android:textSize="18sp"
             android:textStyle="bold"
-            card_view:layout_constraintEnd_toStartOf="@+id/tv_title_servings"
-            card_view:layout_constraintStart_toEndOf="@+id/imageView"
+            card_view:layout_constraintEnd_toStartOf="@+id/servings_label_tv"
+            card_view:layout_constraintStart_toEndOf="@+id/recipe_iv"
             card_view:layout_constraintTop_toTopOf="parent"
             tools:text="Name of the recipe" />
 
         <TextView
-            android:id="@+id/tv_title_servings"
+            android:id="@+id/servings_label_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"
             android:layout_marginEnd="8dp"
             android:layout_marginRight="8dp"
-            android:text="Servings:"
+            android:text="Servings: "
             card_view:layout_constraintBottom_toBottomOf="parent"
-            card_view:layout_constraintEnd_toStartOf="@id/tv_servings"
-            card_view:layout_constraintTop_toBottomOf="@id/tv_name" />
+            card_view:layout_constraintEnd_toStartOf="@id/servings_tv"
+            card_view:layout_constraintTop_toBottomOf="@id/recipe_name_tv" />
 
         <TextView
-            android:id="@+id/tv_servings"
+            android:id="@+id/servings_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"
             android:layout_marginEnd="8dp"
             android:layout_marginRight="8dp"
             card_view:layout_constraintEnd_toEndOf="parent"
-            card_view:layout_constraintTop_toBottomOf="@id/tv_name"
+            card_view:layout_constraintTop_toBottomOf="@id/recipe_name_tv"
             tools:text="8" />
 
 

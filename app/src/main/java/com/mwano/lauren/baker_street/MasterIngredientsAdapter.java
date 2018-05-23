@@ -6,7 +6,6 @@ import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
 import com.mwano.lauren.baker_street.model.Ingredient;
-import com.mwano.lauren.baker_street.model.Step;
 
 import java.util.List;
 
@@ -53,7 +52,7 @@ public class MasterIngredientsAdapter
         // Constructor
         //TODO
         public MasterIngredientsViewHolder(LayoutInflater inflater, ViewGroup parent) {
-            super(inflater.inflate(R.layout.item_ingredients, parent, false));
+            super(inflater.inflate(R.layout.item_master_ingredients, parent, false));
         }
     }
 

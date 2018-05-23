@@ -20,7 +20,7 @@ import java.util.List;
  * https://codelabs.developers.google.com/codelabs/material-design-style/index.html?index=..%2F..%2Findex#3
  */
 
-public class MasterRecipesActivity extends AppCompatActivity {
+public class MasterRecipeActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,6 +35,7 @@ public class MasterRecipesActivity extends AppCompatActivity {
         // Add tabs
         TabLayout tabs = (TabLayout) findViewById(R.id.tabs);
         tabs.setupWithViewPager(viewPager);
+
     }
 
     // Add Fragments to Tabs

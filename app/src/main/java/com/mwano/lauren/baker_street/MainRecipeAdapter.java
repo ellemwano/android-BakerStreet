@@ -16,18 +16,26 @@ public class MainRecipeAdapter extends RecyclerView.Adapter<MainRecipeAdapter.Re
 
     private Context mContext;
     private List<Recipe> mRecipes;
+    private final RecipeAdapterOnClickHandler mRecipeClickHandler;
+
+    // OnClickHandler interface
+    public interface RecipeAdapterOnClickHandler {
+        void onClick(Recipe currentRecipe);
+    }
 
     // MainRecipeAdapter constructor
-    public MainRecipeAdapter(Context context, List<Recipe> recipes) {
+    public MainRecipeAdapter(Context context, List<Recipe> recipes,
+                             RecipeAdapterOnClickHandler recipeClickHandler) {
         mContext = context;
         mRecipes = recipes;
+        mRecipeClickHandler = recipeClickHandler;
     }
 
     @Override
     public RecipeViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         mContext = parent.getContext();
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.item_recipe_card,parent,false);
+                .inflate(R.layout.item_main_recipe_card,parent,false);
         return new RecipeViewHolder(view);
     }
 
@@ -50,7 +58,7 @@ public class MainRecipeAdapter extends RecyclerView.Adapter<MainRecipeAdapter.Re
         notifyDataSetChanged();
     }
 
-    public class RecipeViewHolder extends RecyclerView.ViewHolder {
+    public class RecipeViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
 
         public TextView mNameTextView;
         public TextView mServingsTextView;
@@ -59,8 +67,15 @@ public class MainRecipeAdapter extends RecyclerView.Adapter<MainRecipeAdapter.Re
         //RecipeViewHolder constructor
         public RecipeViewHolder(View itemView) {
             super(itemView);
-            mNameTextView = (TextView)itemView.findViewById(R.id.tv_name);
-            mServingsTextView = (TextView)itemView.findViewById(R.id.tv_servings);
+            mNameTextView = (TextView)itemView.findViewById(R.id.recipe_name_tv);
+            mServingsTextView = (TextView)itemView.findViewById(R.id.servings_tv);
+        }
+
+        @Override
+        public void onClick(View v) {
+            int adapterPosition = getAdapterPosition();
+            Recipe currentRecipe = mRecipes.get(adapterPosition);
+            mRecipeClickHandler.onClick(currentRecipe);
         }
     }
 }

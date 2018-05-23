@@ -6,7 +6,6 @@ import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
 import com.mwano.lauren.baker_street.model.Step;
-import com.mwano.lauren.baker_street.ui.MasterStepsFragment;
 
 import java.util.List;
 
@@ -54,7 +53,7 @@ public class MasterStepsAdapter
         // Constructor
         // TODO
         public MasterStepsViewHolder(LayoutInflater inflater, ViewGroup parent) {
-            super(inflater.inflate(R.layout.item_steps, parent, false));
+            super(inflater.inflate(R.layout.item_master_steps, parent, false));
         }
     }
 

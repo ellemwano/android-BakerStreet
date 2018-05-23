@@ -20,6 +20,6 @@ public class MasterIngredientsFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.item_ingredients, null);
+        return inflater.inflate(R.layout.item_master_ingredients, null);
     }
 }

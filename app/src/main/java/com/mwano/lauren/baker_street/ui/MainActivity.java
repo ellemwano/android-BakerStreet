@@ -22,7 +22,8 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity
+        implements MainRecipeAdapter.RecipeAdapterOnClickHandler{
 
     private RecyclerView mRecyclerView;
     private List<Recipe> mRecipes;
@@ -55,7 +56,7 @@ public class MainActivity extends AppCompatActivity {
         mRecyclerView.setLayoutManager(mGridLayoutManager);
         mRecyclerView.setHasFixedSize(true);
         // Adapter
-        mMainRecipeAdapter = new MainRecipeAdapter(mContext, mRecipes);
+        mMainRecipeAdapter = new MainRecipeAdapter(mContext, mRecipes, this);
         mRecyclerView.setAdapter(mMainRecipeAdapter);
         // Display recipes
         loadRecipes();
@@ -82,8 +83,16 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    // Open MasterRecipeActivity intent, using parcelable
+    @Override
+    public void onClick(Recipe currentRecipe) {
+        Intent intentMasterRecipe= new Intent(this, MasterRecipeActivity.class);
+        intentMasterRecipe.putExtra("recipe", currentRecipe);
+        startActivity(intentMasterRecipe);
+    }
+
     public void clickButton(View v) {
-        Intent intent = new Intent(this, MasterRecipesActivity.class);
+        Intent intent = new Intent(this, MasterRecipeActivity.class);
         startActivity(intent);
     }
 }
