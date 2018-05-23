@@ -1,5 +1,6 @@
 package com.mwano.lauren.baker_street.ui;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -10,6 +11,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 
 import com.mwano.lauren.baker_street.R;
+import com.mwano.lauren.baker_street.model.Ingredient;
+import com.mwano.lauren.baker_street.model.Recipe;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,6 +24,9 @@ import java.util.List;
  */
 
 public class MasterRecipeActivity extends AppCompatActivity {
+
+    private Recipe mCurrentRecipe;
+    private List<Ingredient> mIngredients = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,6 +42,22 @@ public class MasterRecipeActivity extends AppCompatActivity {
         TabLayout tabs = (TabLayout) findViewById(R.id.tabs);
         tabs.setupWithViewPager(viewPager);
 
+        // TODO work on intent activity and fragment
+        // Get the selected recipe from the intent
+        if (savedInstanceState == null) {
+            final Intent intentThatStartedThisActivity = getIntent();
+            if(intentThatStartedThisActivity.hasExtra("recipe")) {
+                mCurrentRecipe = intentThatStartedThisActivity.getParcelableExtra("recipe");
+                // Get the ingredients arrayList from the intent extra
+                mIngredients = mCurrentRecipe.getIngredients();
+                // Create instance of the ingredients fragment and add it to activity
+                MasterIngredientsFragment ingredientFragment =
+                        MasterIngredientsFragment.newInstance((ArrayList<Ingredient>) mIngredients);
+                getSupportFragmentManager().beginTransaction()
+                        .add(R.id.ingredients_container, ingredientFragment)
+                        .commit();
+            }
+        }
     }
 
     // Add Fragments to Tabs

@@ -3,7 +3,9 @@ package com.mwano.lauren.baker_street;
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.mwano.lauren.baker_street.model.Ingredient;
 
@@ -24,14 +26,20 @@ public class MasterIngredientsAdapter
     // check
     @Override
     public MasterIngredientsViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        // TODO
-        return new MasterIngredientsViewHolder(LayoutInflater.from(parent.getContext()), parent);
+        mContext = parent.getContext();
+        View mItemView = LayoutInflater.from(mContext)
+                .inflate(R.layout.fragment_master_ingredients, parent, false);
+        return new MasterIngredientsViewHolder(mItemView);
     }
 
     // check
     @Override
     public void onBindViewHolder(MasterIngredientsViewHolder holder, int position) {
-        // TODO
+        mContext = holder.ingredientsTextView.getContext();
+        Ingredient mIngredient = mIngredients.get(position);
+        holder.ingredientsTextView.setText(mIngredient.getIngredient());
+        holder.quantityTextView.setText(String.valueOf(mIngredient.getQuantity()));
+        holder.measureTextView.setText(mIngredient.getMeasure().toLowerCase());
     }
 
     @Override
@@ -40,7 +48,7 @@ public class MasterIngredientsAdapter
         return mIngredients.size();
     }
 
-    public void setStepData(List<Ingredient> ingredientData) {
+    public void setIngredientData(List<Ingredient> ingredientData) {
         mIngredients = ingredientData;
         notifyDataSetChanged();
     }
@@ -49,10 +57,17 @@ public class MasterIngredientsAdapter
     // ViewHolder
     public static class MasterIngredientsViewHolder extends RecyclerView.ViewHolder {
 
+        public TextView ingredientsTextView;
+        public TextView quantityTextView;
+        public TextView measureTextView;
+
         // Constructor
-        //TODO
-        public MasterIngredientsViewHolder(LayoutInflater inflater, ViewGroup parent) {
-            super(inflater.inflate(R.layout.item_master_ingredients, parent, false));
+        public MasterIngredientsViewHolder(View view) {
+            super(view);
+            ingredientsTextView = (TextView) itemView.findViewById(R.id.tv_ingredient);
+            quantityTextView = (TextView) itemView.findViewById(R.id.tv_quantity);
+            measureTextView = (TextView) itemView.findViewById(R.id.tv_measure);
+
         }
     }
 

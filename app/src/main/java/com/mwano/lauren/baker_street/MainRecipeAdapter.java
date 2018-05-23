@@ -67,6 +67,7 @@ public class MainRecipeAdapter extends RecyclerView.Adapter<MainRecipeAdapter.Re
         //RecipeViewHolder constructor
         public RecipeViewHolder(View itemView) {
             super(itemView);
+            itemView.setOnClickListener(this);
             mNameTextView = (TextView)itemView.findViewById(R.id.recipe_name_tv);
             mServingsTextView = (TextView)itemView.findViewById(R.id.servings_tv);
         }
