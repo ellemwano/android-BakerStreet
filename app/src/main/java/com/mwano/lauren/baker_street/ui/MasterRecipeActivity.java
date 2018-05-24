@@ -42,7 +42,6 @@ public class MasterRecipeActivity extends AppCompatActivity {
         TabLayout tabs = (TabLayout) findViewById(R.id.tabs);
         tabs.setupWithViewPager(viewPager);
 
-        // TODO work on intent activity and fragment
         // Get the selected recipe from the intent
         if (savedInstanceState == null) {
             final Intent intentThatStartedThisActivity = getIntent();
