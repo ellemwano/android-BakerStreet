@@ -32,19 +32,34 @@ public class MasterIngredientsFragment extends Fragment {
 
     public static final String INGREDIENT_KEY = "ingredients";
 
+    // Constructor
+    public MasterIngredientsFragment() {
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        if(getArguments() != null && getArguments().containsKey(INGREDIENT_KEY)) {
+            mIngredients = getArguments().getParcelableArrayList(INGREDIENT_KEY);
+        }
+    }
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_master_ingredients, container, false);
+        // LinearLayoutManager
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
-        MasterIngredientsAdapter ingredientsAdaper =
-                new MasterIngredientsAdapter(getContext(), mIngredients);
+        // RecyclerView
         mIngredientsRecyclerView = (RecyclerView)rootView.findViewById(R.id.rv_ingredients);
         mIngredientsRecyclerView.setLayoutManager(layoutManager);
-        mIngredientsRecyclerView.setAdapter(ingredientsAdaper);
         mIngredientsRecyclerView.setHasFixedSize(true);
-        ingredientsAdaper.setIngredientData(mIngredients);
+        //Adapter
+        MasterIngredientsAdapter ingredientsAdapter =
+                new MasterIngredientsAdapter(getContext(), mIngredients);
+        mIngredientsRecyclerView.setAdapter(ingredientsAdapter);
+        //ingredientsAdapter.setIngredientData(mIngredients);
         return rootView;
     }
 

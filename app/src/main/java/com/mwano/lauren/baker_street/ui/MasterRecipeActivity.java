@@ -54,7 +54,7 @@ public class MasterRecipeActivity extends AppCompatActivity {
                 MasterIngredientsFragment ingredientFragment =
                         MasterIngredientsFragment.newInstance((ArrayList<Ingredient>) mIngredients);
                 getSupportFragmentManager().beginTransaction()
-                        .add(R.id.ingredients_container, ingredientFragment)
+                        .add(R.id.main_content, ingredientFragment)
                         .commit();
             }
         }

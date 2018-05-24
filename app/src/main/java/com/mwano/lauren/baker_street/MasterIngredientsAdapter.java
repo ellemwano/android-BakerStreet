@@ -1,6 +1,7 @@
 package com.mwano.lauren.baker_street;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -26,16 +27,16 @@ public class MasterIngredientsAdapter
     // check
     @Override
     public MasterIngredientsViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        mContext = parent.getContext();
+        // mContext = parent.getContext();
         View mItemView = LayoutInflater.from(mContext)
-                .inflate(R.layout.fragment_master_ingredients, parent, false);
+                .inflate(R.layout.item_master_ingredients, parent, false);
         return new MasterIngredientsViewHolder(mItemView);
     }
 
     // check
     @Override
     public void onBindViewHolder(MasterIngredientsViewHolder holder, int position) {
-        mContext = holder.ingredientsTextView.getContext();
+        // mContext = holder.ingredientsTextView.getContext();
         Ingredient mIngredient = mIngredients.get(position);
         holder.ingredientsTextView.setText(mIngredient.getIngredient());
         holder.quantityTextView.setText(String.valueOf(mIngredient.getQuantity()));
