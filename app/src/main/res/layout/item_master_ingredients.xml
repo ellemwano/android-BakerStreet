@@ -3,7 +3,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="50dp">
+    android:layout_height="wrap_content"
+    android:paddingTop="8dp"
+    android:paddingBottom="8dp">
 
     <android.support.constraint.Guideline
         android:id="@+id/guideline_start"
@@ -23,6 +25,7 @@
         android:layout_marginTop="8dp"
         android:layout_marginBottom="8dp"
         android:textSize="16sp"
+        android:textColor="@color/textColorPrimary"
         app:layout_constraintEnd_toStartOf="@id/guideline_mid"
         app:layout_constraintStart_toStartOf="@id/guideline_start"
         tools:text="Graham Craker Crumbs" />
@@ -44,6 +47,7 @@
         android:layout_marginTop="8dp"
         android:gravity="end"
         android:textSize="16sp"
+        android:textColor="@color/textColorPrimary"
         app:layout_constraintEnd_toStartOf="@id/tv_measure"
         app:layout_constraintStart_toEndOf="@id/guideline_mid"
         tools:text="2" />
@@ -55,6 +59,7 @@
         android:textSize="16sp"
         android:layout_marginBottom="8dp"
         android:layout_marginTop="8dp"
+        android:textColor="@color/textColorPrimary"
         app:layout_constraintEnd_toEndOf="@id/guideline_end"
         tools:text="CUP" />
 
@@ -68,7 +73,7 @@
     <View
         android:layout_width="0dp"
         android:layout_height="1dp"
-        android:background="#000000"
+        android:background="@color/colorAccent"
         android:layout_marginTop="8dp"
         android:layout_marginBottom="8dp"
         app:layout_constraintStart_toStartOf="@id/guideline_start"

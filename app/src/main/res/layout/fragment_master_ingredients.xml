@@ -8,12 +8,13 @@
     android:paddingTop="16dp"
     android:orientation="vertical"
     tools:context=".ui.MasterRecipeActivity"
+    android:background="@color/productGridBackgroundColor"
     app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/rv_ingredients"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:scrollbars="vertical">
         </android.support.v7.widget.RecyclerView>
 

@@ -89,18 +89,11 @@ public class MainActivity extends AppCompatActivity
         Intent intentMasterRecipe = new Intent(this, MasterRecipeActivity.class);
         intentMasterRecipe.putExtra("recipe", currentRecipe);
         startActivity(intentMasterRecipe);
-        Log.d(TAG, "Selected Recipe; " + currentRecipe.getName());
-        Toast.makeText(this, "Clicked", Toast.LENGTH_LONG).show();
+        // Log.d(TAG, "Selected Recipe; " + currentRecipe.getName());
     }
 
     public void clickButton(View view) {
         Intent intent = new Intent(this, MasterRecipeActivity.class);
         startActivity(intent);
     }
-//        Intent intentMasterRecipe = new Intent(this, MasterRecipeActivity.class);
-//        intentMasterRecipe.putExtra("recipe", mRecipes.get(0));
-//        startActivity(intentMasterRecipe);
-//        Log.d(TAG, "Selected Recipe; " + mRecipes.get(0).getName());
-//        Toast.makeText(this, "Clicked", Toast.LENGTH_LONG).show();
-//    }
 }

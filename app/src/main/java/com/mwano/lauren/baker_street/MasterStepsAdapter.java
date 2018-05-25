@@ -3,7 +3,9 @@ package com.mwano.lauren.baker_street;
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.mwano.lauren.baker_street.model.Step;
 
@@ -17,6 +19,7 @@ public class MasterStepsAdapter
 
     // TODO Add onClickHandler
 
+
     // Constructor
     public MasterStepsAdapter(Context context, List<Step> steps) {
         mContext = context;
@@ -26,13 +29,17 @@ public class MasterStepsAdapter
     // TODO
     @Override
     public MasterStepsViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        return new MasterStepsViewHolder(LayoutInflater.from(parent.getContext()), parent);
+        View mItemView = LayoutInflater.from(mContext)
+                .inflate(R.layout.item_master_steps_card, parent, false);
+        return new MasterStepsAdapter.MasterStepsViewHolder(mItemView);
     }
 
     // TODO
     @Override
     public void onBindViewHolder(MasterStepsViewHolder holder, int position) {
-
+        Step mStep = mSteps.get(position);
+        holder.stepsIdTextView.setText(String.valueOf(mStep.getId()));
+        holder.stepsTextView.setText(mStep.getShortDescription());
     }
 
     @Override
@@ -50,10 +57,15 @@ public class MasterStepsAdapter
     // ViewHolder
     public static class MasterStepsViewHolder extends RecyclerView.ViewHolder {
 
+        public TextView stepsIdTextView;
+        public TextView stepsTextView;
+
         // Constructor
         // TODO
-        public MasterStepsViewHolder(LayoutInflater inflater, ViewGroup parent) {
-            super(inflater.inflate(R.layout.item_master_steps, parent, false));
+        public MasterStepsViewHolder(View view) {
+            super(view);
+            stepsIdTextView = (TextView) itemView.findViewById(R.id.tv_step_id);
+            stepsTextView = (TextView) itemView.findViewById(R.id.tv_step_description);
         }
     }
 

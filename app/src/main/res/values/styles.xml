@@ -1,16 +1,35 @@
 <resources>
-        <!-- Base application theme. -->
-        <style name="AppTheme.Base" parent="Theme.AppCompat.Light.NoActionBar">
-            <!-- Customize your theme here. -->
-            <item name="colorPrimary">#3F51B5</item>
-            <!-- Light Indigo -->
-            <item name="colorPrimaryDark">#3949AB</item>
-            <!-- Dark Indigo -->
-            <item name="colorAccent">#00B0FF</item>
-            <!-- Blue -->
-        </style>
+        <!--&lt;!&ndash; Base application theme. &ndash;&gt;-->
+        <!--<style name="AppTheme.Base" parent="Theme.AppCompat.Light.NoActionBar">-->
+            <!--&lt;!&ndash; Customize your theme here. &ndash;&gt;-->
+            <!--<item name="colorPrimary">#3F51B5</item>-->
+            <!--&lt;!&ndash; Light Indigo &ndash;&gt;-->
+            <!--<item name="colorPrimaryDark">#3949AB</item>-->
+            <!--&lt;!&ndash; Dark Indigo &ndash;&gt;-->
+            <!--<item name="colorAccent">#00B0FF</item>-->
+            <!--&lt;!&ndash; Blue &ndash;&gt;-->
+        <!--</style>-->
+    <!-- Base application theme. -->
 
-        <style name="AppTheme" parent="AppTheme.Base">
-        </style>
+    <style name="AppTheme.Base" parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <!--<item name="android:windowLightStatusBar" tools:targetApi="m">true</item>-->
+        <!--<item name="colorControlActivated">@color/colorControlActivated</item>-->
+        <item name="android:textColorPrimary">@color/textColorPrimary</item>
+    </style>
+
+    <style name="Widget.Baking.Toolbar" parent="Widget.AppCompat.Toolbar">
+        <item name="android:background">@color/colorPrimary</item>
+        <item name="android:theme">@style/AppTheme.Base</item>
+        <item name="popupTheme">@style/ThemeOverlay.AppCompat.Light</item>
+        <!--<item name="titleTextAppearance">@style/TextAppearance.Shrine.Toolbar</item>-->
+    </style>
+
+    <style name="AppTheme" parent="AppTheme.Base">
+    </style>
 
 </resources>
+

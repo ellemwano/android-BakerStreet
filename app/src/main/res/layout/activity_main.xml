@@ -4,7 +4,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".ui.MainActivity">
+    android:background="@color/productGridBackgroundColor"
+    tools:context=".ui.MainActivity"
+    android:backgroundTint="@color/productGridBackgroundColor">
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/card_recycler_view"
@@ -12,16 +14,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
     </android.support.v7.widget.RecyclerView>
-
-    <Button
-        android:id="@+id/button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="ViewPager"
-        android:onClick="clickButton"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
 
 </android.support.constraint.ConstraintLayout>
 
