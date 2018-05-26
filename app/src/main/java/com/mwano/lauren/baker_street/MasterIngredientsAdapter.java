@@ -9,6 +9,8 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.mwano.lauren.baker_street.model.Ingredient;
+import com.mwano.lauren.baker_street.Utils;
+
 
 import java.util.List;
 
@@ -39,7 +41,7 @@ public class MasterIngredientsAdapter
         // mContext = holder.ingredientsTextView.getContext();
         Ingredient mIngredient = mIngredients.get(position);
         holder.ingredientsTextView.setText(mIngredient.getIngredient());
-        holder.quantityTextView.setText(String.valueOf(mIngredient.getQuantity()));
+        holder.quantityTextView.setText(Utils.doubleToStringFormat(mIngredient.getQuantity()));
         holder.measureTextView.setText(mIngredient.getMeasure().toLowerCase());
     }
 

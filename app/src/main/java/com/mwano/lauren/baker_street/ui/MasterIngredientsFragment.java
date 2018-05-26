@@ -9,13 +9,10 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
-
 
 import com.mwano.lauren.baker_street.MasterIngredientsAdapter;
 import com.mwano.lauren.baker_street.R;
 import com.mwano.lauren.baker_street.model.Ingredient;
-import com.mwano.lauren.baker_street.model.Recipe;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,6 +26,7 @@ public class MasterIngredientsFragment extends Fragment {
     // Recipe includes a List of Ingredients
     public List<Ingredient> mIngredients = new ArrayList<Ingredient>();
     RecyclerView mIngredientsRecyclerView;
+    LinearLayoutManager mLayoutManager;
 
     public static final String INGREDIENT_KEY = "ingredients";
 
@@ -50,10 +48,10 @@ public class MasterIngredientsFragment extends Fragment {
                              @Nullable Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_master_ingredients, container, false);
         // LinearLayoutManager
-        LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
+        mLayoutManager = new LinearLayoutManager(getContext());
         // RecyclerView
         mIngredientsRecyclerView = (RecyclerView)rootView.findViewById(R.id.rv_ingredients);
-        mIngredientsRecyclerView.setLayoutManager(layoutManager);
+        mIngredientsRecyclerView.setLayoutManager(mLayoutManager);
         mIngredientsRecyclerView.setHasFixedSize(true);
         //Adapter
         MasterIngredientsAdapter ingredientsAdapter =
@@ -62,6 +60,7 @@ public class MasterIngredientsFragment extends Fragment {
         //ingredientsAdapter.setIngredientData(mIngredients);
         return rootView;
     }
+
 
     /**
      * This method sets up a bundle for the arguments to pass

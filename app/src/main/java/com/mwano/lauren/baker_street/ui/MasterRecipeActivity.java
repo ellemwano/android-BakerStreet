@@ -9,6 +9,8 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.View;
+import android.view.ViewGroup;
 
 import com.mwano.lauren.baker_street.R;
 import com.mwano.lauren.baker_street.model.Ingredient;
@@ -45,22 +47,11 @@ public class MasterRecipeActivity extends AppCompatActivity {
                 mCurrentRecipe = intentThatStartedThisActivity.getParcelableExtra("recipe");
                 // Get the ingredients arrayList from the intent extra
                 mIngredients = mCurrentRecipe.getIngredients();
-//                // Create instance of the ingredients fragment and add it to activity
-//                MasterIngredientsFragment ingredientFragment =
-//                        MasterIngredientsFragment.newInstance((ArrayList<Ingredient>) mIngredients);
-//                getSupportFragmentManager().beginTransaction()
-//                        .add(R.id.main_content, ingredientFragment)
-//                        .commit();
                 // Get the steps arrayList from the intent extra
                 mSteps = mCurrentRecipe.getSteps();
-//                // Create instance of the steps fragment and add it to activity
-//                MasterStepsFragment stepFragment =
-//                        MasterStepsFragment.newInstance((ArrayList<Step>) mSteps);
-//                getSupportFragmentManager().beginTransaction()
-//                        .add(R.id.main_content, stepFragment)
-//                        .commit();
+                // Set Recipe name on toolbar
+                setTitle(mCurrentRecipe.getName());
             }
-
 
         // Setting ViewPager for each Tabs
         ViewPager viewPager = (ViewPager) findViewById(R.id.viewpager);
@@ -79,20 +70,13 @@ public class MasterRecipeActivity extends AppCompatActivity {
         // Create instance of the ingredients fragment and add it to activity
         MasterIngredientsFragment ingredientFragment =
                 MasterIngredientsFragment.newInstance((ArrayList<Ingredient>) mIngredients);
-//        getSupportFragmentManager().beginTransaction()
-//                .add(R.id.main_content, ingredientFragment)
-//                .commit();
         adapter.addFragment(ingredientFragment, "Ingredients");
         // Create instance of the steps fragment and add it to activity
         MasterStepsFragment stepFragment =
                 MasterStepsFragment.newInstance((ArrayList<Step>) mSteps);
-//        getSupportFragmentManager().beginTransaction()
-//                .add(R.id.main_content, stepFragment)
-//                .commit();
         adapter.addFragment(stepFragment, "Steps");
         viewPager.setAdapter(adapter);
     }
-
 
     /**
      * Adapter
