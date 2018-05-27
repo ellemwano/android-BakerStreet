@@ -1,4 +1,4 @@
-package com.mwano.lauren.baker_street.ui;
+package com.mwano.lauren.baker_street.ui.master;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -10,7 +10,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.mwano.lauren.baker_street.MasterIngredientsAdapter;
 import com.mwano.lauren.baker_street.R;
 import com.mwano.lauren.baker_street.model.Ingredient;
 
@@ -19,7 +18,7 @@ import java.util.List;
 
 
 /**
- * Provides UI for the view with the Ingredients
+ * Provides UI for the view with the Ingredients for the selected recipe
  */
 public class MasterIngredientsFragment extends Fragment {
 

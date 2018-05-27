@@ -1,4 +1,4 @@
-package com.mwano.lauren.baker_street;
+package com.mwano.lauren.baker_street.ui.master;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.mwano.lauren.baker_street.R;
 import com.mwano.lauren.baker_street.model.Step;
 
 import java.util.List;

@@ -1,4 +1,4 @@
-package com.mwano.lauren.baker_street.ui;
+package com.mwano.lauren.baker_street.ui.main;
 
 import android.content.Context;
 import android.content.Intent;
@@ -6,15 +6,17 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
-import com.mwano.lauren.baker_street.MainRecipeAdapter;
 import com.mwano.lauren.baker_street.R;
 import com.mwano.lauren.baker_street.json.ApiClient;
 import com.mwano.lauren.baker_street.json.ApiInterface;
 import com.mwano.lauren.baker_street.model.Recipe;
+import com.mwano.lauren.baker_street.ui.detail.DetailStepsActivity;
+import com.mwano.lauren.baker_street.ui.master.MasterRecipeActivity;
 
 import java.util.List;
 
@@ -44,6 +46,9 @@ public class MainActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        // Adding Toolbar to Main screen
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
         populateUi();
     }
 
@@ -92,8 +97,9 @@ public class MainActivity extends AppCompatActivity
         // Log.d(TAG, "Selected Recipe; " + currentRecipe.getName());
     }
 
+    // TODO remove later
     public void clickButton(View view) {
-        Intent intent = new Intent(this, MasterRecipeActivity.class);
+        Intent intent = new Intent(this, DetailStepsActivity.class);
         startActivity(intent);
     }
 }

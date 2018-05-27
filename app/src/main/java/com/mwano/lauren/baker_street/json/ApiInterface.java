@@ -9,8 +9,8 @@ import retrofit2.http.GET;
 
 public interface ApiInterface {
 
-    public static final String JSON_FILE = "/topher/2017/May/59121517_baking/baking.json";
+    public static final String RECIPES = "/topher/2017/May/59121517_baking/baking.json";
 
-    @GET(JSON_FILE)
+    @GET(RECIPES)
     Call<List<Recipe>> getRecipes();
 }

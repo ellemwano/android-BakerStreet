@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:paddingTop="16dp"
     android:orientation="vertical"
-    tools:context=".ui.MasterRecipeActivity"
+    tools:context=".ui.master.MasterRecipeActivity"
     android:background="@color/productGridBackgroundColor"
     app:layout_behavior="@string/appbar_scrolling_view_behavior">
 

@@ -1,4 +1,4 @@
-package com.mwano.lauren.baker_street.ui;
+package com.mwano.lauren.baker_street.ui.master;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -10,13 +10,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.mwano.lauren.baker_street.MasterStepsAdapter;
 import com.mwano.lauren.baker_street.R;
 import com.mwano.lauren.baker_street.model.Step;
 
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Provides UI for the view with the Steps for the selected recipe
+ */
 public class MasterStepsFragment extends Fragment {
 
     // Recipe includes a List of Ingredients
