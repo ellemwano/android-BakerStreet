@@ -1,5 +1,6 @@
 package com.mwano.lauren.baker_street.ui.master;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -12,16 +13,19 @@ import android.view.ViewGroup;
 
 import com.mwano.lauren.baker_street.R;
 import com.mwano.lauren.baker_street.model.Step;
+import com.mwano.lauren.baker_street.ui.detail.DetailStepsActivity;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
 
 /**
  * Provides UI for the view with the Steps for the selected recipe
  */
-public class MasterStepsFragment extends Fragment {
+public class MasterStepsFragment extends Fragment
+        implements MasterStepsAdapter.StepAdapterOnClickHandler {
 
     // Recipe includes a List of Ingredients
     public List<Step> mSteps = new ArrayList<Step>();
@@ -46,6 +50,7 @@ public class MasterStepsFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_master_steps, container, false);
+        ButterKnife.bind(this, rootView);
         // LinearLayoutManager
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
         // RecyclerView
@@ -53,7 +58,7 @@ public class MasterStepsFragment extends Fragment {
         mStepsRecyclerView.setHasFixedSize(true);
         //Adapter
         MasterStepsAdapter stepsAdapter =
-                new MasterStepsAdapter(getContext(), mSteps);
+                new MasterStepsAdapter(getContext(), mSteps, this);
         mStepsRecyclerView.setAdapter(stepsAdapter);
         //stepsAdapter.setStepData(mSteps);
         return rootView;
@@ -75,7 +80,10 @@ public class MasterStepsFragment extends Fragment {
         return stepFragment;
     }
 
-
-
-
+    // TODO
+    @Override
+    public void onClick(Step currentStep) {
+        Intent intent = new Intent(getActivity(), DetailStepsActivity.class);
+        startActivity(intent);
+    }
 }

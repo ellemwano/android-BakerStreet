@@ -17,6 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
 
 
 /**
@@ -48,6 +49,7 @@ public class MasterIngredientsFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_master_ingredients, container, false);
+        ButterKnife.bind(this, rootView);
         // LinearLayoutManager
         mLayoutManager = new LinearLayoutManager(getContext());
         // RecyclerView

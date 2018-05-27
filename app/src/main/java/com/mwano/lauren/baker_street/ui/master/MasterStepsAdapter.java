@@ -20,14 +20,19 @@ public class MasterStepsAdapter
 
     private Context mContext;
     private List<Step> mSteps;
+    private final StepAdapterOnClickHandler mStepClickHandler;
 
-    // TODO Add onClickHandler
-
+    // OnClickHandler interface
+    public interface StepAdapterOnClickHandler {
+        void onClick(Step currentStep);
+    }
 
     // Constructor
-    public MasterStepsAdapter(Context context, List<Step> steps) {
+    public MasterStepsAdapter(Context context, List<Step> steps,
+                              StepAdapterOnClickHandler stepClickHandler) {
         mContext = context;
         mSteps = steps;
+        mStepClickHandler = stepClickHandler;
     }
 
     @Override
@@ -36,6 +41,7 @@ public class MasterStepsAdapter
                 .inflate(R.layout.item_master_steps_card, parent, false);
         return new MasterStepsAdapter.MasterStepsViewHolder(mItemView);
     }
+
 
     @Override
     public void onBindViewHolder(MasterStepsViewHolder holder, int position) {
@@ -57,7 +63,7 @@ public class MasterStepsAdapter
 
 
     // ViewHolder
-    public static class MasterStepsViewHolder extends RecyclerView.ViewHolder {
+    public class MasterStepsViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         @BindView(R.id.tv_step_id) TextView stepsIdTextView;
         @BindView(R.id.tv_step_description) TextView stepsTextView;
@@ -65,7 +71,15 @@ public class MasterStepsAdapter
         // Constructor
         public MasterStepsViewHolder(View view) {
             super(view);
+            view.setOnClickListener(this);
             ButterKnife.bind(this, view);
+        }
+
+        @Override
+        public void onClick(View v) {
+            int adapterPosition = getAdapterPosition();
+            Step currentStep = mSteps.get(adapterPosition);
+            mStepClickHandler.onClick(currentStep);
         }
     }
 }
