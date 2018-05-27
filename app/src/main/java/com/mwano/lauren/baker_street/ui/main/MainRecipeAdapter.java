@@ -12,6 +12,9 @@ import com.mwano.lauren.baker_street.model.Recipe;
 
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 
 public class MainRecipeAdapter extends RecyclerView.Adapter<MainRecipeAdapter.RecipeViewHolder> {
 
@@ -61,16 +64,15 @@ public class MainRecipeAdapter extends RecyclerView.Adapter<MainRecipeAdapter.Re
 
     public class RecipeViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
 
-        public TextView mNameTextView;
-        public TextView mServingsTextView;
+        @BindView(R.id.recipe_name_tv) TextView mNameTextView;
+        @BindView(R.id.servings_tv) TextView mServingsTextView;
 
 
         //RecipeViewHolder constructor
         public RecipeViewHolder(View itemView) {
             super(itemView);
             itemView.setOnClickListener(this);
-            mNameTextView = (TextView)itemView.findViewById(R.id.recipe_name_tv);
-            mServingsTextView = (TextView)itemView.findViewById(R.id.servings_tv);
+            ButterKnife.bind(this, itemView);
         }
 
         @Override

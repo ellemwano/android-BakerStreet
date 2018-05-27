@@ -12,6 +12,9 @@ import com.mwano.lauren.baker_street.model.Step;
 
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 public class MasterStepsAdapter
         extends RecyclerView.Adapter<MasterStepsAdapter.MasterStepsViewHolder> {
 
@@ -27,7 +30,6 @@ public class MasterStepsAdapter
         mSteps = steps;
     }
 
-    // TODO
     @Override
     public MasterStepsViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View mItemView = LayoutInflater.from(mContext)
@@ -35,7 +37,6 @@ public class MasterStepsAdapter
         return new MasterStepsAdapter.MasterStepsViewHolder(mItemView);
     }
 
-    // TODO
     @Override
     public void onBindViewHolder(MasterStepsViewHolder holder, int position) {
         Step mStep = mSteps.get(position);
@@ -58,16 +59,13 @@ public class MasterStepsAdapter
     // ViewHolder
     public static class MasterStepsViewHolder extends RecyclerView.ViewHolder {
 
-        public TextView stepsIdTextView;
-        public TextView stepsTextView;
+        @BindView(R.id.tv_step_id) TextView stepsIdTextView;
+        @BindView(R.id.tv_step_description) TextView stepsTextView;
 
         // Constructor
-        // TODO
         public MasterStepsViewHolder(View view) {
             super(view);
-            stepsIdTextView = (TextView) itemView.findViewById(R.id.tv_step_id);
-            stepsTextView = (TextView) itemView.findViewById(R.id.tv_step_description);
+            ButterKnife.bind(this, view);
         }
     }
-
 }

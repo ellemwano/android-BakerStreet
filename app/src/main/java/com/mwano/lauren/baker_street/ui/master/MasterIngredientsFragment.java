@@ -16,6 +16,8 @@ import com.mwano.lauren.baker_street.model.Ingredient;
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.BindView;
+
 
 /**
  * Provides UI for the view with the Ingredients for the selected recipe
@@ -24,7 +26,7 @@ public class MasterIngredientsFragment extends Fragment {
 
     // Recipe includes a List of Ingredients
     public List<Ingredient> mIngredients = new ArrayList<Ingredient>();
-    RecyclerView mIngredientsRecyclerView;
+    @BindView(R.id.rv_ingredients) RecyclerView mIngredientsRecyclerView;
     LinearLayoutManager mLayoutManager;
 
     public static final String INGREDIENT_KEY = "ingredients";
@@ -49,7 +51,6 @@ public class MasterIngredientsFragment extends Fragment {
         // LinearLayoutManager
         mLayoutManager = new LinearLayoutManager(getContext());
         // RecyclerView
-        mIngredientsRecyclerView = (RecyclerView)rootView.findViewById(R.id.rv_ingredients);
         mIngredientsRecyclerView.setLayoutManager(mLayoutManager);
         mIngredientsRecyclerView.setHasFixedSize(true);
         //Adapter

@@ -18,6 +18,9 @@ import com.mwano.lauren.baker_street.model.Step;
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 
 /**
  * Code source for ViewPager (java + xml) - Codelab:
@@ -26,6 +29,9 @@ import java.util.List;
 
 public class MasterRecipeActivity extends AppCompatActivity {
 
+    @BindView(R.id.toolbar) Toolbar toolbar;
+    @BindView(R.id.viewpager) ViewPager viewPager;
+    @BindView(R.id.tabs) TabLayout tabs;
     private Recipe mCurrentRecipe;
     private List<Ingredient> mIngredients = new ArrayList<>();
     private List<Step> mSteps = new ArrayList<>();
@@ -34,8 +40,9 @@ public class MasterRecipeActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_master_recipes);
+        // Bind views
+        ButterKnife.bind(this);
         // Adding Toolbar to Main screen
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
         // Get the selected recipe from the intent
@@ -52,13 +59,9 @@ public class MasterRecipeActivity extends AppCompatActivity {
             }
 
         // Setting ViewPager for each Tabs
-        ViewPager viewPager = (ViewPager) findViewById(R.id.viewpager);
         setupViewPager(viewPager);
         // Add tabs
-        TabLayout tabs = (TabLayout) findViewById(R.id.tabs);
         tabs.setupWithViewPager(viewPager);
-
-
         }
     }
 

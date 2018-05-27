@@ -20,6 +20,9 @@ import com.mwano.lauren.baker_street.ui.master.MasterRecipeActivity;
 
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -27,7 +30,8 @@ import retrofit2.Response;
 public class MainActivity extends AppCompatActivity
         implements MainRecipeAdapter.RecipeAdapterOnClickHandler{
 
-    private RecyclerView mRecyclerView;
+    @BindView(R.id.card_recycler_view) RecyclerView mRecyclerView;
+    @BindView(R.id.toolbar) Toolbar toolbar;
     private List<Recipe> mRecipes;
     private MainRecipeAdapter mMainRecipeAdapter;
     private GridLayoutManager mGridLayoutManager;
@@ -47,8 +51,8 @@ public class MainActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         // Adding Toolbar to Main screen
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        ButterKnife.bind(this);
         populateUi();
     }
 
@@ -57,7 +61,6 @@ public class MainActivity extends AppCompatActivity
         mColumnsNumber = (int) getResources().getInteger(R.integer.num_of_columns);
         mGridLayoutManager = new GridLayoutManager(this, mColumnsNumber);
         // RecyclerView
-        mRecyclerView = (RecyclerView) findViewById(R.id.card_recycler_view);
         mRecyclerView.setLayoutManager(mGridLayoutManager);
         mRecyclerView.setHasFixedSize(true);
         // Adapter
@@ -98,7 +101,8 @@ public class MainActivity extends AppCompatActivity
     }
 
     // TODO remove later
-    public void clickButton(View view) {
+    @OnClick(R.id.button)
+    public void clickButton() {
         Intent intent = new Intent(this, DetailStepsActivity.class);
         startActivity(intent);
     }

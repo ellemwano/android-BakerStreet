@@ -14,6 +14,9 @@ import com.mwano.lauren.baker_street.Utils;
 
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 public class MasterIngredientsAdapter
         extends RecyclerView.Adapter<MasterIngredientsAdapter.MasterIngredientsViewHolder> {
 
@@ -35,7 +38,6 @@ public class MasterIngredientsAdapter
         return new MasterIngredientsViewHolder(mItemView);
     }
 
-    // check
     @Override
     public void onBindViewHolder(MasterIngredientsViewHolder holder, int position) {
         // mContext = holder.ingredientsTextView.getContext();
@@ -60,17 +62,14 @@ public class MasterIngredientsAdapter
     // ViewHolder
     public static class MasterIngredientsViewHolder extends RecyclerView.ViewHolder {
 
-        public TextView ingredientsTextView;
-        public TextView quantityTextView;
-        public TextView measureTextView;
+        @BindView(R.id.tv_ingredient) TextView ingredientsTextView;
+        @BindView(R.id.tv_quantity) TextView quantityTextView;
+        @BindView(R.id.tv_measure) TextView measureTextView;
 
         // Constructor
         public MasterIngredientsViewHolder(View view) {
             super(view);
-            ingredientsTextView = (TextView) itemView.findViewById(R.id.tv_ingredient);
-            quantityTextView = (TextView) itemView.findViewById(R.id.tv_quantity);
-            measureTextView = (TextView) itemView.findViewById(R.id.tv_measure);
-
+            ButterKnife.bind(this, view);
         }
     }
 

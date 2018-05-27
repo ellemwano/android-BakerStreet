@@ -16,6 +16,8 @@ import com.mwano.lauren.baker_street.model.Step;
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.BindView;
+
 /**
  * Provides UI for the view with the Steps for the selected recipe
  */
@@ -23,7 +25,7 @@ public class MasterStepsFragment extends Fragment {
 
     // Recipe includes a List of Ingredients
     public List<Step> mSteps = new ArrayList<Step>();
-    RecyclerView mStepsRecyclerView;
+    @BindView(R.id.rv_steps) RecyclerView mStepsRecyclerView;
 
     public static final String STEP_KEY = "steps";
 
@@ -47,7 +49,6 @@ public class MasterStepsFragment extends Fragment {
         // LinearLayoutManager
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
         // RecyclerView
-        mStepsRecyclerView = (RecyclerView)rootView.findViewById(R.id.rv_steps);
         mStepsRecyclerView.setLayoutManager(layoutManager);
         mStepsRecyclerView.setHasFixedSize(true);
         //Adapter
