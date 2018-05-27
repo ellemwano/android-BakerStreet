@@ -30,7 +30,7 @@ public class MasterIngredientsFragment extends Fragment {
     @BindView(R.id.rv_ingredients) RecyclerView mIngredientsRecyclerView;
     LinearLayoutManager mLayoutManager;
 
-    public static final String INGREDIENT_KEY = "ingredients";
+    public static final String INGREDIENTS_LIST = "ingredients";
 
     // Constructor
     public MasterIngredientsFragment() {
@@ -39,8 +39,8 @@ public class MasterIngredientsFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if(getArguments() != null && getArguments().containsKey(INGREDIENT_KEY)) {
-            mIngredients = getArguments().getParcelableArrayList(INGREDIENT_KEY);
+        if(getArguments() != null && getArguments().containsKey(INGREDIENTS_LIST)) {
+            mIngredients = getArguments().getParcelableArrayList(INGREDIENTS_LIST);
         }
     }
 
@@ -71,11 +71,11 @@ public class MasterIngredientsFragment extends Fragment {
      * @param ingredients ArrayList of Ingredient objects of selected recipe in recipe list
      * @return fragment
      */
-    public static MasterIngredientsFragment newInstance (ArrayList<Ingredient> ingredients) {
+    public static MasterIngredientsFragment newIngredientsInstance(ArrayList<Ingredient> ingredients) {
         MasterIngredientsFragment ingredientFragment = new MasterIngredientsFragment();
         // Set the bundle arguments for the fragment.
         Bundle arguments = new Bundle();
-        arguments.putParcelableArrayList(INGREDIENT_KEY, ingredients);
+        arguments.putParcelableArrayList(INGREDIENTS_LIST, ingredients);
         ingredientFragment.setArguments(arguments);
         return ingredientFragment;
     }

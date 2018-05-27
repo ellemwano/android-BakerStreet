@@ -21,6 +21,8 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+import static com.mwano.lauren.baker_street.ui.main.MainActivity.RECIPE;
+
 
 /**
  * Code source for ViewPager (java + xml) - Codelab:
@@ -47,9 +49,9 @@ public class MasterRecipeActivity extends AppCompatActivity {
 
         // Get the selected recipe from the intent
         if (savedInstanceState == null) {
-            final Intent intentThatStartedThisActivity = getIntent();
-            if(intentThatStartedThisActivity.hasExtra("recipe")) {
-                mCurrentRecipe = intentThatStartedThisActivity.getParcelableExtra("recipe");
+            final Intent intentReceivedMainMaster = getIntent();
+            if(intentReceivedMainMaster.hasExtra(RECIPE)) {
+                mCurrentRecipe = intentReceivedMainMaster.getParcelableExtra(RECIPE);
                 // Get the ingredients arrayList from the intent extra
                 mIngredients = mCurrentRecipe.getIngredients();
                 // Get the steps arrayList from the intent extra
@@ -65,16 +67,17 @@ public class MasterRecipeActivity extends AppCompatActivity {
         }
     }
 
+    // TODO create strings for tabs title
     // Add Fragments to Tabs
     private void setupViewPager(ViewPager viewPager) {
         Adapter adapter = new Adapter(getSupportFragmentManager());
         // Create instance of the ingredients fragment and add it to activity
         MasterIngredientsFragment ingredientFragment =
-                MasterIngredientsFragment.newInstance((ArrayList<Ingredient>) mIngredients);
+                MasterIngredientsFragment.newIngredientsInstance((ArrayList<Ingredient>) mIngredients);
         adapter.addFragment(ingredientFragment, "Ingredients");
         // Create instance of the steps fragment and add it to activity
         MasterStepsFragment stepFragment =
-                MasterStepsFragment.newInstance((ArrayList<Step>) mSteps);
+                MasterStepsFragment.newStepsInstance((ArrayList<Step>) mSteps);
         adapter.addFragment(stepFragment, "Steps");
         viewPager.setAdapter(adapter);
     }

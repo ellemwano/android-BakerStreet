@@ -8,14 +8,13 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.View;
 import android.widget.Toast;
 
 import com.mwano.lauren.baker_street.R;
 import com.mwano.lauren.baker_street.json.ApiClient;
 import com.mwano.lauren.baker_street.json.ApiInterface;
 import com.mwano.lauren.baker_street.model.Recipe;
-import com.mwano.lauren.baker_street.ui.detail.DetailStepsActivity;
+import com.mwano.lauren.baker_street.ui.detail.DetailStepActivity;
 import com.mwano.lauren.baker_street.ui.master.MasterRecipeActivity;
 
 import java.util.List;
@@ -37,6 +36,8 @@ public class MainActivity extends AppCompatActivity
     private GridLayoutManager mGridLayoutManager;
     private int mColumnsNumber;
     private Context mContext;
+
+    public static final String RECIPE = "recipe";
     private final String TAG = MainActivity.class.getSimpleName();
 
     /*
@@ -94,16 +95,16 @@ public class MainActivity extends AppCompatActivity
     // Open MasterRecipeActivity intent, using parcelable
     @Override
     public void onClick(Recipe currentRecipe) {
-        Intent intentMasterRecipe = new Intent(this, MasterRecipeActivity.class);
-        intentMasterRecipe.putExtra("recipe", currentRecipe);
-        startActivity(intentMasterRecipe);
+        Intent intentSentMainMaster = new Intent(this, MasterRecipeActivity.class);
+        intentSentMainMaster.putExtra(RECIPE, currentRecipe);
+        startActivity(intentSentMainMaster);
         // Log.d(TAG, "Selected Recipe; " + currentRecipe.getName());
     }
 
     // TODO remove later
     @OnClick(R.id.button)
     public void clickButton() {
-        Intent intent = new Intent(this, DetailStepsActivity.class);
+        Intent intent = new Intent(this, DetailStepActivity.class);
         startActivity(intent);
     }
 }

@@ -22,7 +22,8 @@
         <ImageView
             android:id="@+id/exoplayer"
             android:layout_width="match_parent"
-            android:layout_height="200dp"
+            android:layout_height="0dp"
+            android:paddingBottom="8dp"
             android:scaleType="centerCrop"
             android:src="@drawable/donut"
             app:layout_constraintDimensionRatio="16:9"
@@ -30,15 +31,22 @@
             app:layout_constraintStart_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
+        <android.support.constraint.Guideline
+            android:id="@+id/guideline_horizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.4"/>
+
         <TextView
             android:id="@+id/tv_detail_description"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:paddingTop="8dp"
-            android:maxLines="10"
+            android:textSize="17sp"
             app:layout_constraintEnd_toStartOf="@id/guideline_end"
             app:layout_constraintStart_toEndOf="@id/guideline_start"
-            app:layout_constraintTop_toBottomOf="@id/exoplayer"
+            app:layout_constraintTop_toBottomOf="@id/guideline_horizontal"
             app:layout_constraintBottom_toTopOf="@id/button_previous"
             tools:text="@tools:sample/lorem/random" />
 

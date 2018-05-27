@@ -13,7 +13,7 @@ import android.view.ViewGroup;
 
 import com.mwano.lauren.baker_street.R;
 import com.mwano.lauren.baker_street.model.Step;
-import com.mwano.lauren.baker_street.ui.detail.DetailStepsActivity;
+import com.mwano.lauren.baker_street.ui.detail.DetailStepActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,7 +31,8 @@ public class MasterStepsFragment extends Fragment
     public List<Step> mSteps = new ArrayList<Step>();
     @BindView(R.id.rv_steps) RecyclerView mStepsRecyclerView;
 
-    public static final String STEP_KEY = "steps";
+    public static final String STEPS_LIST = "steps";
+    public static final String STEP_SELECTED = "selected step";
 
     // Constructor
     public MasterStepsFragment() {
@@ -40,8 +41,8 @@ public class MasterStepsFragment extends Fragment
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if(getArguments() != null && getArguments().containsKey(STEP_KEY)) {
-            mSteps = getArguments().getParcelableArrayList(STEP_KEY);
+        if(getArguments() != null && getArguments().containsKey(STEPS_LIST)) {
+            mSteps = getArguments().getParcelableArrayList(STEPS_LIST);
         }
     }
 
@@ -71,19 +72,19 @@ public class MasterStepsFragment extends Fragment
      * @param steps ArrayList of Step objects of selected recipe in recipe list
      * @return fragment
      */
-    public static MasterStepsFragment newInstance (ArrayList<Step> steps) {
+    public static MasterStepsFragment newStepsInstance(ArrayList<Step> steps) {
         MasterStepsFragment stepFragment = new MasterStepsFragment();
         // Set the bundle arguments for the fragment.
         Bundle arguments = new Bundle();
-        arguments.putParcelableArrayList(STEP_KEY, steps);
+        arguments.putParcelableArrayList(STEPS_LIST, steps);
         stepFragment.setArguments(arguments);
         return stepFragment;
     }
 
-    // TODO
     @Override
     public void onClick(Step currentStep) {
-        Intent intent = new Intent(getActivity(), DetailStepsActivity.class);
-        startActivity(intent);
+        Intent intentDetailStep = new Intent(getActivity(), DetailStepActivity.class);
+        intentDetailStep.putExtra(STEP_SELECTED, currentStep);
+        startActivity(intentDetailStep);
     }
 }

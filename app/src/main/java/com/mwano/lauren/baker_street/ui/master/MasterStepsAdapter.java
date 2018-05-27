@@ -46,8 +46,8 @@ public class MasterStepsAdapter
     @Override
     public void onBindViewHolder(MasterStepsViewHolder holder, int position) {
         Step mStep = mSteps.get(position);
-        holder.stepsIdTextView.setText(String.valueOf(mStep.getId()));
-        holder.stepsTextView.setText(mStep.getShortDescription());
+        holder.stepIdTextView.setText(String.valueOf(mStep.getId()));
+        holder.stepTextView.setText(mStep.getShortDescription());
     }
 
     @Override
@@ -65,8 +65,8 @@ public class MasterStepsAdapter
     // ViewHolder
     public class MasterStepsViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
-        @BindView(R.id.tv_step_id) TextView stepsIdTextView;
-        @BindView(R.id.tv_step_description) TextView stepsTextView;
+        @BindView(R.id.tv_step_id) TextView stepIdTextView;
+        @BindView(R.id.tv_step_description) TextView stepTextView;
 
         // Constructor
         public MasterStepsViewHolder(View view) {

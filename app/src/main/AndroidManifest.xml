@@ -22,7 +22,7 @@
 
         <activity android:name=".ui.master.MasterRecipeActivity" />
 
-        <activity android:name=".ui.detail.DetailStepsActivity" />
+        <activity android:name=".ui.detail.DetailStepActivity" />
 
     </application>
 
