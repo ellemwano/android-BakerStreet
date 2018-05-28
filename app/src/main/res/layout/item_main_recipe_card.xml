@@ -11,14 +11,13 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="8dp"
-        card_view:cardBackgroundColor="@color/productGridBackgroundColor"
-        app:cardCornerRadius="0dp">
+        app:cardCornerRadius="0dp"
+        app:cardBackgroundColor="@color/backgroundColor">
 
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:backgroundTint="@color/productGridBackgroundColor">
+        android:orientation="vertical">
 
         <ImageView
             android:id="@+id/recipe_iv"

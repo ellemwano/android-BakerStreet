@@ -4,9 +4,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="@color/productGridBackgroundColor"
+    android:background="@color/backgroundColor"
     tools:context=".ui.main.MainActivity"
-    android:backgroundTint="@color/productGridBackgroundColor">
+    android:backgroundTint="@color/backgroundColor">
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar"
@@ -23,19 +23,8 @@
         android:layout_height="wrap_content"
         app:layout_constraintTop_toBottomOf="@id/toolbar"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/button">
+        app:layout_constraintEnd_toEndOf="parent">
     </android.support.v7.widget.RecyclerView>
-
-    <!-- TODO Remove and adjust RV with Toolbar -->
-    <Button
-        android:id="@+id/button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Click"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
 
 </android.support.constraint.ConstraintLayout>
 

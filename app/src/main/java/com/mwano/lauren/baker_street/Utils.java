@@ -7,7 +7,7 @@ import java.text.NumberFormat;
 public class Utils {
 
     //
-    public static String doubleToStringFormat(double doubleValue) {
+    public static String doubleToStringFormat(Double doubleValue) {
         NumberFormat nf = new DecimalFormat("#.##");
         return nf.format(doubleValue);
     }

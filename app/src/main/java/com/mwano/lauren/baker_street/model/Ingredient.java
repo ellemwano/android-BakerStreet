@@ -10,7 +10,7 @@ public class Ingredient implements Parcelable {
 
     @SerializedName("quantity")
     @Expose
-    private double quantity;
+    private Double quantity;
     @SerializedName("measure")
     @Expose
     private String measure;
@@ -23,11 +23,11 @@ public class Ingredient implements Parcelable {
     }
 
     // Getters and Setters
-    public double getQuantity() {
+    public Double getQuantity() {
         return quantity;
     }
 
-    public void setQuantity(double quantity) {
+    public void setQuantity(Double quantity) {
         this.quantity = quantity;
     }
 

@@ -3,16 +3,15 @@ package com.mwano.lauren.baker_street.model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import java.util.ArrayList;
 import java.util.List;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 public class Recipe implements Parcelable {
 
-    @SerializedName("id")
+    @SerializedName("recipeId")
     @Expose
-    private Integer id;
+    private Integer recipeId;
     @SerializedName("name")
     @Expose
     private String name;
@@ -34,12 +33,12 @@ public class Recipe implements Parcelable {
     }
 
     // Getters and Setters
-    public Integer getId() {
-        return id;
+    public Integer getRecipeId() {
+        return recipeId;
     }
 
-    public void setId(Integer id) {
-        this.id = id;
+    public void setRecipeId(Integer recipeId) {
+        this.recipeId = recipeId;
     }
 
     public String getName() {
@@ -91,20 +90,19 @@ public class Recipe implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeValue(this.id);
+        dest.writeValue(this.recipeId);
         dest.writeString(this.name);
         dest.writeTypedList(this.ingredients);
-        dest.writeList(this.steps);
+        dest.writeTypedList(this.steps);
         dest.writeValue(this.servings);
         dest.writeString(this.image);
     }
 
     protected Recipe(Parcel in) {
-        this.id = (Integer) in.readValue(Integer.class.getClassLoader());
+        this.recipeId = (Integer) in.readValue(Integer.class.getClassLoader());
         this.name = in.readString();
         this.ingredients = in.createTypedArrayList(Ingredient.CREATOR);
-        this.steps = new ArrayList<Step>();
-        in.readList(this.steps, Step.class.getClassLoader());
+        this.steps = in.createTypedArrayList(Step.CREATOR);
         this.servings = (Integer) in.readValue(Integer.class.getClassLoader());
         this.image = in.readString();
     }

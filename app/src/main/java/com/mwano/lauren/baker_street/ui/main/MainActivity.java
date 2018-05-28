@@ -54,6 +54,8 @@ public class MainActivity extends AppCompatActivity
         // Adding Toolbar to Main screen
         setSupportActionBar(toolbar);
         ButterKnife.bind(this);
+        // Set app name to toolbar
+        toolbar.setTitle(R.string.app_name);
         populateUi();
     }
 
@@ -99,12 +101,5 @@ public class MainActivity extends AppCompatActivity
         intentSentMainMaster.putExtra(RECIPE, currentRecipe);
         startActivity(intentSentMainMaster);
         // Log.d(TAG, "Selected Recipe; " + currentRecipe.getName());
-    }
-
-    // TODO remove later
-    @OnClick(R.id.button)
-    public void clickButton() {
-        Intent intent = new Intent(this, DetailStepActivity.class);
-        startActivity(intent);
     }
 }
