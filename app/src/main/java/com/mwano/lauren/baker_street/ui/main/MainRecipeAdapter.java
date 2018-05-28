@@ -2,13 +2,16 @@ package com.mwano.lauren.baker_street.ui.main;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.mwano.lauren.baker_street.R;
 import com.mwano.lauren.baker_street.model.Recipe;
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
@@ -49,6 +52,20 @@ public class MainRecipeAdapter extends RecyclerView.Adapter<MainRecipeAdapter.Re
         Recipe currentRecipe = mRecipes.get(position);
         holder.mNameTextView.setText(currentRecipe.getName());
         holder.mServingsTextView.setText(String.valueOf(currentRecipe.getServings()));
+        // Instantiate Picasso to handle the Recipe image
+        Picasso mPicasso = Picasso.get();
+        // Load recipe image if exists and non null, else load a placeholder
+        if(!TextUtils.isEmpty(currentRecipe.getImage())){
+            mPicasso.load(currentRecipe.getImage())
+                    .placeholder(R.drawable.donut)
+                    .error(R.drawable.donut)
+                    .into(holder.mRecipeImageView);
+        } else {
+            mPicasso.load(R.drawable.donut)
+                    .placeholder(R.drawable.donut)
+                    .error(R.drawable.donut)
+                    .into(holder.mRecipeImageView);
+        }
     }
 
     @Override
@@ -64,6 +81,7 @@ public class MainRecipeAdapter extends RecyclerView.Adapter<MainRecipeAdapter.Re
 
     public class RecipeViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
 
+        @BindView(R.id.recipe_iv) ImageView mRecipeImageView;
         @BindView(R.id.recipe_name_tv) TextView mNameTextView;
         @BindView(R.id.servings_tv) TextView mServingsTextView;
 
