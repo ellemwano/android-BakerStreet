@@ -73,6 +73,7 @@ public class MainActivity extends AppCompatActivity
         loadRecipes();
     }
 
+    // TODO add no Connection error
     public void loadRecipes() {
         ApiInterface request = ApiClient.getClient().create(ApiInterface.class);
         Call<List<Recipe>> call = request.getRecipes();
