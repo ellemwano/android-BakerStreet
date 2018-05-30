@@ -13,7 +13,7 @@ import android.view.ViewGroup;
 
 import com.mwano.lauren.baker_street.R;
 import com.mwano.lauren.baker_street.model.Step;
-import com.mwano.lauren.baker_street.ui.detail.DetailStepActivity;
+import com.mwano.lauren.baker_street.ui.detail.DetailStepPagerActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,7 +24,7 @@ import butterknife.ButterKnife;
 /**
  * Provides UI for the view with the Steps for the selected recipe
  */
-public class MasterStepsFragment extends Fragment
+public class MasterStepsPageFragment extends Fragment
         implements MasterStepsAdapter.StepAdapterOnClickHandler {
 
     // Recipe includes a List of Ingredients
@@ -35,7 +35,7 @@ public class MasterStepsFragment extends Fragment
     public static final String STEP_SELECTED = "selected step";
 
     // Constructor
-    public MasterStepsFragment() {
+    public MasterStepsPageFragment() {
     }
 
     @Override
@@ -50,7 +50,7 @@ public class MasterStepsFragment extends Fragment
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_master_steps, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_master_steps_page, container, false);
         ButterKnife.bind(this, rootView);
         // LinearLayoutManager
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
@@ -72,8 +72,8 @@ public class MasterStepsFragment extends Fragment
      * @param steps ArrayList of Step objects of selected recipe in recipe list
      * @return fragment
      */
-    public static MasterStepsFragment newStepsInstance(ArrayList<Step> steps) {
-        MasterStepsFragment stepFragment = new MasterStepsFragment();
+    public static MasterStepsPageFragment newStepsInstance(ArrayList<Step> steps) {
+        MasterStepsPageFragment stepFragment = new MasterStepsPageFragment();
         // Set the bundle arguments for the fragment.
         Bundle arguments = new Bundle();
         arguments.putParcelableArrayList(STEPS_LIST, steps);
@@ -83,7 +83,7 @@ public class MasterStepsFragment extends Fragment
 
     @Override
     public void onClick(Step currentStep) {
-        Intent intentDetailStep = new Intent(getActivity(), DetailStepActivity.class);
+        Intent intentDetailStep = new Intent(getActivity(), DetailStepPagerActivity.class);
         intentDetailStep.putExtra(STEP_SELECTED, currentStep);
         startActivity(intentDetailStep);
     }

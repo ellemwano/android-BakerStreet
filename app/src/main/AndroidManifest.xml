@@ -21,9 +21,9 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".ui.master.MasterRecipeActivity" />
+        <activity android:name=".ui.master.MasterRecipePagerActivity" />
 
-        <activity android:name=".ui.detail.DetailStepActivity" />
+        <activity android:name=".ui.detail.DetailStepPagerActivity" />
 
     </application>
 

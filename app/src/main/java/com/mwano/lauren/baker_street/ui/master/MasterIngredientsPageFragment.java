@@ -23,7 +23,7 @@ import butterknife.ButterKnife;
 /**
  * Provides UI for the view with the Ingredients for the selected recipe
  */
-public class MasterIngredientsFragment extends Fragment {
+public class MasterIngredientsPageFragment extends Fragment {
 
     // Recipe includes a List of Ingredients
     public List<Ingredient> mIngredients = new ArrayList<Ingredient>();
@@ -33,7 +33,7 @@ public class MasterIngredientsFragment extends Fragment {
     public static final String INGREDIENTS_LIST = "ingredients";
 
     // Constructor
-    public MasterIngredientsFragment() {
+    public MasterIngredientsPageFragment() {
     }
 
     @Override
@@ -48,7 +48,7 @@ public class MasterIngredientsFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_master_ingredients, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_master_ingredients_page, container, false);
         ButterKnife.bind(this, rootView);
         // LinearLayoutManager
         mLayoutManager = new LinearLayoutManager(getContext());
@@ -71,8 +71,8 @@ public class MasterIngredientsFragment extends Fragment {
      * @param ingredients ArrayList of Ingredient objects of selected recipe in recipe list
      * @return fragment
      */
-    public static MasterIngredientsFragment newIngredientsInstance(ArrayList<Ingredient> ingredients) {
-        MasterIngredientsFragment ingredientFragment = new MasterIngredientsFragment();
+    public static MasterIngredientsPageFragment newIngredientsInstance(ArrayList<Ingredient> ingredients) {
+        MasterIngredientsPageFragment ingredientFragment = new MasterIngredientsPageFragment();
         // Set the bundle arguments for the fragment.
         Bundle arguments = new Bundle();
         arguments.putParcelableArrayList(INGREDIENTS_LIST, ingredients);

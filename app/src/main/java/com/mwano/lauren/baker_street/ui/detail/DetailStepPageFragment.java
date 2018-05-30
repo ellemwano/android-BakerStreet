@@ -20,20 +20,21 @@ import butterknife.ButterKnife;
 /**
  * A Fragment subclass that displays the video and description for the selected step
  */
-public class DetailStepFragment extends Fragment {
+public class DetailStepPageFragment extends Fragment {
 
-
-    //@BindView(R.id.exoplayer) ImageView mImagePlaceholder;
-    @BindView(R.id.tv_detail_description) TextView mDescriptionTextView;
-    @BindView(R.id.button_previous) Button mPreviousButton;
-    @BindView(R.id.button_next) Button mNextButton;
+    @BindView(R.id.exoplayer)
+    ImageView mImagePlaceholder;
+    @BindView(R.id.tv_detail_description)
+    TextView mDescriptionTextView;
+    //@BindView(R.id.button_previous) Button mPreviousButton;
+    //@BindView(R.id.button_next) Button mNextButton;
 
     public String mStep;
 
     public static final String STEP = "step";
 
     // Constructor
-    public DetailStepFragment() {
+    public DetailStepPageFragment() {
     }
 
     @Override
@@ -47,13 +48,12 @@ public class DetailStepFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View rootview = inflater.inflate(R.layout.fragment_detail_step, container, false);
+        View rootview = inflater.inflate(R.layout.fragment_detail_step_page, container, false);
         ButterKnife.bind(this, rootview);
         // Set content to views
         mDescriptionTextView.setText(mStep);
 
         return rootview;
-
     }
 
     /**
@@ -63,8 +63,8 @@ public class DetailStepFragment extends Fragment {
      * @param step String description of selected step in step list
      * @return fragment
      */
-    public static DetailStepFragment newStepInstance(String step) {
-        DetailStepFragment stepFragment = new DetailStepFragment();
+    public static DetailStepPageFragment newStepInstance(String step) {
+        DetailStepPageFragment stepFragment = new DetailStepPageFragment();
         // Set the bundle arguments for the fragment.
         Bundle arguments = new Bundle();
         arguments.putString(STEP, step);

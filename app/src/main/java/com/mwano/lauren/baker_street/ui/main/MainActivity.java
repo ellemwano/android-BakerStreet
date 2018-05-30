@@ -14,14 +14,12 @@ import com.mwano.lauren.baker_street.R;
 import com.mwano.lauren.baker_street.json.ApiClient;
 import com.mwano.lauren.baker_street.json.ApiInterface;
 import com.mwano.lauren.baker_street.model.Recipe;
-import com.mwano.lauren.baker_street.ui.detail.DetailStepActivity;
-import com.mwano.lauren.baker_street.ui.master.MasterRecipeActivity;
+import com.mwano.lauren.baker_street.ui.master.MasterRecipePagerActivity;
 
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -95,10 +93,10 @@ public class MainActivity extends AppCompatActivity
         });
     }
 
-    // Open MasterRecipeActivity intent, using parcelable
+    // Open MasterRecipePagerActivity intent, using parcelable
     @Override
     public void onClick(Recipe currentRecipe) {
-        Intent intentSentMainMaster = new Intent(this, MasterRecipeActivity.class);
+        Intent intentSentMainMaster = new Intent(this, MasterRecipePagerActivity.class);
         intentSentMainMaster.putExtra(RECIPE, currentRecipe);
         startActivity(intentSentMainMaster);
         // Log.d(TAG, "Selected Recipe; " + currentRecipe.getName());

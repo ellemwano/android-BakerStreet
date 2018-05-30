@@ -29,7 +29,7 @@ import static com.mwano.lauren.baker_street.ui.main.MainActivity.RECIPE;
  * https://codelabs.developers.google.com/codelabs/material-design-style/index.html?index=..%2F..%2Findex#3
  */
 
-public class MasterRecipeActivity extends AppCompatActivity {
+public class MasterRecipePagerActivity extends AppCompatActivity {
 
     @BindView(R.id.toolbar) Toolbar toolbar;
     @BindView(R.id.viewpager) ViewPager viewPager;
@@ -41,7 +41,7 @@ public class MasterRecipeActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_master_recipes);
+        setContentView(R.layout.activity_master_recipes_pager);
         // Bind views
         ButterKnife.bind(this);
         // Adding Toolbar to Main screen
@@ -72,12 +72,12 @@ public class MasterRecipeActivity extends AppCompatActivity {
     private void setupViewPager(ViewPager viewPager) {
         Adapter adapter = new Adapter(getSupportFragmentManager());
         // Create instance of the ingredients fragment and add it to activity
-        MasterIngredientsFragment ingredientFragment =
-                MasterIngredientsFragment.newIngredientsInstance((ArrayList<Ingredient>) mIngredients);
+        MasterIngredientsPageFragment ingredientFragment =
+                MasterIngredientsPageFragment.newIngredientsInstance((ArrayList<Ingredient>) mIngredients);
         adapter.addFragment(ingredientFragment, "Ingredients");
         // Create instance of the steps fragment and add it to activity
-        MasterStepsFragment stepFragment =
-                MasterStepsFragment.newStepsInstance((ArrayList<Step>) mSteps);
+        MasterStepsPageFragment stepFragment =
+                MasterStepsPageFragment.newStepsInstance((ArrayList<Step>) mSteps);
         adapter.addFragment(stepFragment, "Steps");
         viewPager.setAdapter(adapter);
     }

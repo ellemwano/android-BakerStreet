@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:paddingTop="16dp"
     android:orientation="vertical"
-    tools:context=".ui.master.MasterRecipeActivity"
+    tools:context=".ui.master.MasterRecipePagerActivity"
     android:background="@color/backgroundColor"
     app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
