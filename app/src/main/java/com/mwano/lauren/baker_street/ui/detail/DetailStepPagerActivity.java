@@ -24,7 +24,7 @@ import static com.mwano.lauren.baker_street.ui.master.MasterStepsPageFragment.ST
 import static com.mwano.lauren.baker_street.ui.master.MasterStepsPageFragment.STEP_SELECTED;
 
 
-public class DetailStepPagerActivity extends FragmentActivity {
+public class DetailStepPagerActivity extends AppCompatActivity {
 
     @BindView(R.id.step_pager)
     ViewPager mStepPager;
@@ -34,8 +34,6 @@ public class DetailStepPagerActivity extends FragmentActivity {
     public Step mCurrentStep;
     private int mStepId;
     private String mDescription;
-
-    //private static final int NUM_PAGES = 5;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -55,7 +53,7 @@ public class DetailStepPagerActivity extends FragmentActivity {
                 // Get the ingredients List from the intent extra
                 mDescription = mCurrentStep.getDescription();
                 // Set Recipe name on toolbar
-                setTitle(mCurrentStep.getShortDescription());
+                //setTitle(mCurrentStep.getShortDescription());
             }
         }
 
@@ -71,7 +69,13 @@ public class DetailStepPagerActivity extends FragmentActivity {
 
         mStepPager.setAdapter(mPagerAdapter);
         mStepPager.setCurrentItem(mStepId);
+
+
+
     }
+
+
+
 
     /**
      * A simple pager adapter that represents the DetailStepPageFragment objects, in
@@ -87,6 +91,7 @@ public class DetailStepPagerActivity extends FragmentActivity {
 
         @Override
         public Fragment getItem(int position) {
+            mCurrentStep = mSteps.get(position);
             return DetailStepPageFragment.newStepInstance(mCurrentStep, position);
         }
 
