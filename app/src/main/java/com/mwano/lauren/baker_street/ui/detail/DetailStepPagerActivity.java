@@ -60,7 +60,7 @@ public class DetailStepPagerActivity extends FragmentActivity {
         }
 
         // Instantiate a ViewPager and a PagerAdapter
-        mPagerAdapter = new DetailStepPagerAdapter(getSupportFragmentManager(), mSteps);
+        mPagerAdapter = new DetailStepPagerAdapter(getSupportFragmentManager(), mCurrentStep);
 
 //        // Instantiate a fragment passing in the data from the intent
 //        DetailStepPageFragment detailFragment =
@@ -80,14 +80,14 @@ public class DetailStepPagerActivity extends FragmentActivity {
     private class DetailStepPagerAdapter extends FragmentStatePagerAdapter {
 
         // Constructor
-        public DetailStepPagerAdapter(FragmentManager fm, ArrayList<Step> steps) {
+        public DetailStepPagerAdapter(FragmentManager fm, Step step) {
             super(fm);
-            mSteps = steps;
+            mCurrentStep = step;
         }
 
         @Override
         public Fragment getItem(int position) {
-            return DetailStepPageFragment.newStepInstance(mDescription, mStepId);
+            return DetailStepPageFragment.newStepInstance(mCurrentStep, position);
         }
 
         @Override

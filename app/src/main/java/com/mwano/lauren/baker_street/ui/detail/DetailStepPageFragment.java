@@ -11,6 +11,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.mwano.lauren.baker_street.R;
+import com.mwano.lauren.baker_street.model.Step;
+
+import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -28,8 +31,9 @@ public class DetailStepPageFragment extends Fragment {
     //@BindView(R.id.button_previous) Button mPreviousButton;
     //@BindView(R.id.button_next) Button mNextButton;
 
-    public String mStep;
+    public Step mStep;
     public int mStepId;
+    public ArrayList<Step> mStepList;
 
     public static final String STEP = "step";
     public static final String STEP_ID = "step id";
@@ -42,7 +46,7 @@ public class DetailStepPageFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null && getArguments().containsKey(STEP)) {
-            mStep = getArguments().getString(STEP);
+            mStep = getArguments().getParcelable(STEP);
             mStepId = getArguments().getInt(STEP_ID);
         }
     }
@@ -53,7 +57,7 @@ public class DetailStepPageFragment extends Fragment {
         View rootview = inflater.inflate(R.layout.fragment_detail_step_page, container, false);
         ButterKnife.bind(this, rootview);
         // Set content to views
-        mDescriptionTextView.setText(mStep);
+        mDescriptionTextView.setText(mStep.getDescription());
 
         return rootview;
     }
@@ -66,11 +70,12 @@ public class DetailStepPageFragment extends Fragment {
      * @param stepId int id of the selected step in step list
      * @return fragment
      */
-    public static DetailStepPageFragment newStepInstance(String step, int stepId) {
+   // Changed Step from String to ArrayList
+    public static DetailStepPageFragment newStepInstance(Step step, int stepId) {
         DetailStepPageFragment stepFragment = new DetailStepPageFragment();
         // Set the bundle arguments for the fragment.
         Bundle arguments = new Bundle();
-        arguments.putString(STEP, step);
+        arguments.putParcelable(STEP, step);
         arguments.putInt(STEP_ID, stepId);
         stepFragment.setArguments(arguments);
         return stepFragment;
