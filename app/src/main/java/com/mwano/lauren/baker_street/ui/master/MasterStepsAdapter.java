@@ -10,6 +10,7 @@ import android.widget.TextView;
 import com.mwano.lauren.baker_street.R;
 import com.mwano.lauren.baker_street.model.Step;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -19,16 +20,16 @@ public class MasterStepsAdapter
         extends RecyclerView.Adapter<MasterStepsAdapter.MasterStepsViewHolder> {
 
     private Context mContext;
-    private List<Step> mSteps;
+    private List<Step> mSteps = new ArrayList<>();
     private final StepAdapterOnClickHandler mStepClickHandler;
 
     // OnClickHandler interface
     public interface StepAdapterOnClickHandler {
-        void onClick(Step currentStep);
+        void onClick(Step currentStep, ArrayList<Step> mSteps);
     }
 
     // Constructor
-    public MasterStepsAdapter(Context context, List<Step> steps,
+    public MasterStepsAdapter(Context context, ArrayList<Step> steps,
                               StepAdapterOnClickHandler stepClickHandler) {
         mContext = context;
         mSteps = steps;
@@ -56,7 +57,7 @@ public class MasterStepsAdapter
         return mSteps.size();
     }
 
-    public void setStepData(List<Step> stepData) {
+    public void setStepData(ArrayList<Step> stepData) {
         mSteps = stepData;
         notifyDataSetChanged();
     }
@@ -79,7 +80,7 @@ public class MasterStepsAdapter
         public void onClick(View v) {
             int adapterPosition = getAdapterPosition();
             Step currentStep = mSteps.get(adapterPosition);
-            mStepClickHandler.onClick(currentStep);
+            mStepClickHandler.onClick(currentStep, (ArrayList<Step>) mSteps);
         }
     }
 }

@@ -7,7 +7,6 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -30,8 +29,10 @@ public class DetailStepPageFragment extends Fragment {
     //@BindView(R.id.button_next) Button mNextButton;
 
     public String mStep;
+    public int mStepId;
 
     public static final String STEP = "step";
+    public static final String STEP_ID = "step id";
 
     // Constructor
     public DetailStepPageFragment() {
@@ -42,6 +43,7 @@ public class DetailStepPageFragment extends Fragment {
         super.onCreate(savedInstanceState);
         if (getArguments() != null && getArguments().containsKey(STEP)) {
             mStep = getArguments().getString(STEP);
+            mStepId = getArguments().getInt(STEP_ID);
         }
     }
 
@@ -61,13 +63,15 @@ public class DetailStepPageFragment extends Fragment {
      * to a new instance of this fragment.
      *
      * @param step String description of selected step in step list
+     * @param stepId int id of the selected step in step list
      * @return fragment
      */
-    public static DetailStepPageFragment newStepInstance(String step) {
+    public static DetailStepPageFragment newStepInstance(String step, int stepId) {
         DetailStepPageFragment stepFragment = new DetailStepPageFragment();
         // Set the bundle arguments for the fragment.
         Bundle arguments = new Bundle();
         arguments.putString(STEP, step);
+        arguments.putInt(STEP_ID, stepId);
         stepFragment.setArguments(arguments);
         return stepFragment;
     }

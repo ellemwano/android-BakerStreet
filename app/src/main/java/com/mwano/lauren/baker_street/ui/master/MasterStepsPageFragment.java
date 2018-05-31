@@ -59,7 +59,7 @@ public class MasterStepsPageFragment extends Fragment
         mStepsRecyclerView.setHasFixedSize(true);
         //Adapter
         MasterStepsAdapter stepsAdapter =
-                new MasterStepsAdapter(getContext(), mSteps, this);
+                new MasterStepsAdapter(getContext(), (ArrayList<Step>) mSteps, this);
         mStepsRecyclerView.setAdapter(stepsAdapter);
         //stepsAdapter.setStepData(mSteps);
         return rootView;
@@ -82,9 +82,10 @@ public class MasterStepsPageFragment extends Fragment
     }
 
     @Override
-    public void onClick(Step currentStep) {
+    public void onClick(Step currentStep, ArrayList<Step> steps) {
         Intent intentDetailStep = new Intent(getActivity(), DetailStepPagerActivity.class);
         intentDetailStep.putExtra(STEP_SELECTED, currentStep);
+        intentDetailStep.putExtra(STEPS_LIST, steps);
         startActivity(intentDetailStep);
     }
 }
