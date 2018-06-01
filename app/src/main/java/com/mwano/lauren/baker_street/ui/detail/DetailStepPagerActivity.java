@@ -10,6 +10,8 @@ import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
+import android.widget.Button;
 
 import com.mwano.lauren.baker_street.R;
 import com.mwano.lauren.baker_street.model.Step;
@@ -24,10 +26,21 @@ import static com.mwano.lauren.baker_street.ui.master.MasterStepsPageFragment.ST
 import static com.mwano.lauren.baker_street.ui.master.MasterStepsPageFragment.STEP_SELECTED;
 
 
+/**
+ * ViewPager implementation. Code source:
+ * https://developer.android.com/training/animation/screen-slide
+ * http://www.truiton.com/2013/05/android-fragmentstatepageradapter-example/
+ */
+
 public class DetailStepPagerActivity extends AppCompatActivity {
 
     @BindView(R.id.step_pager)
     ViewPager mStepPager;
+    @BindView(R.id.button_to_first)
+    Button buttonFirst;
+    @BindView(R.id.button_to_last)
+    Button buttonLast;
+
 
     private PagerAdapter mPagerAdapter;
     public ArrayList<Step> mSteps;
@@ -56,25 +69,35 @@ public class DetailStepPagerActivity extends AppCompatActivity {
                 //setTitle(mCurrentStep.getShortDescription());
             }
         }
-
         // Instantiate a ViewPager and a PagerAdapter
         mPagerAdapter = new DetailStepPagerAdapter(getSupportFragmentManager(), mCurrentStep);
-
-//        // Instantiate a fragment passing in the data from the intent
-//        DetailStepPageFragment detailFragment =
-//                DetailStepPageFragment.newStepInstance((String) mDescription, (int) mStepId);
-//        getSupportFragmentManager().beginTransaction()
-//                .add(R.id.detail_steps_container, detailFragment)
-//                .commit();
-
         mStepPager.setAdapter(mPagerAdapter);
         mStepPager.setCurrentItem(mStepId);
 
-
-
+        // Set up First and Last buttons
+        buttonFirst.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                mStepPager.setCurrentItem(0);
+            }
+        });
+        buttonLast.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                mStepPager.setCurrentItem(mSteps.size() - 1);
+            }
+        });
     }
 
-
+    @Override
+    public void onBackPressed() {
+        if (mStepPager.getCurrentItem() == 0) {
+            // If the user is currently looking at the first step, allow the system to handle the
+            // Back button. This calls finish() on this activity and pops the back stack.
+            super.onBackPressed();
+        } else {
+            // Otherwise, select the previous step.
+            mStepPager.setCurrentItem(mStepPager.getCurrentItem() - 1);
+        }
+    }
 
 
     /**
