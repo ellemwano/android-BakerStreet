@@ -48,6 +48,7 @@ public class DetailStepPagerActivity extends AppCompatActivity {
     private int mStepId;
     private String mDescription;
 
+    // TODO Add page indicator
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -87,17 +88,17 @@ public class DetailStepPagerActivity extends AppCompatActivity {
         });
     }
 
-    @Override
-    public void onBackPressed() {
-        if (mStepPager.getCurrentItem() == 0) {
-            // If the user is currently looking at the first step, allow the system to handle the
-            // Back button. This calls finish() on this activity and pops the back stack.
-            super.onBackPressed();
-        } else {
-            // Otherwise, select the previous step.
-            mStepPager.setCurrentItem(mStepPager.getCurrentItem() - 1);
-        }
-    }
+//    @Override
+//    public void onBackPressed() {
+//        if (mStepPager.getCurrentItem() == 0) {
+//            // If the user is currently looking at the first step, allow the system to handle the
+//            // Back button. This calls finish() on this activity and pops the back stack.
+//            super.onBackPressed();
+//        } else {
+//            // Otherwise, select the previous step.
+//            mStepPager.setCurrentItem(mStepPager.getCurrentItem() - 1);
+//        }
+//    }
 
 
     /**

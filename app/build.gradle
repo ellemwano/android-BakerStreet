@@ -44,4 +44,6 @@ dependencies {
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
     // Picasso
     implementation 'com.squareup.picasso:picasso:2.71828'
+    // ExoPlayer
+    implementation'com.google.android.exoplayer:exoplayer:2.7.3'
 }
