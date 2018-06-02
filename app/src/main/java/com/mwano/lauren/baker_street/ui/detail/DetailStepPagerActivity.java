@@ -1,6 +1,7 @@
 package com.mwano.lauren.baker_street.ui.detail;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -47,6 +48,7 @@ public class DetailStepPagerActivity extends AppCompatActivity {
     public Step mCurrentStep;
     private int mStepId;
     private String mDescription;
+    private String mVideoUrl;
 
     // TODO Add page indicator
     @Override
@@ -66,6 +68,8 @@ public class DetailStepPagerActivity extends AppCompatActivity {
                 mStepId = mCurrentStep.getId();
                 // Get the ingredients List from the intent extra
                 mDescription = mCurrentStep.getDescription();
+                // Get the video Url from the intent
+                mVideoUrl = mCurrentStep.getVideoURL();
                 // Set Recipe name on toolbar
                 //setTitle(mCurrentStep.getShortDescription());
             }
