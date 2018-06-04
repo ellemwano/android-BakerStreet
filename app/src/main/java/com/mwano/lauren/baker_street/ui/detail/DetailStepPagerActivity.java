@@ -37,10 +37,10 @@ public class DetailStepPagerActivity extends AppCompatActivity {
 
     @BindView(R.id.step_pager)
     ViewPager mStepPager;
-    @BindView(R.id.button_to_first)
-    Button buttonFirst;
-    @BindView(R.id.button_to_last)
-    Button buttonLast;
+    //@BindView(R.id.button_to_first)
+    //Button buttonFirst;
+    //@BindView(R.id.button_to_last)
+    //Button buttonLast;
 
 
     private PagerAdapter mPagerAdapter;
@@ -51,6 +51,7 @@ public class DetailStepPagerActivity extends AppCompatActivity {
     private String mVideoUrl;
 
     private static final String CURRENT_STEP = "current step";
+    private static final String STEP_LIST = "step list";
     private static final String STEP_ID = "step id";
     private static final String STEP_DESCRIPTION = "step description";
     private static final String STEP_VIDEO_URL = "step video url";
@@ -69,23 +70,20 @@ public class DetailStepPagerActivity extends AppCompatActivity {
                     && intentMasterDetailStep.hasExtra(STEPS_LIST)) {
                 mSteps = intentMasterDetailStep.getParcelableArrayListExtra(STEPS_LIST);
                 mCurrentStep = intentMasterDetailStep.getParcelableExtra(STEP_SELECTED);
-                // Get the id of the selected step from the intent
-                mStepId = mCurrentStep.getId();
-                // Get the ingredients List from the intent extra
-                mDescription = mCurrentStep.getDescription();
-                // Get the video Url from the intent
-                //mVideoUrl = mCurrentStep.getVideoURL();
-                // Set Recipe name on toolbar
-                //setTitle(mCurrentStep.getShortDescription());
             }
         }
         if (savedInstanceState != null) {
             mCurrentStep = savedInstanceState.getParcelable(CURRENT_STEP);
-            //mStepId = savedInstanceState.getInt(STEP_ID);
-            //mDescription = savedInstanceState.getString(STEP_DESCRIPTION);
-            //mVideoUrl = savedInstanceState.getString(STEP_VIDEO_URL);
-            //mCurrentFragment = getSupportFragmentManager().getFragment(savedInstanceState, "savedFragment");
+            mSteps = savedInstanceState.getParcelableArrayList(STEP_LIST);
+            mStepId = savedInstanceState.getInt(STEP_ID);
+            mDescription = savedInstanceState.getString(STEP_DESCRIPTION);
         }
+        // Get the id of the selected step from the intent
+        mStepId = mCurrentStep.getId();
+        // Get the ingredients List from the intent extra
+        mDescription = mCurrentStep.getDescription();
+        // Set Recipe name on toolbar
+        //setTitle(mCurrentStep.getShortDescription());
         // Instantiate a ViewPager and a PagerAdapter
         mPagerAdapter = new DetailStepPagerAdapter(getSupportFragmentManager(), mCurrentStep);
         mStepPager.setAdapter(mPagerAdapter);
@@ -135,10 +133,9 @@ public class DetailStepPagerActivity extends AppCompatActivity {
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        //outState.putInt(STEP_ID, mStepId);
-        //outState.putString(STEP_DESCRIPTION, mDescription);
-       // outState.putString(STEP_VIDEO_URL, mVideoUrl);
+        outState.putInt(STEP_ID, mStepId);
+        outState.putString(STEP_DESCRIPTION, mDescription);
         outState.putParcelable(CURRENT_STEP, mCurrentStep);
-        //getSupportFragmentManager().putFragment(outState, "savedFragment", mCurrentFragment);
+        outState.putParcelableArrayList(STEP_LIST, mSteps);
     }
 }
