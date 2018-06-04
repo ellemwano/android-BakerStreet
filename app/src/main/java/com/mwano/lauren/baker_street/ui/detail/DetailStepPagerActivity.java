@@ -50,6 +50,11 @@ public class DetailStepPagerActivity extends AppCompatActivity {
     private String mDescription;
     private String mVideoUrl;
 
+    private static final String CURRENT_STEP = "current step";
+    private static final String STEP_ID = "step id";
+    private static final String STEP_DESCRIPTION = "step description";
+    private static final String STEP_VIDEO_URL = "step video url";
+
     // TODO Add page indicator
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -57,8 +62,8 @@ public class DetailStepPagerActivity extends AppCompatActivity {
         setContentView(R.layout.activity_detail_step_pager);
         ButterKnife.bind(this);
 
-        // Get the selected recipe from the intent
         if (savedInstanceState == null) {
+            // Get the selected recipe from the intent
             final Intent intentMasterDetailStep = getIntent();
             if (intentMasterDetailStep.hasExtra(STEP_SELECTED)
                     && intentMasterDetailStep.hasExtra(STEPS_LIST)) {
@@ -69,40 +74,37 @@ public class DetailStepPagerActivity extends AppCompatActivity {
                 // Get the ingredients List from the intent extra
                 mDescription = mCurrentStep.getDescription();
                 // Get the video Url from the intent
-                mVideoUrl = mCurrentStep.getVideoURL();
+                //mVideoUrl = mCurrentStep.getVideoURL();
                 // Set Recipe name on toolbar
                 //setTitle(mCurrentStep.getShortDescription());
             }
+        }
+        if (savedInstanceState != null) {
+            mCurrentStep = savedInstanceState.getParcelable(CURRENT_STEP);
+            //mStepId = savedInstanceState.getInt(STEP_ID);
+            //mDescription = savedInstanceState.getString(STEP_DESCRIPTION);
+            //mVideoUrl = savedInstanceState.getString(STEP_VIDEO_URL);
+            //mCurrentFragment = getSupportFragmentManager().getFragment(savedInstanceState, "savedFragment");
         }
         // Instantiate a ViewPager and a PagerAdapter
         mPagerAdapter = new DetailStepPagerAdapter(getSupportFragmentManager(), mCurrentStep);
         mStepPager.setAdapter(mPagerAdapter);
         mStepPager.setCurrentItem(mStepId);
 
-        // Set up First and Last buttons
-        buttonFirst.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                mStepPager.setCurrentItem(0);
-            }
-        });
-        buttonLast.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                mStepPager.setCurrentItem(mSteps.size() - 1);
-            }
-        });
+//        // Set up First and Last buttons
+//        buttonFirst.setOnClickListener(new View.OnClickListener() {
+//            public void onClick(View v) {
+//                mStepPager.setCurrentItem(0);
+//            }
+//        });
+//        buttonLast.setOnClickListener(new View.OnClickListener() {
+//            public void onClick(View v) {
+//                mStepPager.setCurrentItem(mSteps.size() - 1);
+//            }
+//        });
     }
 
-//    @Override
-//    public void onBackPressed() {
-//        if (mStepPager.getCurrentItem() == 0) {
-//            // If the user is currently looking at the first step, allow the system to handle the
-//            // Back button. This calls finish() on this activity and pops the back stack.
-//            super.onBackPressed();
-//        } else {
-//            // Otherwise, select the previous step.
-//            mStepPager.setCurrentItem(mStepPager.getCurrentItem() - 1);
-//        }
-//    }
+
 
 
     /**
@@ -125,7 +127,18 @@ public class DetailStepPagerActivity extends AppCompatActivity {
 
         @Override
         public int getCount() {
+            if (mSteps == null) return 0;
             return mSteps.size();
         }
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        //outState.putInt(STEP_ID, mStepId);
+        //outState.putString(STEP_DESCRIPTION, mDescription);
+       // outState.putString(STEP_VIDEO_URL, mVideoUrl);
+        outState.putParcelable(CURRENT_STEP, mCurrentStep);
+        //getSupportFragmentManager().putFragment(outState, "savedFragment", mCurrentFragment);
     }
 }

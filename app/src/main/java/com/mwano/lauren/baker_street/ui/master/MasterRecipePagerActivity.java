@@ -35,8 +35,13 @@ public class MasterRecipePagerActivity extends AppCompatActivity {
     @BindView(R.id.viewpager) ViewPager viewPager;
     @BindView(R.id.tabs) TabLayout tabs;
     private Recipe mCurrentRecipe;
+    private String mRecipeName;
     private List<Ingredient> mIngredients = new ArrayList<>();
     private List<Step> mSteps = new ArrayList<>();
+
+    private static final String SELECTED_RECIPE = "recipe selected";
+    private static final String RECIPE_NAME = "recipe name";
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,15 +61,19 @@ public class MasterRecipePagerActivity extends AppCompatActivity {
                 mIngredients = mCurrentRecipe.getIngredients();
                 // Get the steps arrayList from the intent extra
                 mSteps = mCurrentRecipe.getSteps();
-                // Set Recipe name on toolbar
-                setTitle(mCurrentRecipe.getName());
+                // Get Recipe name
+                mRecipeName = mCurrentRecipe.getName();
             }
-
+        } else {
+            mCurrentRecipe = savedInstanceState.getParcelable(SELECTED_RECIPE);
+            mRecipeName = savedInstanceState.getString(RECIPE_NAME);
+        }
+        // Set Recipe name on toolbar
+        setTitle(mRecipeName);
         // Setting ViewPager for each Tabs
         setupViewPager(viewPager);
         // Add tabs
         tabs.setupWithViewPager(viewPager);
-        }
     }
 
     // TODO create strings for tabs title
@@ -112,5 +121,12 @@ public class MasterRecipePagerActivity extends AppCompatActivity {
         public CharSequence getPageTitle(int position) {
             return mFragmentTitleList.get(position);
         }
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putParcelable(SELECTED_RECIPE, mCurrentRecipe);
+        outState.putString(RECIPE_NAME, mRecipeName);
     }
 }

@@ -1,7 +1,6 @@
 package com.mwano.lauren.baker_street.ui.detail;
 
 import android.annotation.SuppressLint;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -36,8 +35,8 @@ import butterknife.ButterKnife;
 
 
 /**
- * A Fragment subclass that displays the video and description for the selected step
- * ExoPlayer, help for code: ClassicalMusicQuiz app - Udacity, and Google codelab
+ * A Fragment subclass that displays the video and description for the selected step.
+ * Code help:
  * https://codelabs.developers.google.com/codelabs/exoplayer-intro/index.html?index=..%2F..%2Findex#0
  */
 public class DetailStepPageFragment extends Fragment {
@@ -61,6 +60,9 @@ public class DetailStepPageFragment extends Fragment {
 
     public static final String STEP = "step";
     public static final String STEP_ID = "step id";
+    private static final String CURRENT_WINDOW = "current window";
+    private static final String PLAYBACK_POSITION = "playback position";
+    private static final String CURRENT_STEP = "current step";
     private static final String TAG = DetailStepPageFragment.class.getSimpleName();
 
     // Constructor
@@ -70,11 +72,6 @@ public class DetailStepPageFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null && getArguments().containsKey(STEP)) {
-            mStep = getArguments().getParcelable(STEP);
-            mStepId = getArguments().getInt(STEP_ID);
-        }
-        // TODO Default image?
     }
 
     @Nullable
@@ -82,32 +79,42 @@ public class DetailStepPageFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View rootview = inflater.inflate(R.layout.fragment_detail_step_page, container, false);
         ButterKnife.bind(this, rootview);
+        if(savedInstanceState != null) {
+            mStep = savedInstanceState.getParcelable(CURRENT_STEP);
+            mCurrentWindow = savedInstanceState.getInt(CURRENT_WINDOW);
+            mPlaybackPosition = savedInstanceState.getLong(PLAYBACK_POSITION);
+        } else{
+            // Get selected Step and StepId from the intent
+            if (getArguments() != null && getArguments().containsKey(STEP)) {
+                mStep = getArguments().getParcelable(STEP);
+                mStepId = getArguments().getInt(STEP_ID);
+            }
+        }
         // Set content to views
         mDescriptionTextView.setText(mStep.getDescription());
-//        // Initialise the player
-//        mVideoUri = mStep.getVideoURL();
-//        initialisePlayer(Uri.parse(mVideoUri));
-
-        // Load the donut as the background image until the video loads.
-//        mPlayerView.setDefaultArtwork(BitmapFactory.decodeResource
-//                (getResources(), R.drawable.donut_169));
 
         return rootview;
     }
 
-    /**
-     * Initialise ExopLayer
-     * @param videoUri The URI of the video to play
-     */
-    private void initialisePlayer(Uri videoUri) {
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putParcelable(CURRENT_STEP, mStep);
+        outState.putInt(CURRENT_WINDOW, mCurrentWindow);
+        outState.putLong(PLAYBACK_POSITION, mPlaybackPosition);
+    }
 
-        // Initialise player
+    /**     * Initialise ExoPlayer
+     //* @param  The URI of the video to play
+     */
+    private void initialisePlayer() {
+
         if(mExoPlayer == null) {
             // Create an instance of the ExoPlayer
             mExoPlayer = ExoPlayerFactory.newSimpleInstance(
                     new DefaultRenderersFactory(getContext()),
                     new DefaultTrackSelector(), new DefaultLoadControl());
-
+            showExoPlayer();
             mPlayerView.setPlayer(mExoPlayer);
 
             mExoPlayer.setPlayWhenReady(playWhenReady);
@@ -123,9 +130,8 @@ public class DetailStepPageFragment extends Fragment {
             // If no video, check if there's a thumbnail, and if not display placeholder
             // Instantiate Picasso to handle the thumbnail image
             Picasso mPicasso = Picasso.get();
-            // Set ExoPlayer view to gone and Image view to visible
-            mPlayerView.setVisibility(View.GONE);
-            mThumbnailView.setVisibility(View.VISIBLE);
+            // Remove Player view and show Image view
+            showImageView();
             if (!TextUtils.isEmpty(mStep.getThumbnailURL())) {
                 mPicasso.load(mStep.getThumbnailURL())
                         .placeholder(R.drawable.donut_169)
@@ -145,28 +151,42 @@ public class DetailStepPageFragment extends Fragment {
                 createMediaSource(uri);
     }
 
+    /**
+     * Starting with API level 24 Android supports multiple windows. As our app can be visible
+     * but not active in split window mode, we need to initialize the player in onStart.
+     */
     @Override
     public void onStart() {
         super.onStart();
         if (Util.SDK_INT > 23) {
-            initialisePlayer(mVideoUri);
+            initialisePlayer();
         }
         Log.d(TAG, "This is onStart");
     }
 
+
+    /**
+     * Before API 24, we wait as long as possible until we grab resources,
+     * so we wait until onResume() before initialising the player.
+     * hideSystemUi() called here is just an implementation detail to have a pure full screen experience
+     */
     @Override
     public void onResume() {
         super.onResume();
         if (!getUserVisibleHint()) {
             return;
         }
-        hideSystemUi();
+        //hideSystemUi();
         if ((Util.SDK_INT <= 23 || mExoPlayer == null)) {
-            initialisePlayer(mVideoUri);
+            initialisePlayer();
         }
         Log.d(TAG, "This is onResume");
     }
 
+    /**
+     * Before API Level 24 there is no guarantee of onStop being called.
+     * So we have to release the player as early as possible in onPause.
+     */
     @Override
     public void onPause() {
         super.onPause();
@@ -176,6 +196,11 @@ public class DetailStepPageFragment extends Fragment {
         Log.d(TAG, "This is onPause");
     }
 
+    /**
+     * Starting with API Level 24 (which brought multi and split window mode)onStop is guaranteed
+     * to be called and in the paused mode our activity is eventually still visible.
+     * Hence we need to wait releasing until onStop.
+     */
     @Override
     public void onStop() {
         super.onStop();
@@ -185,7 +210,7 @@ public class DetailStepPageFragment extends Fragment {
         Log.d(TAG, "This is onStop");
     }
 
-    @Override
+   @Override
     public void setUserVisibleHint(boolean visible) {
         super.setUserVisibleHint(visible);
         if (visible && isResumed()) {
@@ -240,6 +265,16 @@ public class DetailStepPageFragment extends Fragment {
         arguments.putInt(STEP_ID, stepId);
         stepFragment.setArguments(arguments);
         return stepFragment;
+    }
+
+    public void showExoPlayer() {
+        mThumbnailView.setVisibility(View.GONE);
+        mPlayerView.setVisibility(View.VISIBLE);
+    }
+
+    public void showImageView() {
+        mPlayerView.setVisibility(View.GONE);
+        mThumbnailView.setVisibility(View.VISIBLE);
     }
 }
 
