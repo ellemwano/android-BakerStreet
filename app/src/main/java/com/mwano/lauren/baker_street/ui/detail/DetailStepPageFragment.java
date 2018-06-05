@@ -1,6 +1,8 @@
 package com.mwano.lauren.baker_street.ui.detail;
 
 import android.annotation.SuppressLint;
+import android.content.res.Configuration;
+import android.graphics.drawable.GradientDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -39,7 +41,10 @@ import butterknife.ButterKnife;
  * Code help:
  * https://codelabs.developers.google.com/codelabs/exoplayer-intro/index.html?index=..%2F..%2Findex#0
  */
-public class DetailStepPageFragment extends Fragment {
+public class DetailStepPageFragment extends Fragment
+        //implements Player.EventListener
+        {
+
 
     @BindView(R.id.tv_detail_description)
     TextView mDescriptionTextView;
@@ -56,13 +61,14 @@ public class DetailStepPageFragment extends Fragment {
     private Uri mVideoUri;
     private int mCurrentWindow;
     private long mPlaybackPosition;
-    private boolean playWhenReady = true;
+    private boolean mPlayWhenReady = true;
 
     public static final String STEP = "step";
     public static final String STEP_ID = "step id";
     private static final String CURRENT_WINDOW = "current window";
     private static final String PLAYBACK_POSITION = "playback position";
     private static final String CURRENT_STEP = "current step";
+    private static final String START_PLAY = "start play when ready";
     private static final String TAG = DetailStepPageFragment.class.getSimpleName();
 
     // Constructor
@@ -81,8 +87,9 @@ public class DetailStepPageFragment extends Fragment {
         ButterKnife.bind(this, rootview);
         if(savedInstanceState != null) {
             mStep = savedInstanceState.getParcelable(CURRENT_STEP);
-            mCurrentWindow = savedInstanceState.getInt(CURRENT_WINDOW);
-            mPlaybackPosition = savedInstanceState.getLong(PLAYBACK_POSITION);
+//            mCurrentWindow = savedInstanceState.getInt(CURRENT_WINDOW, 0);
+//            mPlaybackPosition = savedInstanceState.getLong(PLAYBACK_POSITION, 0);
+            mPlayWhenReady = savedInstanceState.getBoolean(START_PLAY);
         } else{
             // Get selected Step and StepId from the intent
             if (getArguments() != null && getArguments().containsKey(STEP)) {
@@ -92,7 +99,11 @@ public class DetailStepPageFragment extends Fragment {
         }
         // Set content to views
         mDescriptionTextView.setText(mStep.getDescription());
-
+        // If phone in landscape, hide description
+        if(getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            mDescriptionTextView.setVisibility(View.GONE);
+            hideSystemUi();
+        }
         return rootview;
     }
 
@@ -100,8 +111,9 @@ public class DetailStepPageFragment extends Fragment {
     public void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putParcelable(CURRENT_STEP, mStep);
-        outState.putInt(CURRENT_WINDOW, mCurrentWindow);
-        outState.putLong(PLAYBACK_POSITION, mPlaybackPosition);
+//        outState.putInt(CURRENT_WINDOW, mCurrentWindow);
+//        outState.putLong(PLAYBACK_POSITION, mPlaybackPosition);
+        outState.putBoolean(START_PLAY, mPlayWhenReady);
     }
 
     /**     * Initialise ExoPlayer
@@ -117,10 +129,9 @@ public class DetailStepPageFragment extends Fragment {
             showExoPlayer();
             mPlayerView.setPlayer(mExoPlayer);
 
-            mExoPlayer.setPlayWhenReady(playWhenReady);
+            mExoPlayer.setPlayWhenReady(mPlayWhenReady);
             mExoPlayer.seekTo(mCurrentWindow, mPlaybackPosition);
         }
-
         // If there's a video, create a MediaSource
         if(!TextUtils.isEmpty(mStep.getVideoURL())) {
             mVideoUri = Uri.parse(mStep.getVideoURL());
@@ -138,13 +149,17 @@ public class DetailStepPageFragment extends Fragment {
                         .error(R.drawable.donut_169)
                         .into(mThumbnailView);
             }
-            mPicasso.load(R.drawable.donut_169)
-                    .placeholder(R.drawable.donut_169)
-                    .error(R.drawable.donut_169)
-                    .into(mThumbnailView);
+            // If no thumbnail either, show placeholder
+            showImageView();
+            mThumbnailView.setImageResource(R.drawable.donut_169);
         }
     }
 
+    /**
+     * Media Source builder
+     * @param uri The Video URO
+     * @return A Media Source for the given video
+     */
     private MediaSource buildMediaSource(Uri uri) {
         return new ExtractorMediaSource.Factory(
                 new DefaultHttpDataSourceFactory("Baker Street")).
@@ -161,7 +176,7 @@ public class DetailStepPageFragment extends Fragment {
         if (Util.SDK_INT > 23) {
             initialisePlayer();
         }
-        Log.d(TAG, "This is onStart");
+        Log.d(TAG, "This is onStart for: " + mStepId);
     }
 
 
@@ -176,11 +191,10 @@ public class DetailStepPageFragment extends Fragment {
         if (!getUserVisibleHint()) {
             return;
         }
-        //hideSystemUi();
         if ((Util.SDK_INT <= 23 || mExoPlayer == null)) {
             initialisePlayer();
         }
-        Log.d(TAG, "This is onResume");
+        Log.d(TAG, "This is onResume for: " + mStepId);
     }
 
     /**
@@ -193,7 +207,8 @@ public class DetailStepPageFragment extends Fragment {
         if (Util.SDK_INT <= 23) {
             releasePlayer();
         }
-        Log.d(TAG, "This is onPause");
+        Log.d(TAG, "This is onPause for :" + mStepId);
+
     }
 
     /**
@@ -207,10 +222,16 @@ public class DetailStepPageFragment extends Fragment {
         if (Util.SDK_INT > 23) {
             releasePlayer();
         }
-        Log.d(TAG, "This is onStop");
+        Log.d(TAG, "This is onStop for: " + mStepId);
     }
 
-   @Override
+
+
+    /**
+     * Set a hint to the system about whether this fragment's UI is currently visible to the user.
+     * @param visible The fragment's UI is visible to the user
+     */
+    @Override
     public void setUserVisibleHint(boolean visible) {
         super.setUserVisibleHint(visible);
         if (visible && isResumed()) {
@@ -225,13 +246,14 @@ public class DetailStepPageFragment extends Fragment {
     public void onDestroy() {
         super.onDestroy();
         releasePlayer();
+        Log.d(TAG, "This is onDestroy for: " + mStepId);
     }
 
     private void releasePlayer() {
         if (mExoPlayer != null) {
             mPlaybackPosition = mExoPlayer.getCurrentPosition();
             mCurrentWindow = mExoPlayer.getCurrentWindowIndex();
-            playWhenReady = mExoPlayer.getPlayWhenReady();
+            mPlayWhenReady = mExoPlayer.getPlayWhenReady();
             mExoPlayer.release();
             mExoPlayer = null;
         }
@@ -276,6 +298,78 @@ public class DetailStepPageFragment extends Fragment {
         mPlayerView.setVisibility(View.GONE);
         mThumbnailView.setVisibility(View.VISIBLE);
     }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        if(newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            mDescriptionTextView.setVisibility(View.GONE);
+            hideSystemUi();
+        } else {
+            mDescriptionTextView.setVisibility(View.VISIBLE);
+        }
+    }
+
+
+
+
+
+
+            //    @Override
+//    public void onPlayerStateChanged(boolean playWhenReady, int playbackState) {
+//        if ((playbackState == Player.STATE_READY) && playWhenReady) {
+//            // We are playing
+//            Log.d(TAG, "onPlayerStateChanged: PLAYING");
+//        } else if ((playbackState == Player.STATE_READY)) {
+//            // We are paused
+//            Log.d(TAG, "onPlayerStateChanged: PAUSED");
+//        }
+//    }
+//
+//    @Override
+//    public void onTimelineChanged(Timeline timeline, Object manifest, int reason) {
+//
+//    }
+//
+//    @Override
+//    public void onTracksChanged(TrackGroupArray trackGroups, TrackSelectionArray trackSelections) {
+//
+//    }
+//
+//    @Override
+//    public void onLoadingChanged(boolean isLoading) {
+//
+//    }
+//
+//    @Override
+//    public void onRepeatModeChanged(int repeatMode) {
+//
+//    }
+//
+//    @Override
+//    public void onShuffleModeEnabledChanged(boolean shuffleModeEnabled) {
+//
+//    }
+//
+//    @Override
+//    public void onPlayerError(ExoPlaybackException error) {
+//
+//    }
+//
+//    @Override
+//    public void onPositionDiscontinuity(int reason) {
+//
+//    }
+//
+//    @Override
+//    public void onPlaybackParametersChanged(PlaybackParameters playbackParameters) {
+//
+//    }
+//
+//    @Override
+//    public void onSeekProcessed() {
+//
+//    }
 }
 
 

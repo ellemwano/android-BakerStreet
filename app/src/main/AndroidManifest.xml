@@ -23,7 +23,15 @@
 
         <activity android:name=".ui.master.MasterRecipePagerActivity" />
 
-        <activity android:name=".ui.detail.DetailStepPagerActivity" />
+        <activity android:name=".ui.detail.DetailStepPagerActivity"
+            android:configChanges="keyboard
+                |keyboardHidden
+                |orientation
+                |screenSize
+                |screenLayout
+                |smallestScreenSize
+                |uiMode">
+        </activity>
 
     </application>
 
