@@ -41,10 +41,7 @@ import butterknife.ButterKnife;
  * Code help:
  * https://codelabs.developers.google.com/codelabs/exoplayer-intro/index.html?index=..%2F..%2Findex#0
  */
-public class DetailStepPageFragment extends Fragment
-        //implements Player.EventListener
-        {
-
+public class DetailStepPageFragment extends Fragment {
 
     @BindView(R.id.tv_detail_description)
     TextView mDescriptionTextView;
@@ -85,12 +82,12 @@ public class DetailStepPageFragment extends Fragment
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View rootview = inflater.inflate(R.layout.fragment_detail_step_page, container, false);
         ButterKnife.bind(this, rootview);
-        if(savedInstanceState != null) {
+        if (savedInstanceState != null) {
             mStep = savedInstanceState.getParcelable(CURRENT_STEP);
 //            mCurrentWindow = savedInstanceState.getInt(CURRENT_WINDOW, 0);
 //            mPlaybackPosition = savedInstanceState.getLong(PLAYBACK_POSITION, 0);
             mPlayWhenReady = savedInstanceState.getBoolean(START_PLAY);
-        } else{
+        } else {
             // Get selected Step and StepId from the intent
             if (getArguments() != null && getArguments().containsKey(STEP)) {
                 mStep = getArguments().getParcelable(STEP);
@@ -100,28 +97,20 @@ public class DetailStepPageFragment extends Fragment
         // Set content to views
         mDescriptionTextView.setText(mStep.getDescription());
         // If phone in landscape, hide description
-        if(getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
+        if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
             mDescriptionTextView.setVisibility(View.GONE);
             hideSystemUi();
         }
         return rootview;
     }
 
-    @Override
-    public void onSaveInstanceState(@NonNull Bundle outState) {
-        super.onSaveInstanceState(outState);
-        outState.putParcelable(CURRENT_STEP, mStep);
-//        outState.putInt(CURRENT_WINDOW, mCurrentWindow);
-//        outState.putLong(PLAYBACK_POSITION, mPlaybackPosition);
-        outState.putBoolean(START_PLAY, mPlayWhenReady);
-    }
-
-    /**     * Initialise ExoPlayer
-     //* @param  The URI of the video to play
+    /**
+     * Initialise ExoPlayer
+     * //* @param  The URI of the video to play
      */
     private void initialisePlayer() {
 
-        if(mExoPlayer == null) {
+        if (mExoPlayer == null) {
             // Create an instance of the ExoPlayer
             mExoPlayer = ExoPlayerFactory.newSimpleInstance(
                     new DefaultRenderersFactory(getContext()),
@@ -133,7 +122,7 @@ public class DetailStepPageFragment extends Fragment
             mExoPlayer.seekTo(mCurrentWindow, mPlaybackPosition);
         }
         // If there's a video, create a MediaSource
-        if(!TextUtils.isEmpty(mStep.getVideoURL())) {
+        if (!TextUtils.isEmpty(mStep.getVideoURL())) {
             mVideoUri = Uri.parse(mStep.getVideoURL());
             MediaSource mediaSource = buildMediaSource(mVideoUri);
             mExoPlayer.prepare(mediaSource, true, false);
@@ -157,6 +146,7 @@ public class DetailStepPageFragment extends Fragment
 
     /**
      * Media Source builder
+     *
      * @param uri The Video URO
      * @return A Media Source for the given video
      */
@@ -179,7 +169,6 @@ public class DetailStepPageFragment extends Fragment
         Log.d(TAG, "This is onStart for: " + mStepId);
     }
 
-
     /**
      * Before API 24, we wait as long as possible until we grab resources,
      * so we wait until onResume() before initialising the player.
@@ -188,6 +177,7 @@ public class DetailStepPageFragment extends Fragment
     @Override
     public void onResume() {
         super.onResume();
+        hideSystemUi();
         if (!getUserVisibleHint()) {
             return;
         }
@@ -225,20 +215,6 @@ public class DetailStepPageFragment extends Fragment
         Log.d(TAG, "This is onStop for: " + mStepId);
     }
 
-
-
-    /**
-     * Set a hint to the system about whether this fragment's UI is currently visible to the user.
-     * @param visible The fragment's UI is visible to the user
-     */
-    @Override
-    public void setUserVisibleHint(boolean visible) {
-        super.setUserVisibleHint(visible);
-        if (visible && isResumed()) {
-            onResume();
-        }
-    }
-
     /**
      * Release the player when the activity is destroyed
      */
@@ -259,6 +235,21 @@ public class DetailStepPageFragment extends Fragment
         }
     }
 
+    /**
+     * Set a hint to the system about whether this fragment's UI is currently visible to the user.
+     *
+     * @param visible The fragment's UI is visible to the user
+     */
+    @Override
+    public void setUserVisibleHint(boolean visible) {
+        super.setUserVisibleHint(visible);
+        if (visible && isResumed()) {
+            onResume();
+        } else if (!visible && isResumed()) {
+            onPause();
+        }
+    }
+
     // TODO Implement in land
     // ExoPlayer in full screen
     @SuppressLint("InlinedApi")
@@ -275,7 +266,7 @@ public class DetailStepPageFragment extends Fragment
      * This method sets up a bundle for the arguments to pass
      * to a new instance of this fragment.
      *
-     * @param step String description of selected step in step list
+     * @param step   String description of selected step in step list
      * @param stepId int id of the selected step in step list
      * @return fragment
      */
@@ -289,6 +280,17 @@ public class DetailStepPageFragment extends Fragment
         return stepFragment;
     }
 
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            mDescriptionTextView.setVisibility(View.GONE);
+            hideSystemUi();
+        } else {
+            mDescriptionTextView.setVisibility(View.VISIBLE);
+        }
+    }
+
     public void showExoPlayer() {
         mThumbnailView.setVisibility(View.GONE);
         mPlayerView.setVisibility(View.VISIBLE);
@@ -300,76 +302,13 @@ public class DetailStepPageFragment extends Fragment
     }
 
     @Override
-    public void onConfigurationChanged(Configuration newConfig) {
-        super.onConfigurationChanged(newConfig);
-        if(newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
-            mDescriptionTextView.setVisibility(View.GONE);
-            hideSystemUi();
-        } else {
-            mDescriptionTextView.setVisibility(View.VISIBLE);
-        }
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putParcelable(CURRENT_STEP, mStep);
+//        outState.putInt(CURRENT_WINDOW, mCurrentWindow);
+//        outState.putLong(PLAYBACK_POSITION, mPlaybackPosition);
+        outState.putBoolean(START_PLAY, mPlayWhenReady);
     }
-
-
-
-
-
-
-            //    @Override
-//    public void onPlayerStateChanged(boolean playWhenReady, int playbackState) {
-//        if ((playbackState == Player.STATE_READY) && playWhenReady) {
-//            // We are playing
-//            Log.d(TAG, "onPlayerStateChanged: PLAYING");
-//        } else if ((playbackState == Player.STATE_READY)) {
-//            // We are paused
-//            Log.d(TAG, "onPlayerStateChanged: PAUSED");
-//        }
-//    }
-//
-//    @Override
-//    public void onTimelineChanged(Timeline timeline, Object manifest, int reason) {
-//
-//    }
-//
-//    @Override
-//    public void onTracksChanged(TrackGroupArray trackGroups, TrackSelectionArray trackSelections) {
-//
-//    }
-//
-//    @Override
-//    public void onLoadingChanged(boolean isLoading) {
-//
-//    }
-//
-//    @Override
-//    public void onRepeatModeChanged(int repeatMode) {
-//
-//    }
-//
-//    @Override
-//    public void onShuffleModeEnabledChanged(boolean shuffleModeEnabled) {
-//
-//    }
-//
-//    @Override
-//    public void onPlayerError(ExoPlaybackException error) {
-//
-//    }
-//
-//    @Override
-//    public void onPositionDiscontinuity(int reason) {
-//
-//    }
-//
-//    @Override
-//    public void onPlaybackParametersChanged(PlaybackParameters playbackParameters) {
-//
-//    }
-//
-//    @Override
-//    public void onSeekProcessed() {
-//
-//    }
 }
 
 
