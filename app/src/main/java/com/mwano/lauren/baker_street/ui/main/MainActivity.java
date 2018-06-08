@@ -2,6 +2,7 @@ package com.mwano.lauren.baker_street.ui.main;
 
 import android.content.Context;
 import android.content.Intent;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
@@ -13,9 +14,12 @@ import android.widget.Toast;
 import com.mwano.lauren.baker_street.R;
 import com.mwano.lauren.baker_street.json.ApiClient;
 import com.mwano.lauren.baker_street.json.ApiInterface;
+import com.mwano.lauren.baker_street.model.Ingredient;
 import com.mwano.lauren.baker_street.model.Recipe;
+import com.mwano.lauren.baker_street.ui.master.MasterIngredientsPageFragment;
 import com.mwano.lauren.baker_street.ui.master.MasterRecipePagerActivity;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -27,6 +31,8 @@ import retrofit2.Response;
 public class MainActivity extends AppCompatActivity
         implements MainRecipeAdapter.RecipeAdapterOnClickHandler{
 
+    public static final String RECIPE = "recipe";
+    private final String TAG = MainActivity.class.getSimpleName();
     @BindView(R.id.card_recycler_view) RecyclerView mRecyclerView;
     @BindView(R.id.toolbar) Toolbar toolbar;
     private List<Recipe> mRecipes;
@@ -34,9 +40,10 @@ public class MainActivity extends AppCompatActivity
     private GridLayoutManager mGridLayoutManager;
     private int mColumnsNumber;
     private Context mContext;
-
-    public static final String RECIPE = "recipe";
-    private final String TAG = MainActivity.class.getSimpleName();
+    private Boolean mTwoPane;
+    private Recipe mCurrentRecipe;
+    private List<Ingredient> mIngredients;
+    private String mRecipeName;
 
     /*
     Code source for Retrofit
@@ -54,12 +61,40 @@ public class MainActivity extends AppCompatActivity
         ButterKnife.bind(this);
         // Set app name to toolbar
         toolbar.setTitle(R.string.app_name);
+
+        // Check if 2-pane layout
+        if(findViewById(R.id.main_ingredients_container) != null) {
+            mTwoPane = true;
+            mColumnsNumber = 3;
+
+            if (savedInstanceState == null) {
+                FragmentManager fragmentManager = getSupportFragmentManager();
+                    if(mRecipes != null) {
+                        mCurrentRecipe = mRecipes.get(0);
+                        MasterIngredientsPageFragment ingredientsFragment = MasterIngredientsPageFragment
+                                .newIngredientsInstance((ArrayList<Ingredient>) mCurrentRecipe.getIngredients());
+                        fragmentManager.beginTransaction()
+                                .add(R.id.main_ingredients_container, ingredientsFragment)
+                                .commit();
+                    }
+            } else {
+                // Saved state
+            }
+        } else {
+            // We're in a single-pane mode, displaying fragments on a phone, in different activities
+            mTwoPane = false;
+            // Set number of columns in portrait or landscape mode
+            mColumnsNumber = (int) getResources().getInteger(R.integer.num_of_columns);
+        }
         populateUi();
+        // Set Recipe name on toolbar
+        if(mCurrentRecipe != null) {
+            mRecipeName = mCurrentRecipe.getName();
+            setTitle(mRecipeName);
+        }
     }
 
     private void populateUi() {
-        // Set number of columns in portrait or landscape mode
-        mColumnsNumber = (int) getResources().getInteger(R.integer.num_of_columns);
         mGridLayoutManager = new GridLayoutManager(this, mColumnsNumber);
         // RecyclerView
         mRecyclerView.setLayoutManager(mGridLayoutManager);
@@ -69,6 +104,7 @@ public class MainActivity extends AppCompatActivity
         mRecyclerView.setAdapter(mMainRecipeAdapter);
         // Display recipes
         loadRecipes();
+
     }
 
     // TODO add no Connection error
@@ -96,9 +132,19 @@ public class MainActivity extends AppCompatActivity
     // Open MasterRecipePagerActivity intent, using parcelable
     @Override
     public void onClick(Recipe currentRecipe) {
-        Intent intentSentMainMaster = new Intent(this, MasterRecipePagerActivity.class);
-        intentSentMainMaster.putExtra(RECIPE, currentRecipe);
-        startActivity(intentSentMainMaster);
-        // Log.d(TAG, "Selected Recipe; " + currentRecipe.getName());
+        if(mTwoPane) {
+            ArrayList<Ingredient> mIngredients = (ArrayList<Ingredient>) currentRecipe.getIngredients();
+            MasterIngredientsPageFragment ingredientFragment =
+                    MasterIngredientsPageFragment.newIngredientsInstance(mIngredients);
+            getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.main_ingredients_container, ingredientFragment)
+                    //.addToBackStack(null)
+                    .commit();
+        } else {
+            Intent intentSentMainMaster = new Intent(this, MasterRecipePagerActivity.class);
+            intentSentMainMaster.putExtra(RECIPE, currentRecipe);
+            startActivity(intentSentMainMaster);
+            // Log.d(TAG, "Selected Recipe; " + currentRecipe.getName());
+        }
     }
 }

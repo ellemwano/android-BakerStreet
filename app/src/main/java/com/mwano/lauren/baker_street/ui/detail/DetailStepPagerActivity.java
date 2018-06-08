@@ -37,11 +37,6 @@ public class DetailStepPagerActivity extends AppCompatActivity {
 
     @BindView(R.id.step_pager)
     ViewPager mStepPager;
-    //@BindView(R.id.button_to_first)
-    //Button buttonFirst;
-    //@BindView(R.id.button_to_last)
-    //Button buttonLast;
-
 
     private PagerAdapter mPagerAdapter;
     public ArrayList<Step> mSteps;
@@ -88,18 +83,6 @@ public class DetailStepPagerActivity extends AppCompatActivity {
         mPagerAdapter = new DetailStepPagerAdapter(getSupportFragmentManager(), mCurrentStep);
         mStepPager.setAdapter(mPagerAdapter);
         mStepPager.setCurrentItem(mStepId);
-
-//        // Set up First and Last buttons
-//        buttonFirst.setOnClickListener(new View.OnClickListener() {
-//            public void onClick(View v) {
-//                mStepPager.setCurrentItem(0);
-//            }
-//        });
-//        buttonLast.setOnClickListener(new View.OnClickListener() {
-//            public void onClick(View v) {
-//                mStepPager.setCurrentItem(mSteps.size() - 1);
-//            }
-//        });
     }
 
 
