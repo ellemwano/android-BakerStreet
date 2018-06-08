@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/backgroundColor"
+    android:backgroundTint="@color/backgroundColor"
+    tools:context=".ui.main.MainActivity">
+
+    <android.support.design.widget.AppBarLayout
+        android:id="@+id/appbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="@color/colorPrimaryDark"
+            app:layout_scrollFlags="scroll|enterAlways"
+            app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+            app:titleTextColor="@color/textColorPrimary" />
+    </android.support.design.widget.AppBarLayout>
+
+    <LinearLayout
+        android:id="@+id/main_tablet_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        <!-- Display the Main Recipe fragment -->
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/card_recycler_view"
+            android:layout_width="700dp"
+            android:layout_height="wrap_content"
+            android:scrollbars="vertical">
+
+        </android.support.v7.widget.RecyclerView>
+
+        <!-- A small divider -->
+        <View
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:background="@android:color/darker_gray" />
+
+        <!-- TODO Change layout to constraint -->
+        <!-- Display the Ingredient fragment -->
+        <LinearLayout
+            android:id="@+id/main_ingredients_container"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="INGREDIENTS"
+                android:paddingBottom="8dp"/>
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/rv_ingredients"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:scrollbars="vertical">
+            </android.support.v7.widget.RecyclerView>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Baking Steps"/>
+        </LinearLayout>
+    </LinearLayout>
+
+</android.support.design.widget.CoordinatorLayout>
+
