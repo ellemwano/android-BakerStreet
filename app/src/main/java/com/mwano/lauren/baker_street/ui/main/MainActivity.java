@@ -2,6 +2,7 @@ package com.mwano.lauren.baker_street.ui.main;
 
 import android.content.Context;
 import android.content.Intent;
+import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -9,6 +10,8 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 import android.widget.Toast;
 
 import com.mwano.lauren.baker_street.R;
@@ -16,6 +19,7 @@ import com.mwano.lauren.baker_street.json.ApiClient;
 import com.mwano.lauren.baker_street.json.ApiInterface;
 import com.mwano.lauren.baker_street.model.Ingredient;
 import com.mwano.lauren.baker_street.model.Recipe;
+import com.mwano.lauren.baker_street.ui.detail.MasterDetailActivity;
 import com.mwano.lauren.baker_street.ui.master.MasterIngredientsPageFragment;
 import com.mwano.lauren.baker_street.ui.master.MasterRecipePagerActivity;
 
@@ -24,6 +28,8 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
+import butterknife.Optional;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -33,8 +39,13 @@ public class MainActivity extends AppCompatActivity
 
     public static final String RECIPE = "recipe";
     private final String TAG = MainActivity.class.getSimpleName();
-    @BindView(R.id.card_recycler_view) RecyclerView mRecyclerView;
-    @BindView(R.id.toolbar) Toolbar toolbar;
+    @BindView(R.id.card_recycler_view)
+    RecyclerView mRecyclerView;
+    @BindView(R.id.toolbar)
+    Toolbar toolbar;
+    @Nullable
+    @BindView(R.id.button_steps)
+    Button stepsButton;
     private List<Recipe> mRecipes;
     private MainRecipeAdapter mMainRecipeAdapter;
     private GridLayoutManager mGridLayoutManager;
@@ -61,6 +72,7 @@ public class MainActivity extends AppCompatActivity
         ButterKnife.bind(this);
         // Set app name to toolbar
         toolbar.setTitle(R.string.app_name);
+        loadRecipes();
 
         // Check if 2-pane layout
         if(findViewById(R.id.main_ingredients_container) != null) {
@@ -69,17 +81,28 @@ public class MainActivity extends AppCompatActivity
 
             if (savedInstanceState == null) {
                 FragmentManager fragmentManager = getSupportFragmentManager();
-                    if(mRecipes != null) {
-                        mCurrentRecipe = mRecipes.get(0);
-                        MasterIngredientsPageFragment ingredientsFragment = MasterIngredientsPageFragment
-                                .newIngredientsInstance((ArrayList<Ingredient>) mCurrentRecipe.getIngredients());
-                        fragmentManager.beginTransaction()
-                                .add(R.id.main_ingredients_container, ingredientsFragment)
-                                .commit();
-                    }
+                // TODO Set default recipe
+                if(mCurrentRecipe != null) {
+                    mCurrentRecipe = mRecipes.get(0);
+                    Log.d(TAG, "Default recipe is: " + mCurrentRecipe.getName());
+                    MasterIngredientsPageFragment ingredientsFragment = MasterIngredientsPageFragment
+                            .newIngredientsInstance((ArrayList<Ingredient>) mCurrentRecipe.getIngredients());
+                    fragmentManager.beginTransaction()
+                            .add(R.id.main_ingredients_container, ingredientsFragment)
+                            .commit();
+                }
             } else {
-                // Saved state
+                mCurrentRecipe = savedInstanceState.getParcelable(RECIPE);
             }
+            // On two-pane, open MasterDetail activity for selected recipe via a button
+            final Intent intentSentMainMasterDetail = new Intent(this, MasterDetailActivity.class);
+            intentSentMainMasterDetail.putExtra(RECIPE, mCurrentRecipe);
+            stepsButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    startActivity(intentSentMainMasterDetail);
+                }
+            });
         } else {
             // We're in a single-pane mode, displaying fragments on a phone, in different activities
             mTwoPane = false;
@@ -102,9 +125,8 @@ public class MainActivity extends AppCompatActivity
         // Adapter
         mMainRecipeAdapter = new MainRecipeAdapter(mContext, mRecipes, this);
         mRecyclerView.setAdapter(mMainRecipeAdapter);
-        // Display recipes
-        loadRecipes();
-
+//        // Display recipes
+//        loadRecipes();
     }
 
     // TODO add no Connection error
@@ -129,7 +151,8 @@ public class MainActivity extends AppCompatActivity
         });
     }
 
-    // Open MasterRecipePagerActivity intent, using parcelable
+    // On two-pane, create Ingredients fragment for selected Recipe
+    // On single-pane, open MasterRecipePagerActivity, passing in selected Recipe
     @Override
     public void onClick(Recipe currentRecipe) {
         if(mTwoPane) {
@@ -138,7 +161,6 @@ public class MainActivity extends AppCompatActivity
                     MasterIngredientsPageFragment.newIngredientsInstance(mIngredients);
             getSupportFragmentManager().beginTransaction()
                     .replace(R.id.main_ingredients_container, ingredientFragment)
-                    //.addToBackStack(null)
                     .commit();
         } else {
             Intent intentSentMainMaster = new Intent(this, MasterRecipePagerActivity.class);
@@ -147,4 +169,11 @@ public class MainActivity extends AppCompatActivity
             // Log.d(TAG, "Selected Recipe; " + currentRecipe.getName());
         }
     }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putParcelable(RECIPE, mCurrentRecipe);
+    }
+
 }

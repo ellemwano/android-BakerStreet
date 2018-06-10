@@ -33,6 +33,8 @@
                 |uiMode">
         </activity>
 
+        <activity android:name=".ui.detail.MasterDetailActivity" />
+
     </application>
 
 </manifest>

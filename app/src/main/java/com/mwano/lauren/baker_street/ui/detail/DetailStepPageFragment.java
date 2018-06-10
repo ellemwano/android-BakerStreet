@@ -95,7 +95,9 @@ public class DetailStepPageFragment extends Fragment {
             }
         }
         // Set content to views
-        mDescriptionTextView.setText(mStep.getDescription());
+        if(mStep != null) {
+            mDescriptionTextView.setText(mStep.getDescription());
+        }
         // If phone in landscape, hide description
         if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
             mDescriptionTextView.setVisibility(View.GONE);
@@ -122,25 +124,27 @@ public class DetailStepPageFragment extends Fragment {
             mExoPlayer.seekTo(mCurrentWindow, mPlaybackPosition);
         }
         // If there's a video, create a MediaSource
-        if (!TextUtils.isEmpty(mStep.getVideoURL())) {
-            mVideoUri = Uri.parse(mStep.getVideoURL());
-            MediaSource mediaSource = buildMediaSource(mVideoUri);
-            mExoPlayer.prepare(mediaSource, true, false);
-        } else {
-            // If no video, check if there's a thumbnail, and if not display placeholder
-            // Instantiate Picasso to handle the thumbnail image
-            Picasso mPicasso = Picasso.get();
-            // Remove Player view and show Image view
-            showImageView();
-            if (!TextUtils.isEmpty(mStep.getThumbnailURL())) {
-                mPicasso.load(mStep.getThumbnailURL())
-                        .placeholder(R.drawable.donut_169)
-                        .error(R.drawable.donut_169)
-                        .into(mThumbnailView);
+        if (mStep != null) {
+            if (!TextUtils.isEmpty(mStep.getVideoURL())) {
+                mVideoUri = Uri.parse(mStep.getVideoURL());
+                MediaSource mediaSource = buildMediaSource(mVideoUri);
+                mExoPlayer.prepare(mediaSource, true, false);
+            } else {
+                // If no video, check if there's a thumbnail, and if not display placeholder
+                // Instantiate Picasso to handle the thumbnail image
+                Picasso mPicasso = Picasso.get();
+                // Remove Player view and show Image view
+                showImageView();
+                if (!TextUtils.isEmpty(mStep.getThumbnailURL())) {
+                    mPicasso.load(mStep.getThumbnailURL())
+                            .placeholder(R.drawable.donut_169)
+                            .error(R.drawable.donut_169)
+                            .into(mThumbnailView);
+                }
+                // If no thumbnail either, show placeholder
+                showImageView();
+                mThumbnailView.setImageResource(R.drawable.donut_169);
             }
-            // If no thumbnail either, show placeholder
-            showImageView();
-            mThumbnailView.setImageResource(R.drawable.donut_169);
         }
     }
 
