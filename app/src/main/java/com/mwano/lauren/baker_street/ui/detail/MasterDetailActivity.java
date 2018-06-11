@@ -64,7 +64,7 @@ public class MasterDetailActivity extends AppCompatActivity
             DetailStepPageFragment detailFragment =
                     DetailStepPageFragment.newStepInstance(mCurrentStep, mStepId);
             getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.tablet_detail_steps_container, detailFragment)
+                    .add(R.id.tablet_detail_steps_container, detailFragment)
                     .commit();
         }
     }

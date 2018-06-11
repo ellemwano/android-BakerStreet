@@ -84,8 +84,8 @@ public class DetailStepPageFragment extends Fragment {
         ButterKnife.bind(this, rootview);
         if (savedInstanceState != null) {
             mStep = savedInstanceState.getParcelable(CURRENT_STEP);
-//            mCurrentWindow = savedInstanceState.getInt(CURRENT_WINDOW, 0);
-//            mPlaybackPosition = savedInstanceState.getLong(PLAYBACK_POSITION, 0);
+            mCurrentWindow = savedInstanceState.getInt(CURRENT_WINDOW);
+            mPlaybackPosition = savedInstanceState.getLong(PLAYBACK_POSITION);
             mPlayWhenReady = savedInstanceState.getBoolean(START_PLAY);
         } else {
             // Get selected Step and StepId from the intent
@@ -98,8 +98,11 @@ public class DetailStepPageFragment extends Fragment {
         if(mStep != null) {
             mDescriptionTextView.setText(mStep.getDescription());
         }
-        // If phone in landscape, hide description
-        if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
+        // Check if phone or tablet
+        Configuration config = getActivity().getResources().getConfiguration();
+        // If on phone and landscape, hide description
+        if(config.smallestScreenWidthDp < 600
+                && config.orientation == Configuration.ORIENTATION_LANDSCAPE) {
             mDescriptionTextView.setVisibility(View.GONE);
             hideSystemUi();
         }
@@ -284,16 +287,16 @@ public class DetailStepPageFragment extends Fragment {
         return stepFragment;
     }
 
-    @Override
-    public void onConfigurationChanged(Configuration newConfig) {
-        super.onConfigurationChanged(newConfig);
-        if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
-            mDescriptionTextView.setVisibility(View.GONE);
-            hideSystemUi();
-        } else {
-            mDescriptionTextView.setVisibility(View.VISIBLE);
-        }
-    }
+//    @Override
+//    public void onConfigurationChanged(Configuration newConfig) {
+//        super.onConfigurationChanged(newConfig);
+//        if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
+//            mDescriptionTextView.setVisibility(View.GONE);
+//            hideSystemUi();
+//        } else {
+//            mDescriptionTextView.setVisibility(View.VISIBLE);
+//        }
+//    }
 
     public void showExoPlayer() {
         mThumbnailView.setVisibility(View.GONE);
@@ -309,8 +312,8 @@ public class DetailStepPageFragment extends Fragment {
     public void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putParcelable(CURRENT_STEP, mStep);
-//        outState.putInt(CURRENT_WINDOW, mCurrentWindow);
-//        outState.putLong(PLAYBACK_POSITION, mPlaybackPosition);
+        outState.putInt(CURRENT_WINDOW, mCurrentWindow);
+        outState.putLong(PLAYBACK_POSITION, mPlaybackPosition);
         outState.putBoolean(START_PLAY, mPlayWhenReady);
     }
 }

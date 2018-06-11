@@ -80,11 +80,11 @@ public class MainActivity extends AppCompatActivity
             mColumnsNumber = 3;
 
             if (savedInstanceState == null) {
-                FragmentManager fragmentManager = getSupportFragmentManager();
                 // TODO Set default recipe
-                if(mCurrentRecipe != null) {
+                if(mRecipes != null) {
                     mCurrentRecipe = mRecipes.get(0);
-                    Log.d(TAG, "Default recipe is: " + mCurrentRecipe.getName());
+                    //Log.d(TAG, "Default recipe is: " + mCurrentRecipe.getName());
+                    FragmentManager fragmentManager = getSupportFragmentManager();
                     MasterIngredientsPageFragment ingredientsFragment = MasterIngredientsPageFragment
                             .newIngredientsInstance((ArrayList<Ingredient>) mCurrentRecipe.getIngredients());
                     fragmentManager.beginTransaction()
@@ -139,7 +139,7 @@ public class MainActivity extends AppCompatActivity
             public void onResponse(Call<List<Recipe>> call,
                                    Response<List<Recipe>> response) {
                 mRecipes = response.body();
-                // Log.d(TAG, "Number of recipes :" + mRecipes.size());
+                Log.d(TAG, "Number of recipes :" + mRecipes.size());
                 mMainRecipeAdapter.setRecipeData(mRecipes);
             }
             @Override
@@ -156,7 +156,8 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void onClick(Recipe currentRecipe) {
         if(mTwoPane) {
-            ArrayList<Ingredient> mIngredients = (ArrayList<Ingredient>) currentRecipe.getIngredients();
+            mCurrentRecipe = currentRecipe;
+            ArrayList<Ingredient> mIngredients = (ArrayList<Ingredient>) mCurrentRecipe.getIngredients();
             MasterIngredientsPageFragment ingredientFragment =
                     MasterIngredientsPageFragment.newIngredientsInstance(mIngredients);
             getSupportFragmentManager().beginTransaction()
