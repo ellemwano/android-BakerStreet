@@ -1,5 +1,6 @@
 package com.mwano.lauren.baker_street.ui.main;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.Nullable;
@@ -12,6 +13,8 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.mwano.lauren.baker_street.R;
@@ -40,8 +43,17 @@ public class MainActivity extends AppCompatActivity
     @BindView(R.id.toolbar)
     Toolbar toolbar;
     @Nullable
-    @BindView(R.id.button_steps)
-    Button stepsButton;
+    @BindView(R.id.tv_recipe_name_main)
+    TextView recipeNameMainTextView;
+    @Nullable
+    @BindView(R.id.tv_to_baking_steps)
+    TextView toStepsTextView;
+    @Nullable
+    @BindView(R.id.default_tablet_layout)
+    LinearLayout defaultTabletLayout;
+    @Nullable
+    @BindView(R.id.main_ingredients_container)
+    LinearLayout mainTabletLayout;
 
     private MainRecipeAdapter mMainRecipeAdapter;
     private GridLayoutManager mGridLayoutManager;
@@ -75,28 +87,39 @@ public class MainActivity extends AppCompatActivity
         loadRecipes();
 
         // Check if 2-pane layout
-        if(findViewById(R.id.main_ingredients_container) != null) {
+        if(findViewById(R.id.main_tablet_layout) != null) {
             mTwoPane = true;
             mColumnsNumber = 3;
 
             if (savedInstanceState == null) {
-                // TODO Set default recipe
-                if(mRecipes != null) {
-                    mRecipeId = 0;
-                    mCurrentRecipe = mRecipes.get(mRecipeId);
-                    //Log.d(TAG, "Default recipe is: " + mCurrentRecipe.getName());
-                    FragmentManager fragmentManager = getSupportFragmentManager();
-                    MasterIngredientsPageFragment ingredientsFragment = MasterIngredientsPageFragment
-                            .newIngredientsInstance((ArrayList<Ingredient>) mCurrentRecipe.getIngredients());
-                    fragmentManager.beginTransaction()
-                            .add(R.id.main_ingredients_container, ingredientsFragment)
-                            .commit();
-                }
+                // Set welcome screen
+                mainTabletLayout.setVisibility(View.GONE);
+                defaultTabletLayout.setVisibility(View.VISIBLE);
+//                if(mRecipes != null) {
+//                    mRecipeId = 0;
+//                    mCurrentRecipe = mRecipes.get(mRecipeId);
+//                    //Log.d(TAG, "Default recipe is: " + mCurrentRecipe.getName());
+//                    FragmentManager fragmentManager = getSupportFragmentManager();
+//                    MasterIngredientsPageFragment ingredientsFragment = MasterIngredientsPageFragment
+//                            .newIngredientsInstance((ArrayList<Ingredient>) mCurrentRecipe.getIngredients());
+//                    fragmentManager.beginTransaction()
+//                            .add(R.id.main_ingredients_container, ingredientsFragment)
+//                            .commit();
+//                }
             } else {
+                defaultTabletLayout.setVisibility(View.GONE);
+                mainTabletLayout.setVisibility(View.VISIBLE);
                 mCurrentRecipe = savedInstanceState.getParcelable(RECIPE);
+                recipeNameMainTextView.setText(mCurrentRecipe.getName());
+                FragmentManager fragmentManager = getSupportFragmentManager();
+                MasterIngredientsPageFragment ingredientsFragment = MasterIngredientsPageFragment
+                        .newIngredientsInstance((ArrayList<Ingredient>) mCurrentRecipe.getIngredients());
+                fragmentManager.beginTransaction()
+                        .add(R.id.main_ingredients_container, ingredientsFragment)
+                        .commit();
             }
             // On two-pane, open MasterDetail activity for selected recipe via a button
-            stepsButton.setOnClickListener(new View.OnClickListener() {
+            toStepsTextView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     final Intent intentSentMainMasterDetail = new Intent(MainActivity.this, MasterDetailActivity.class);
@@ -134,6 +157,7 @@ public class MainActivity extends AppCompatActivity
     public void loadRecipes() {
         ApiInterface request = ApiClient.getClient().create(ApiInterface.class);
         Call<List<Recipe>> call = request.getRecipes();
+
         // Asynchronous request
         call.enqueue(new Callback<List<Recipe>>() {
             @Override
@@ -157,13 +181,17 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void onClick(Recipe currentRecipe) {
         if(mTwoPane) {
+            defaultTabletLayout.setVisibility(View.GONE);
+            mainTabletLayout.setVisibility(View.VISIBLE);
             mCurrentRecipe = currentRecipe;
+            recipeNameMainTextView.setText(mCurrentRecipe.getName());
             ArrayList<Ingredient> mIngredients = (ArrayList<Ingredient>) mCurrentRecipe.getIngredients();
             MasterIngredientsPageFragment ingredientFragment =
                     MasterIngredientsPageFragment.newIngredientsInstance(mIngredients);
             getSupportFragmentManager().beginTransaction()
                     .replace(R.id.main_ingredients_container, ingredientFragment)
                     .commit();
+
         } else {
             Intent intentSentMainMaster = new Intent(this, MasterRecipePagerActivity.class);
             intentSentMainMaster.putExtra(RECIPE, currentRecipe);

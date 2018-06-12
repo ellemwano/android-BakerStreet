@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.design.widget.CoordinatorLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -25,6 +24,7 @@
             app:titleTextColor="@color/textColorPrimary" />
     </android.support.design.widget.AppBarLayout>
 
+    <!-- TODO ConstraintLayout -->
     <LinearLayout
         android:id="@+id/main_tablet_layout"
         android:layout_width="match_parent"
@@ -47,32 +47,76 @@
             android:layout_height="match_parent"
             android:background="@android:color/darker_gray" />
 
-        <!-- TODO Change layout to constraint -->
         <!-- Display the Ingredient fragment -->
         <LinearLayout
             android:id="@+id/main_ingredients_container"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:visibility="visible">
+
+            <TextView
+                android:id="@+id/tv_recipe_name_main"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/colorPrimary"
+                android:gravity="center_horizontal"
+                android:paddingBottom="8dp"
+                android:paddingTop="8dp"
+                android:textColor="@color/textColorPrimary"
+                android:textSize="24sp"
+                android:textStyle="bold"
+                tools:text="@tools:sample/lorem" />
+
+            <TextView
+                android:id="@+id/tv_to_baking_steps"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:background="@color/colorAccent"
+                android:drawableRight="@drawable/ic_arrow_forward"
+                android:gravity="end"
+                android:padding="8dp"
+                android:text="Baking Steps"
+                android:textColor="@color/backgroundColor"
+                android:textSize="16sp"
+                android:textStyle="bold" />
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:background="@color/backgroundColor"
+                android:gravity="center_horizontal"
+                android:paddingTop="8dp"
                 android:text="INGREDIENTS"
-                android:paddingBottom="8dp"/>
+                android:textColor="@color/textColorPrimary"
+                android:textSize="16sp"
+                android:textStyle="bold" />
 
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/rv_ingredients"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:scrollbars="vertical">
-            </android.support.v7.widget.RecyclerView>
+                android:scrollbars="vertical"/>
 
-            <Button
-                android:id="@+id/button_steps"
+        </LinearLayout>
+
+        <!-- Display welcome layout when no saved state -->
+        <LinearLayout
+            android:id="@+id/default_tablet_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/colorPrimaryDark"
+            android:gravity="center|center_vertical"
+            android:orientation="vertical"
+            android:visibility="gone">
+
+            <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Baking Steps" />
+                android:paddingBottom="32dp"
+                android:src="@drawable/app_name_two_lines" />
+
         </LinearLayout>
     </LinearLayout>
 
