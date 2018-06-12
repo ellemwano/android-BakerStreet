@@ -25,7 +25,7 @@
 
         <activity android:name=".ui.detail.DetailStepPagerActivity" />
 
-        <activity android:name=".ui.detail.MasterDetailActivity" />
+        <activity android:name=".ui.twoPane.MasterDetailActivity" />
 
     </application>
 

@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/master_detail_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -8,17 +10,35 @@
 
 
     <!-- Display the Steps fragment -->
-    <FrameLayout
+    <android.support.constraint.ConstraintLayout
         android:id="@+id/detail_steps_container"
         android:layout_width="350dp"
         android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/tv_recipe_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="8dp"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:textColor="@color/textColorPrimary"
+            android:background="@color/colorPrimary"
+            android:gravity="center_horizontal"
+            tools:text="@tools:sample/lorem"/>
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/rv_ingredients"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:scrollbars="vertical" />
-    </FrameLayout>
+            android:scrollbars="vertical"
+            app:layout_constraintTop_toBottomOf="@id/tv_recipe_name"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
+    </android.support.constraint.ConstraintLayout>
 
     <!-- A small divider -->
     <View

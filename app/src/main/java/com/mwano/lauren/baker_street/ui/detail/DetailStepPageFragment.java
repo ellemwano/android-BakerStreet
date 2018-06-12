@@ -82,6 +82,7 @@ public class DetailStepPageFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View rootview = inflater.inflate(R.layout.fragment_detail_step_page, container, false);
         ButterKnife.bind(this, rootview);
+        // TODO Save/Restore position
         if (savedInstanceState != null) {
             mStep = savedInstanceState.getParcelable(CURRENT_STEP);
             mCurrentWindow = savedInstanceState.getInt(CURRENT_WINDOW);
@@ -184,7 +185,12 @@ public class DetailStepPageFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        hideSystemUi();
+        // TODO maybe remove
+        // Hide system toolbar only if on phone
+        Configuration config = getActivity().getResources().getConfiguration();
+        if(config.smallestScreenWidthDp < 600) {
+            hideSystemUi();
+        }
         if (!getUserVisibleHint()) {
             return;
         }
