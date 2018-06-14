@@ -16,6 +16,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.widget.TextView;
 
 import com.mwano.lauren.baker_street.R;
@@ -39,8 +40,9 @@ import static com.mwano.lauren.baker_street.ui.main.MainActivity.RECIPE;
 public class MasterDetailActivity extends AppCompatActivity
     implements MasterStepsAdapter.StepAdapterOnClickHandler {
 
-    @BindView(R.id.tv_recipe_name)
-    TextView mRecipeNameTextView;
+    @BindView(R.id.toolbar)
+    Toolbar toolbar;
+
     private Recipe mCurrentRecipe;
     private List<Step> mSteps;
     private Step mCurrentStep;
@@ -53,6 +55,8 @@ public class MasterDetailActivity extends AppCompatActivity
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_master_detail);
+        // Adding Toolbar to Main screen
+        setSupportActionBar(toolbar);
         ButterKnife.bind(this);
 
 
@@ -68,7 +72,6 @@ public class MasterDetailActivity extends AppCompatActivity
                 }
             }
 
-            // TODO check
             // Set Steps fragment
             MasterStepsPageFragment stepFragment =
                     MasterStepsPageFragment.newStepsInstance((ArrayList<Step>) mSteps);
@@ -76,7 +79,7 @@ public class MasterDetailActivity extends AppCompatActivity
                     .add(R.id.detail_steps_container, stepFragment)
                     .commit();
 
-            // TODO Set Detail fragment to 0 by default
+            // Set Detail Step fragment to Step 0 by default
             mStepId = 0;
             mCurrentStep = mSteps.get(mStepId);
             DetailStepPageFragment detailFragment =
@@ -84,8 +87,11 @@ public class MasterDetailActivity extends AppCompatActivity
             getSupportFragmentManager().beginTransaction()
                     .add(R.id.tablet_detail_steps_container, detailFragment)
                     .commit();
+        } else {
+            // TODO Saved state
         }
-        mRecipeNameTextView.setText(mRecipeName);
+        // Set app name to toolbar
+        toolbar.setTitle(mRecipeName);
     }
 
     // Open selected Detail fragment from Master intent

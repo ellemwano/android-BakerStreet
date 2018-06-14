@@ -82,7 +82,7 @@ public class DetailStepPageFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View rootview = inflater.inflate(R.layout.fragment_detail_step_page, container, false);
         ButterKnife.bind(this, rootview);
-        // TODO Save/Restore position
+        // Restore state
         if (savedInstanceState != null) {
             mStep = savedInstanceState.getParcelable(CURRENT_STEP);
             mCurrentWindow = savedInstanceState.getInt(CURRENT_WINDOW);
@@ -111,57 +111,21 @@ public class DetailStepPageFragment extends Fragment {
     }
 
     /**
-     * Initialise ExoPlayer
-     * //* @param  The URI of the video to play
-     */
-    private void initialisePlayer() {
-
-        if (mExoPlayer == null) {
-            // Create an instance of the ExoPlayer
-            mExoPlayer = ExoPlayerFactory.newSimpleInstance(
-                    new DefaultRenderersFactory(getContext()),
-                    new DefaultTrackSelector(), new DefaultLoadControl());
-            showExoPlayer();
-            mPlayerView.setPlayer(mExoPlayer);
-
-            mExoPlayer.setPlayWhenReady(mPlayWhenReady);
-            mExoPlayer.seekTo(mCurrentWindow, mPlaybackPosition);
-        }
-        // If there's a video, create a MediaSource
-        if (mStep != null) {
-            if (!TextUtils.isEmpty(mStep.getVideoURL())) {
-                mVideoUri = Uri.parse(mStep.getVideoURL());
-                MediaSource mediaSource = buildMediaSource(mVideoUri);
-                mExoPlayer.prepare(mediaSource, true, false);
-            } else {
-                // If no video, check if there's a thumbnail, and if not display placeholder
-                // Instantiate Picasso to handle the thumbnail image
-                Picasso mPicasso = Picasso.get();
-                // Remove Player view and show Image view
-                showImageView();
-                if (!TextUtils.isEmpty(mStep.getThumbnailURL())) {
-                    mPicasso.load(mStep.getThumbnailURL())
-                            .placeholder(R.drawable.donut_169)
-                            .error(R.drawable.donut_169)
-                            .into(mThumbnailView);
-                }
-                // If no thumbnail either, show placeholder
-                showImageView();
-                mThumbnailView.setImageResource(R.drawable.donut_169);
-            }
-        }
-    }
-
-    /**
-     * Media Source builder
+     * This method sets up a bundle for the arguments to pass
+     * to a new instance of this fragment.
      *
-     * @param uri The Video URO
-     * @return A Media Source for the given video
+     * @param step   String description of selected step in step list
+     * @param stepId int id of the selected step in step list
+     * @return fragment
      */
-    private MediaSource buildMediaSource(Uri uri) {
-        return new ExtractorMediaSource.Factory(
-                new DefaultHttpDataSourceFactory("Baker Street")).
-                createMediaSource(uri);
+    public static DetailStepPageFragment newStepInstance(Step step, int stepId) {
+        DetailStepPageFragment stepFragment = new DetailStepPageFragment();
+        // Set the bundle arguments for the fragment.
+        Bundle arguments = new Bundle();
+        arguments.putParcelable(STEP, step);
+        arguments.putInt(STEP_ID, stepId);
+        stepFragment.setArguments(arguments);
+        return stepFragment;
     }
 
     /**
@@ -238,6 +202,58 @@ public class DetailStepPageFragment extends Fragment {
         Log.d(TAG, "This is onDestroy for: " + mStepId);
     }
 
+    /**
+     * Initialise ExoPlayer
+     * //* @param  The URI of the video to play
+     */
+    private void initialisePlayer() {
+        if (mExoPlayer == null) {
+            // Create an instance of the ExoPlayer
+            mExoPlayer = ExoPlayerFactory.newSimpleInstance(
+                    new DefaultRenderersFactory(getContext()),
+                    new DefaultTrackSelector(), new DefaultLoadControl());
+            showExoPlayer();
+            mPlayerView.setPlayer(mExoPlayer);
+        }
+        mExoPlayer.setPlayWhenReady(mPlayWhenReady);
+        mExoPlayer.seekTo(mCurrentWindow, mPlaybackPosition);
+        // If there's a video, create a MediaSource
+        if (mStep != null) {
+            if (!TextUtils.isEmpty(mStep.getVideoURL())) {
+                mVideoUri = Uri.parse(mStep.getVideoURL());
+                MediaSource mediaSource = buildMediaSource(mVideoUri);
+                mExoPlayer.prepare(mediaSource, false, false);
+            } else {
+                // If no video, check if there's a thumbnail, and if not display placeholder
+                // Instantiate Picasso to handle the thumbnail image
+                Picasso mPicasso = Picasso.get();
+                // Remove Player view and show Image view
+                showImageView();
+                if (!TextUtils.isEmpty(mStep.getThumbnailURL())) {
+                    mPicasso.load(mStep.getThumbnailURL())
+                            .placeholder(R.drawable.donut_169)
+                            .error(R.drawable.donut_169)
+                            .into(mThumbnailView);
+                }
+                // If no thumbnail either, show placeholder
+                showImageView();
+                mThumbnailView.setImageResource(R.drawable.donut_169);
+            }
+        }
+    }
+
+    /**
+     * Media Source builder
+     *
+     * @param uri The Video URO
+     * @return A Media Source for the given video
+     */
+    private MediaSource buildMediaSource(Uri uri) {
+        return new ExtractorMediaSource.Factory(
+                new DefaultHttpDataSourceFactory("Baker Street")).
+                createMediaSource(uri);
+    }
+
     private void releasePlayer() {
         if (mExoPlayer != null) {
             mPlaybackPosition = mExoPlayer.getCurrentPosition();
@@ -263,46 +279,20 @@ public class DetailStepPageFragment extends Fragment {
         }
     }
 
-    // TODO Implement in land
+    // TODO Check if needed
     // ExoPlayer in full screen
     @SuppressLint("InlinedApi")
     private void hideSystemUi() {
-        mPlayerView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LOW_PROFILE
-                | View.SYSTEM_UI_FLAG_FULLSCREEN
-                | View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-                | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
-                | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
-                | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);
+        Configuration config = getActivity().getResources().getConfiguration();
+        if(config.smallestScreenWidthDp < 600) {
+            mPlayerView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LOW_PROFILE
+                    | View.SYSTEM_UI_FLAG_FULLSCREEN
+                    | View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                    | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
+                    | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+                    | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);
+        }
     }
-
-    /**
-     * This method sets up a bundle for the arguments to pass
-     * to a new instance of this fragment.
-     *
-     * @param step   String description of selected step in step list
-     * @param stepId int id of the selected step in step list
-     * @return fragment
-     */
-    public static DetailStepPageFragment newStepInstance(Step step, int stepId) {
-        DetailStepPageFragment stepFragment = new DetailStepPageFragment();
-        // Set the bundle arguments for the fragment.
-        Bundle arguments = new Bundle();
-        arguments.putParcelable(STEP, step);
-        arguments.putInt(STEP_ID, stepId);
-        stepFragment.setArguments(arguments);
-        return stepFragment;
-    }
-
-//    @Override
-//    public void onConfigurationChanged(Configuration newConfig) {
-//        super.onConfigurationChanged(newConfig);
-//        if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
-//            mDescriptionTextView.setVisibility(View.GONE);
-//            hideSystemUi();
-//        } else {
-//            mDescriptionTextView.setVisibility(View.VISIBLE);
-//        }
-//    }
 
     public void showExoPlayer() {
         mThumbnailView.setVisibility(View.GONE);
@@ -323,6 +313,7 @@ public class DetailStepPageFragment extends Fragment {
         outState.putBoolean(START_PLAY, mPlayWhenReady);
     }
 }
+
 
 
 
