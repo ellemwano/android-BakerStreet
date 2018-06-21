@@ -101,7 +101,7 @@ public class DetailStepPageFragment extends Fragment {
         }
         // Check if phone or tablet
         Configuration config = getActivity().getResources().getConfiguration();
-        // If on phone and landscape, hide description
+        // If on phone and landscape, hide description and full screen
         if(config.smallestScreenWidthDp < 600
                 && config.orientation == Configuration.ORIENTATION_LANDSCAPE) {
             mDescriptionTextView.setVisibility(View.GONE);
@@ -266,7 +266,7 @@ public class DetailStepPageFragment extends Fragment {
 
     /**
      * Set a hint to the system about whether this fragment's UI is currently visible to the user.
-     *
+     * (Source: https://stackoverflow.com/a/18375436/8691157)
      * @param visible The fragment's UI is visible to the user
      */
     @Override

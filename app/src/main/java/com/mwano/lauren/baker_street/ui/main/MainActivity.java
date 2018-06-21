@@ -1,7 +1,5 @@
 package com.mwano.lauren.baker_street.ui.main;
 
-import android.app.ProgressDialog;
-import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentManager;
@@ -12,14 +10,13 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.mwano.lauren.baker_street.R;
-import com.mwano.lauren.baker_street.json.ApiClient;
-import com.mwano.lauren.baker_street.json.ApiInterface;
+import com.mwano.lauren.baker_street.data.network.ApiClient;
+import com.mwano.lauren.baker_street.data.network.ApiInterface;
 import com.mwano.lauren.baker_street.model.Ingredient;
 import com.mwano.lauren.baker_street.model.Recipe;
 import com.mwano.lauren.baker_street.ui.twoPane.MasterDetailActivity;
@@ -35,6 +32,13 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+
+    /**
+    Code source for Retrofit
+    https://www.androidhive.info/2016/05/android-working-with-retrofit-http-library/
+//    and the use of APIManager:
+//    http://codingsonata.com/retrofit-tutorial-android-part-1-introduction/
+    */
 public class MainActivity extends AppCompatActivity
         implements MainRecipeAdapter.RecipeAdapterOnClickHandler{
 
@@ -68,12 +72,6 @@ public class MainActivity extends AppCompatActivity
     public static final String RECIPE = "recipe";
     private final String TAG = MainActivity.class.getSimpleName();
 
-    /*
-    Code source for Retrofit
-    https://www.androidhive.info/2016/05/android-working-with-retrofit-http-library/
-//    and the use of APIManager:
-//    http://codingsonata.com/retrofit-tutorial-android-part-1-introduction/
-    */
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
