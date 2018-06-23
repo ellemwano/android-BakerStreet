@@ -90,6 +90,7 @@ public class DetailStepPagerActivity extends AppCompatActivity {
         // Set page indicator
         mPageIndicatorView.setCount(mSteps.size()); // specify total count of indicators
         mPageIndicatorView.setViewPager(mStepPager);
+        mPageIndicatorView.setSelection(mStepId);
     }
 
 
