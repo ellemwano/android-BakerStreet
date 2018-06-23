@@ -16,6 +16,7 @@ import android.widget.Button;
 
 import com.mwano.lauren.baker_street.R;
 import com.mwano.lauren.baker_street.model.Step;
+import com.rd.PageIndicatorView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,6 +38,8 @@ public class DetailStepPagerActivity extends AppCompatActivity {
 
     @BindView(R.id.step_pager)
     ViewPager mStepPager;
+    @BindView(R.id.pageIndicatorView)
+    PageIndicatorView mPageIndicatorView;
 
     private PagerAdapter mPagerAdapter;
     public ArrayList<Step> mSteps;
@@ -83,6 +86,10 @@ public class DetailStepPagerActivity extends AppCompatActivity {
         mPagerAdapter = new DetailStepPagerAdapter(getSupportFragmentManager(), mCurrentStep);
         mStepPager.setAdapter(mPagerAdapter);
         mStepPager.setCurrentItem(mStepId);
+
+        // Set page indicator
+        mPageIndicatorView.setCount(mSteps.size()); // specify total count of indicators
+        mPageIndicatorView.setViewPager(mStepPager);
     }
 
 
