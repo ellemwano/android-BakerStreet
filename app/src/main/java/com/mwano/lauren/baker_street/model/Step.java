@@ -12,7 +12,7 @@ public class Step implements Parcelable {
 
     @SerializedName("id")
     @Expose
-    private Integer stepId;
+    private int stepId;
     @SerializedName("shortDescription")
     @Expose
     private String shortDescription;
@@ -31,11 +31,11 @@ public class Step implements Parcelable {
     }
 
     // Getters and Setters
-    public Integer getId() {
+    public int getId() {
         return stepId;
     }
 
-    public void setId(Integer stepId) {
+    public void setId(int stepId) {
         this.stepId = stepId;
     }
 
@@ -88,7 +88,7 @@ public class Step implements Parcelable {
     }
 
     protected Step(Parcel in) {
-        this.stepId = (Integer) in.readValue(Integer.class.getClassLoader());
+        this.stepId = in.readInt();
         this.shortDescription = in.readString();
         this.description = in.readString();
         this.videoURL = in.readString();

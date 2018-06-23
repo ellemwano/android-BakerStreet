@@ -27,7 +27,7 @@ public class Utils {
      * @param doubleValue
      * @return a String with the value of the Double without the .0 if no decimal
      */
-    public static String doubleToStringFormat(Double doubleValue) {
+    public static String doubleToStringFormat(double doubleValue) {
         NumberFormat nf = new DecimalFormat("#.##");
         return nf.format(doubleValue);
     }

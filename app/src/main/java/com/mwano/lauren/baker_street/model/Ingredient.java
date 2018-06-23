@@ -1,5 +1,7 @@
 package com.mwano.lauren.baker_street.model;
 
+import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.PrimaryKey;
 import android.os.Parcel;
 import android.os.Parcelable;
 
@@ -10,7 +12,7 @@ public class Ingredient implements Parcelable {
 
     @SerializedName("quantity")
     @Expose
-    private Double quantity;
+    private double quantity;
     @SerializedName("measure")
     @Expose
     private String measure;
@@ -23,11 +25,11 @@ public class Ingredient implements Parcelable {
     }
 
     // Getters and Setters
-    public Double getQuantity() {
+    public double getQuantity() {
         return quantity;
     }
 
-    public void setQuantity(Double quantity) {
+    public void setQuantity(double quantity) {
         this.quantity = quantity;
     }
 
@@ -61,7 +63,7 @@ public class Ingredient implements Parcelable {
     }
 
     protected Ingredient(Parcel in) {
-        this.quantity = (Double) in.readValue(Double.class.getClassLoader());
+        this.quantity = in.readDouble();
         this.measure = in.readString();
         this.ingredient = in.readString();
     }
