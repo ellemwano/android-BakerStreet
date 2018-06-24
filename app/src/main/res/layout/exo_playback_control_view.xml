@@ -4,7 +4,7 @@
     android:layout_height="wrap_content"
     android:layout_gravity="bottom"
     android:layoutDirection="ltr"
-    android:background="#CC000000"
+    android:background="#26000000"
     android:orientation="vertical">
 
     <LinearLayout
@@ -15,17 +15,16 @@
         android:orientation="horizontal">
 
         <ImageButton android:id="@id/exo_prev"
+            android:tint="@color/colorPrimary"
             style="@style/ExoMediaButton.Previous"/>
 
         <ImageButton android:id="@id/exo_play"
+            android:tint="@color/colorPrimary"
             style="@style/ExoMediaButton.Play"/>
 
         <ImageButton android:id="@id/exo_pause"
+            android:tint="@color/colorPrimary"
             style="@style/ExoMediaButton.Pause"/>
-
-        <ImageButton
-            android:id="@+id/exo_next"
-            style="@style/ExoMediaButton.Next" />
 
     </LinearLayout>
 
@@ -44,13 +43,13 @@
             android:paddingLeft="4dp"
             android:paddingRight="4dp"
             android:includeFontPadding="false"
-            android:textColor="#FFBEBEBE"/>
+            android:textColor="@color/colorPrimary"/>
 
         <com.google.android.exoplayer2.ui.DefaultTimeBar
             android:id="@id/exo_progress"
             android:layout_width="0dp"
             android:layout_weight="1"
-            android:layout_height="26dp"/>
+            android:layout_height="26dp" />
 
         <TextView android:id="@id/exo_duration"
             android:layout_width="wrap_content"
@@ -60,7 +59,7 @@
             android:paddingLeft="4dp"
             android:paddingRight="4dp"
             android:includeFontPadding="false"
-            android:textColor="#FFBEBEBE"/>
+            android:textColor="@color/colorPrimary"/>
 
     </LinearLayout>
 

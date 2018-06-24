@@ -99,9 +99,8 @@ public class DetailStepPageFragment extends Fragment {
         if(mStep != null) {
             mDescriptionTextView.setText(mStep.getDescription());
         }
-        // Check if phone or tablet
+        // Check if phone or tablet. If on phone and landscape, hide description
         Configuration config = getActivity().getResources().getConfiguration();
-        // If on phone and landscape, hide description
         if(config.smallestScreenWidthDp < 600
                 && config.orientation == Configuration.ORIENTATION_LANDSCAPE) {
             mDescriptionTextView.setVisibility(View.GONE);

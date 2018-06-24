@@ -19,12 +19,13 @@
         android:id="@+id/exoplayer"
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        app:show_timeout="7000"
         android:paddingBottom="8dp"
-        android:paddingTop="16dp"
         android:visibility="visible"
+        android:background="@android:color/black"
         app:layout_constraintDimensionRatio="16:9"
-        app:layout_constraintEnd_toStartOf="parent"
-        app:layout_constraintStart_toEndOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
@@ -32,11 +33,10 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:paddingBottom="8dp"
-        android:paddingTop="16dp"
         android:visibility="gone"
         app:layout_constraintDimensionRatio="16:9"
-        app:layout_constraintEnd_toStartOf="parent"
-        app:layout_constraintStart_toEndOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <android.support.constraint.Guideline
@@ -55,7 +55,7 @@
         android:textSize="17sp"
         android:visibility="visible"
         android:background="@color/backgroundColor"
-        android:padding="8dp"
+        android:padding="16dp"
         android:elevation="1dp"
         app:layout_constraintEnd_toStartOf="@id/guideline_end"
         app:layout_constraintHorizontal_bias="0.504"
