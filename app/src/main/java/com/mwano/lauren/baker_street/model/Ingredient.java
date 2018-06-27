@@ -4,10 +4,12 @@ import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.PrimaryKey;
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.support.annotation.NonNull;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+@Entity
 public class Ingredient implements Parcelable {
 
     @SerializedName("quantity")
@@ -18,6 +20,8 @@ public class Ingredient implements Parcelable {
     private String measure;
     @SerializedName("ingredient")
     @Expose
+    @PrimaryKey
+    @NonNull
     private String ingredient;
 
     // Constructor

@@ -19,20 +19,23 @@ public class Recipe implements Parcelable {
 
     @SerializedName("recipeId")
     @Expose
-    @PrimaryKey
+    @PrimaryKey(autoGenerate = true)
+    @NonNull
     private int recipeId;
     @SerializedName("name")
     @Expose
     private String name;
     @SerializedName("ingredients")
     @Expose
+    //@Ignore
     @TypeConverters(DataConverter.class)
     @ColumnInfo(name = "ingredients_list")
     private List<Ingredient> ingredients = null;
     @SerializedName("steps")
     @Expose
-    @Ignore
-    // @ColumnInfo(name = "steps_list")
+    //@Ignore
+    @TypeConverters(DataConverter.class)
+    @ColumnInfo(name = "steps_list")
     private List<Step> steps = null;
     @SerializedName("servings")
     @Expose

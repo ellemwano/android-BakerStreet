@@ -1,18 +1,23 @@
 package com.mwano.lauren.baker_street.model;
 
+import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.PrimaryKey;
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.support.annotation.NonNull;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.ArrayList;
 
+@Entity
 public class Step implements Parcelable {
 
     @SerializedName("id")
     @Expose
-    private int stepId;
+    @PrimaryKey
+    protected int stepId;
     @SerializedName("shortDescription")
     @Expose
     private String shortDescription;

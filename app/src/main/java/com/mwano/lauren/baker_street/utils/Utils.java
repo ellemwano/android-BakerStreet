@@ -32,16 +32,16 @@ public class Utils {
         return nf.format(doubleValue);
     }
 
-    /**
-     * Check whether there is a Network connection
-     * @param context
-     * @return a boolean, true for connection and false otherwise
-     * Code source: https://stackoverflow.com/a/44773973/8691157
-     */
-    public static boolean isNetworkConnected(Context context) {
-        // get Connectivity Manager to get network status
-        ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
-        return activeNetwork != null && activeNetwork.isConnectedOrConnecting();
-    }
+//    /**
+//     * Check whether there is a Network connection
+//     * @param context
+//     * @return a boolean, true for connection and false otherwise
+//     * Code source: https://stackoverflow.com/a/44773973/8691157
+//     */
+//    public static boolean isNetworkConnected(Context context) {
+//        // get Connectivity Manager to get network status
+//        ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+//        NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
+//        return activeNetwork != null && activeNetwork.isConnectedOrConnecting();
+//    }
 }
