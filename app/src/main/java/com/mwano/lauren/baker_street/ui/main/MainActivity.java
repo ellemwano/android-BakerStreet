@@ -107,7 +107,7 @@ public class MainActivity extends AppCompatActivity
         recipeViewModel.getRecipeList().observe(MainActivity.this, new Observer<List<Recipe>>() {
             @Override
             public void onChanged(@Nullable List<Recipe> recipes) {
-                mMainRecipeAdapter.setRecipeData(mRecipes);
+                mMainRecipeAdapter.setRecipeData(recipes);
             }
         });
 
