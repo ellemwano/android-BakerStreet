@@ -20,7 +20,6 @@ public class RecipeViewModel extends AndroidViewModel {
     private RecipeRepository mRepository;
     // LiveData variable to cache the list of Recipes
     private LiveData<List<Recipe>> mObservableRecipes;
-    //private boolean hasInternetConnection;
     private static boolean internetState = false;
 
 
@@ -43,7 +42,6 @@ public class RecipeViewModel extends AndroidViewModel {
 
     public void setInternetState(boolean internetState) {
         this.internetState = internetState;
-        //Timber.v(String.valueOf(internetState));
     }
 
     // Delete all recipes

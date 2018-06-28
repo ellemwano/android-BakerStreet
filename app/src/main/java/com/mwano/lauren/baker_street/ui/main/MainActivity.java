@@ -96,7 +96,7 @@ public class MainActivity extends AppCompatActivity
         // Set app name to toolbar
         toolbar.setTitle(R.string.app_name);
 
-        // TODO add ViewModel
+        // ViewModel
         recipeViewModel = ViewModelProviders.of(this).get(RecipeViewModel.class);
         isNetworkConnected();
         recipeViewModel.getRecipeList().observe(MainActivity.this, new Observer<List<Recipe>>() {
@@ -153,15 +153,6 @@ public class MainActivity extends AppCompatActivity
             // Set number of columns in portrait or landscape mode
             mColumnsNumber = (int) getResources().getInteger(R.integer.num_of_columns);
         }
-        populateUi();
-        // Set Recipe name on toolbar
-        if(mCurrentRecipe != null) {
-            mRecipeName = mCurrentRecipe.getName();
-            setTitle(mRecipeName);
-        }
-    }
-
-    private void populateUi() {
         mGridLayoutManager = new GridLayoutManager(this, mColumnsNumber);
         // RecyclerView
         mRecyclerView.setLayoutManager(mGridLayoutManager);
@@ -169,8 +160,12 @@ public class MainActivity extends AppCompatActivity
         // Adapter
         mMainRecipeAdapter = new MainRecipeAdapter(this, mRecipes, this);
         mRecyclerView.setAdapter(mMainRecipeAdapter);
-//        // Display recipes
-//        loadRecipes();
+
+        // Set Recipe name on toolbar
+        if(mCurrentRecipe != null) {
+            mRecipeName = mCurrentRecipe.getName();
+            setTitle(mRecipeName);
+        }
     }
 
     // TODO add no Connection error

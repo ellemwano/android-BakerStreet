@@ -43,7 +43,6 @@ public class RecipeRepository {
     RecipeRepository(Application application) {
         RecipeDatabase db = RecipeDatabase.getDatabase(application);
         mRecipeDao = db.recipeDao();
-        // mAllRecipes = mRecipeDao.getAllRecipes();
     }
 
     /**
@@ -61,7 +60,6 @@ public class RecipeRepository {
                                    @NonNull Response<List<Recipe>> response) {
                 mRecipes.setValue(response.body());
                 insertAllRecipes(response.body());
-                //mMainRecipeAdapter.setRecipeData(mRecipes);
             }
 
             @Override
@@ -72,7 +70,6 @@ public class RecipeRepository {
             }
         });
         return mRecipes;
-        //Log.d(TAG, "Number of recipes :" + mRecipes.size());
     }
 
     /**
@@ -109,7 +106,6 @@ public class RecipeRepository {
 //                for (Recipe recipe : params[0]) {
 //                    mRecipeDao.insertRecipe(recipe);
 //                }
-//                deleteAllRecipesFromDb();
                 mRecipeDao.insertAllRecipes(recipes);
                 //mRecipeDao.insertRecipe(recipes.get(1));
                 return null;

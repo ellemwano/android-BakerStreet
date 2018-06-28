@@ -17,7 +17,7 @@ import com.mwano.lauren.baker_street.data.local.DataConverter;
 @Entity(tableName = "recipe")
 public class Recipe implements Parcelable {
 
-    @SerializedName("recipeId")
+    @SerializedName("id")
     @Expose
     @PrimaryKey(autoGenerate = true)
     @NonNull
@@ -27,13 +27,11 @@ public class Recipe implements Parcelable {
     private String name;
     @SerializedName("ingredients")
     @Expose
-    //@Ignore
     @TypeConverters(DataConverter.class)
     @ColumnInfo(name = "ingredients_list")
     private List<Ingredient> ingredients = null;
     @SerializedName("steps")
     @Expose
-    //@Ignore
     @TypeConverters(DataConverter.class)
     @ColumnInfo(name = "steps_list")
     private List<Step> steps = null;

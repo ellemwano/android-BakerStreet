@@ -19,10 +19,6 @@ import retrofit2.http.DELETE;
 @Dao
 public interface RecipeDao {
 
-    // One-time load static data
-
-
-
     @Update(onConflict = OnConflictStrategy.REPLACE)
     void updateRecipe(Recipe recipe);
 
