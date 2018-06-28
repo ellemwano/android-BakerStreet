@@ -84,6 +84,7 @@ public class MainActivity extends AppCompatActivity
     private final String TAG = MainActivity.class.getSimpleName();
 
 
+    // TODO Add splash screen
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -95,6 +96,10 @@ public class MainActivity extends AppCompatActivity
         ButterKnife.bind(this);
         // Set app name to toolbar
         toolbar.setTitle(R.string.app_name);
+
+        // Adapter
+        mMainRecipeAdapter = new MainRecipeAdapter(this, mRecipes, this);
+        mRecyclerView.setAdapter(mMainRecipeAdapter);
 
         // ViewModel
         recipeViewModel = ViewModelProviders.of(this).get(RecipeViewModel.class);
@@ -153,43 +158,19 @@ public class MainActivity extends AppCompatActivity
             // Set number of columns in portrait or landscape mode
             mColumnsNumber = (int) getResources().getInteger(R.integer.num_of_columns);
         }
-        mGridLayoutManager = new GridLayoutManager(this, mColumnsNumber);
-        // RecyclerView
-        mRecyclerView.setLayoutManager(mGridLayoutManager);
-        mRecyclerView.setHasFixedSize(true);
-        // Adapter
-        mMainRecipeAdapter = new MainRecipeAdapter(this, mRecipes, this);
-        mRecyclerView.setAdapter(mMainRecipeAdapter);
-
         // Set Recipe name on toolbar
         if(mCurrentRecipe != null) {
             mRecipeName = mCurrentRecipe.getName();
             setTitle(mRecipeName);
         }
+
+        mGridLayoutManager = new GridLayoutManager(this, mColumnsNumber);
+        // RecyclerView
+        mRecyclerView.setLayoutManager(mGridLayoutManager);
+        mRecyclerView.setHasFixedSize(true);
     }
 
     // TODO add no Connection error
-//    public void loadRecipes() {
-//        ApiInterface request = ApiClient.getClient().create(ApiInterface.class);
-//        Call<List<Recipe>> call = request.getRecipes();
-//
-//        // Asynchronous request
-//        call.enqueue(new Callback<List<Recipe>>() {
-//            @Override
-//            public void onResponse(Call<List<Recipe>> call,
-//                                   Response<List<Recipe>> response) {
-//                mRecipes = response.body();
-//                Log.d(TAG, "Number of recipes :" + mRecipes.size());
-//                mMainRecipeAdapter.setRecipeData(mRecipes);
-//            }
-//            @Override
-//            public void onFailure(Call<List<Recipe>> call, Throwable t) {
-//                Toast.makeText
-//                        (MainActivity.this, "error message", Toast.LENGTH_LONG).show();
-//                Log.d(TAG, t.getMessage());
-//            }
-//        });
-//    }
 
     // On two-pane, create Ingredients fragment for selected Recipe
     // On single-pane, open MasterRecipePagerActivity, passing in selected Recipe
@@ -215,12 +196,11 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
-    //public static boolean isNetworkConnected(Context context) {
+    //
     private void isNetworkConnected() {
         // get Connectivity Manager to get network status
         ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
-        //return activeNetwork != null && activeNetwork.isConnectedOrConnecting();
         recipeViewModel.setInternetState(activeNetwork != null && activeNetwork.isConnectedOrConnecting());
     }
 

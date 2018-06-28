@@ -48,19 +48,6 @@ public class RecipeViewModel extends AndroidViewModel {
     public void deleteAllRecipes() {
         mRepository.deleteAllRecipesFromDb();
     }
-
-
-
-
-
-    // Use MediatorLivedata  (like tpakis repo)
-    // Remove getAllRecipes from constructor and add MediatorLiveData instead
-    // Set a getter method for fetched data from network, from repo
-    // Set a getter for data from DB (from repo)?
-    // Or just a general one, no repo connection?
-    // if create a conditional getter method in repo (list empty vs list full)
-    // or no internet connection = get from DB
-    // and call method here inside new general method to get data.
 }
 
 
