@@ -19,8 +19,7 @@ public class Recipe implements Parcelable {
 
     @SerializedName("id")
     @Expose
-    @PrimaryKey(autoGenerate = true)
-    @NonNull
+    @PrimaryKey
     private int recipeId;
     @SerializedName("name")
     @Expose

@@ -5,15 +5,14 @@ import android.annotation.SuppressLint;
 import android.app.Application;
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
-import android.content.Context;
 import android.os.AsyncTask;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
 import com.mwano.lauren.baker_street.data.network.ApiClient;
 import com.mwano.lauren.baker_street.data.network.ApiInterface;
+import com.mwano.lauren.baker_street.model.Ingredient;
 import com.mwano.lauren.baker_street.model.Recipe;
-import com.mwano.lauren.baker_street.utils.Utils;
 
 import java.util.List;
 
@@ -25,6 +24,8 @@ public class RecipeRepository {
 
     private RecipeDao mRecipeDao;
     private LiveData<List<Recipe>> mAllRecipes;
+    private LiveData<Recipe> mRecipe;
+    private LiveData<List<Ingredient>> mIngredientsList;
     // add single recipe by id?
     private static final String TAG = RecipeRepository.class.getSimpleName();
 
@@ -86,28 +87,20 @@ public class RecipeRepository {
     /**
      * Insert all recipes to the database
      */
+    @SuppressWarnings("unchecked")
     @SuppressLint("StaticFieldLeak")
     public void insertAllRecipes(final List<Recipe> recipes) {
         new AsyncTask<List<Recipe>, Void, Void>() {
             @Override
             protected final Void doInBackground(List<Recipe>... params) {
                 deleteAllRecipesFromDb();
-//                for (Recipe recipe : params[0]) {
-//                    mRecipeDao.insertRecipe(recipe);
-//                }
                 mRecipeDao.insertAllRecipes(recipes);
-                //mRecipeDao.insertRecipe(recipes.get(1));
                 return null;
             }
         }.execute();
     }
 
-
-    // TODO Logic where get data
-    // if no internet db and db full = db
-    // if no internet and db empty = error, check connection
-    // if internet and db empty = network
-
+    // Fetch all Recipes, from Network or DB, according to internet connection.
     public LiveData<List<Recipe>> getRecipeList(boolean internetState) {
         if (internetState) {
             return getRecipesFromNetwork();
@@ -116,6 +109,46 @@ public class RecipeRepository {
         }
     }
 
+
+    // Load single recipe by its id
+    @SuppressLint("StaticFieldLeak")
+    public LiveData<Recipe> loadRecipeById(final int id){
+        new AsyncTask<Void, Void, Recipe>() {
+            final MutableLiveData<Recipe> mRecipe = new MutableLiveData<>();
+            @Override
+            protected Recipe doInBackground(Void... params) {
+                return mRecipeDao.loadRecipeById(id);
+            }
+            @Override
+            protected void onPostExecute(Recipe recipe) {
+                //Log.d("", "recipe by id "+ recipe.getName());
+                mRecipe.setValue(recipe);
+            }
+        }.execute();
+        return mRecipe;
+    }
+
+
+    // Load Ingredient list per recipe
+    @SuppressLint("StaticFieldLeak")
+    public LiveData<List<Ingredient>> loadIngredientsForRecipe(final int id){
+        new AsyncTask<Void, Void, List<Ingredient>>() {
+            final MutableLiveData<List<Ingredient>> mIngredientsList = new MutableLiveData<>();
+            @Override
+            protected List<Ingredient> doInBackground(Void... params) {
+                return mRecipeDao.loadRecipeIngredients(id);
+            }
+            @Override
+            protected void onPostExecute(List<Ingredient> ingredients) {
+                mIngredientsList.setValue(ingredients);
+            }
+        }.execute();
+        return mIngredientsList;
+    }
+
+
+
+
     // Delete all recipes
     public void deleteAllRecipesFromDb() {
         mRecipeDao.deleteAllRecipes();
@@ -123,13 +156,7 @@ public class RecipeRepository {
 }
 
 
-    // set logic in method here
-    // in viewmodel, set livedata  method same name and return recipe list
-    // in viewmodel, set livedata getter for recipe list
 
-    // in mainactivity, call VMProviders.
-    // call getter for all recipes from VM and add observer and override onChanged()
-    // in onChanged(), set adapter, passing recipe list (+ remove observer?)
 
 
 

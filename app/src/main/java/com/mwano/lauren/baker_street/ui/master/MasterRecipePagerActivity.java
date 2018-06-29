@@ -1,5 +1,7 @@
 package com.mwano.lauren.baker_street.ui.master;
 
+import android.arch.lifecycle.LiveData;
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
@@ -11,6 +13,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 
 import com.mwano.lauren.baker_street.R;
+import com.mwano.lauren.baker_street.data.local.IngredientStepViewModel;
+import com.mwano.lauren.baker_street.data.local.IngredientStepViewModelFactory;
 import com.mwano.lauren.baker_street.model.Ingredient;
 import com.mwano.lauren.baker_street.model.Recipe;
 import com.mwano.lauren.baker_street.model.Step;
@@ -22,6 +26,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 import static com.mwano.lauren.baker_street.ui.main.MainActivity.RECIPE;
+import static com.mwano.lauren.baker_street.ui.main.MainActivity.RECIPE_ID;
 
 
 /**
@@ -35,8 +40,10 @@ public class MasterRecipePagerActivity extends AppCompatActivity {
     @BindView(R.id.viewpager) ViewPager viewPager;
     @BindView(R.id.tabs) TabLayout tabs;
     private Recipe mCurrentRecipe;
+    private int mRecipeId;
     private String mRecipeName;
-    private List<Ingredient> mIngredients = new ArrayList<>();
+   // private List<Ingredient> mIngredients = new ArrayList<>();
+    private LiveData<List<Ingredient>> mIngredients;
     private List<Step> mSteps = new ArrayList<>();
 
     private static final String SELECTED_RECIPE = "recipe selected";
@@ -52,17 +59,35 @@ public class MasterRecipePagerActivity extends AppCompatActivity {
         // Adding Toolbar to Main screen
         setSupportActionBar(toolbar);
 
-        // Get the selected recipe from the intent
+        // TODO set ViewModel
+
+
+        //// Get the selected recipe from the intent
+        // Get the selected Recipe id from the intent
         if (savedInstanceState == null) {
             final Intent intentReceivedMainMaster = getIntent();
-            if(intentReceivedMainMaster.hasExtra(RECIPE)) {
-                mCurrentRecipe = intentReceivedMainMaster.getParcelableExtra(RECIPE);
+//            if(intentReceivedMainMaster.hasExtra(RECIPE)) {
+//                mCurrentRecipe = intentReceivedMainMaster.getParcelableExtra(RECIPE);
+//                // Get the ingredients arrayList from the intent extra
+//                mIngredients = mCurrentRecipe.getIngredients();
+//                // Get the steps arrayList from the intent extra
+//                mSteps = mCurrentRecipe.getSteps();
+//                // Get Recipe name
+//                mRecipeName = mCurrentRecipe.getName();
+//            }
+            if (intentReceivedMainMaster.hasExtra(RECIPE_ID)) {
+                // Get Recipe name and id from intent
+                mRecipeId = intentReceivedMainMaster.getParcelableExtra(RECIPE_ID);
+                mRecipeName = intentReceivedMainMaster.getParcelableExtra(RECIPE_NAME);
+
+                IngredientStepViewModelFactory factory =
+                        new IngredientStepViewModelFactory(getApplication(), mRecipeId);
+                IngredientStepViewModel viewModel =
+                        ViewModelProviders.of(this, factory).get(IngredientStepViewModel.class);
                 // Get the ingredients arrayList from the intent extra
-                mIngredients = mCurrentRecipe.getIngredients();
+                mIngredients = viewModel.getRecipeIngredients(mRecipeId);
                 // Get the steps arrayList from the intent extra
-                mSteps = mCurrentRecipe.getSteps();
-                // Get Recipe name
-                mRecipeName = mCurrentRecipe.getName();
+                // TODO Add steps
             }
         } else {
             mCurrentRecipe = savedInstanceState.getParcelable(SELECTED_RECIPE);
@@ -82,7 +107,7 @@ public class MasterRecipePagerActivity extends AppCompatActivity {
         Adapter adapter = new Adapter(getSupportFragmentManager());
         // Create instance of the ingredients fragment and add it to activity
         MasterIngredientsPageFragment ingredientFragment =
-                MasterIngredientsPageFragment.newIngredientsInstance((ArrayList<Ingredient>) mIngredients);
+                MasterIngredientsPageFragment.newIngredientsInstance((List<Ingredient>) mIngredients);
         adapter.addFragment(ingredientFragment, "Ingredients");
         // Create instance of the steps fragment and add it to activity
         MasterStepsPageFragment stepFragment =

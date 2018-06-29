@@ -74,13 +74,15 @@ public class MainActivity extends AppCompatActivity
     private Boolean mTwoPane;
     private List<Recipe> mRecipes;
     private Recipe mCurrentRecipe;
-    private int mRecipeId;
+    private int mCurrentRecipeId;
     private List<Ingredient> mIngredients;
     private String mRecipeName;
     private RecipeViewModel recipeViewModel;
     private boolean hasNetworkConnection = false;
 
     public static final String RECIPE = "recipe";
+    public static final String RECIPE_ID = "recipe id";
+    public static final String RECIPE_NAME = "recipe_name";
     private final String TAG = MainActivity.class.getSimpleName();
 
 
@@ -172,10 +174,13 @@ public class MainActivity extends AppCompatActivity
 
     // TODO add no Connection error
 
+    // TODO Change intent for 2-pane
     // On two-pane, create Ingredients fragment for selected Recipe
     // On single-pane, open MasterRecipePagerActivity, passing in selected Recipe
     @Override
     public void onClick(Recipe currentRecipe) {
+        mCurrentRecipeId = currentRecipe.getRecipeId();
+        mRecipeName = currentRecipe.getName();
         if(mTwoPane) {
             defaultTabletLayout.setVisibility(View.GONE);
             mainTabletLayout.setVisibility(View.VISIBLE);
@@ -190,9 +195,12 @@ public class MainActivity extends AppCompatActivity
 
         } else {
             Intent intentSentMainMaster = new Intent(this, MasterRecipePagerActivity.class);
-            intentSentMainMaster.putExtra(RECIPE, currentRecipe);
+            //intentSentMainMaster.putExtra(RECIPE, currentRecipe);
+            intentSentMainMaster.putExtra(RECIPE_ID, mCurrentRecipeId);
+            intentSentMainMaster.putExtra(RECIPE_NAME, mRecipeName);
+            //Log.d(TAG, "Selected Recipe; " + currentRecipe.getName());
+            Log.d(TAG, "Selected Recipe; " + currentRecipe.getName());
             startActivity(intentSentMainMaster);
-            // Log.d(TAG, "Selected Recipe; " + currentRecipe.getName());
         }
     }
 

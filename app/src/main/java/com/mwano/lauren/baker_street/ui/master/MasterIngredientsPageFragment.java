@@ -1,6 +1,7 @@
 package com.mwano.lauren.baker_street.ui.master;
 
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -25,9 +26,11 @@ import butterknife.ButterKnife;
  */
 public class MasterIngredientsPageFragment extends Fragment {
 
+    @BindView(R.id.rv_ingredients)
+    RecyclerView mIngredientsRecyclerView;
     // Recipe includes a List of Ingredients
-    public List<Ingredient> mIngredients = new ArrayList<Ingredient>();
-    @BindView(R.id.rv_ingredients) RecyclerView mIngredientsRecyclerView;
+    //public List<Ingredient> mIngredients = new ArrayList<>();
+    public List<Ingredient> mIngredients;
     LinearLayoutManager mLayoutManager;
 
     public static final String INGREDIENTS_LIST = "ingredients";
@@ -71,11 +74,11 @@ public class MasterIngredientsPageFragment extends Fragment {
      * @param ingredients ArrayList of Ingredient objects of selected recipe in recipe list
      * @return fragment
      */
-    public static MasterIngredientsPageFragment newIngredientsInstance(ArrayList<Ingredient> ingredients) {
+    public static MasterIngredientsPageFragment newIngredientsInstance(List<Ingredient> ingredients) {
         MasterIngredientsPageFragment ingredientFragment = new MasterIngredientsPageFragment();
         // Set the bundle arguments for the fragment.
         Bundle arguments = new Bundle();
-        arguments.putParcelableArrayList(INGREDIENTS_LIST, ingredients);
+        arguments.putParcelableArrayList(INGREDIENTS_LIST, new ArrayList<>(ingredients));
         ingredientFragment.setArguments(arguments);
         return ingredientFragment;
     }
