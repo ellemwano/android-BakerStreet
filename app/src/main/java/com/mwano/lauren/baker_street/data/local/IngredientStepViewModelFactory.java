@@ -10,7 +10,7 @@ import com.mwano.lauren.baker_street.model.Recipe;
 
 public class IngredientStepViewModelFactory extends ViewModelProvider.NewInstanceFactory{
 
-    private RecipeDatabase mDb;
+    //private RecipeDatabase mDb;
     private int mRecipeId;
     private Application mApplication;
 

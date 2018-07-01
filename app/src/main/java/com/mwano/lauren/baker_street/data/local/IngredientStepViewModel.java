@@ -4,46 +4,71 @@ package com.mwano.lauren.baker_street.data.local;
 import android.app.Application;
 import android.arch.lifecycle.AndroidViewModel;
 import android.arch.lifecycle.LiveData;
+import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.ViewModel;
 import android.arch.lifecycle.ViewModelProvider;
 import android.support.annotation.NonNull;
+import android.util.Log;
 
 import com.mwano.lauren.baker_street.model.Ingredient;
 import com.mwano.lauren.baker_street.model.Recipe;
 
 import java.util.List;
 
+import static android.support.constraint.Constraints.TAG;
+
 public class IngredientStepViewModel  extends AndroidViewModel {
 
     // Reference to the repository
     private RecipeRepository mRepository;
     // Variable to cache the selected Recipe
-    private LiveData<Recipe> mObservableSingleRecipe;
+    private Recipe mSingleRecipe;
     // Cache Ingredients list
-    private LiveData<List<Ingredient>> mObservableIngredientsList;
+    private List<Ingredient> mIngredientsList;
+    private String mRecipeName;
+
+    private static final String TAG = IngredientStepViewModel.class.getSimpleName();
 
     // Constructor with a reference to the repository, getting the Selected recipe from the repository
     public IngredientStepViewModel(@NonNull Application application, int recipeId) {
         super(application);
         mRepository = new RecipeRepository(application);
-        mObservableSingleRecipe = mRepository.loadRecipeById(recipeId);
+        mSingleRecipe = mRepository.loadSingleRecipeById(recipeId);
+        Log.d(TAG, "Single Recipe is: "  + mSingleRecipe);
+        // Single Recipe is null
     }
 
     // Get single Recipe by its id
-    public LiveData<Recipe> getSingleRecipe(int recipeId) {
-        mRepository.loadRecipeById(recipeId);
-        return mObservableSingleRecipe;
+    public Recipe getSingleRecipe() {
+        return mSingleRecipe;
     }
 
-    // Get Recipe's ingredients
-    public LiveData<List<Ingredient>> getRecipeIngredients(int recipeId) {
-        mRepository.loadIngredientsForRecipe(recipeId);
-        return mObservableIngredientsList;
+//    // Get Recipe's ingredients
+//    public LiveData<List<Ingredient>> getRecipeIngredients(int recipeId) {
+//        mRepository.loadIngredientsForRecipe(recipeId);
+//        return mObservableIngredientsList;
+//    }
+
+    // Get Ingredients
+    public List<Ingredient> getIngredientsList(Recipe recipe) {
+        recipe.getIngredients();
+        return mIngredientsList;
+    }
+
+    // Set Recipe
+    public void setSingleRecipe(Recipe singleRecipe) {
+        mSingleRecipe = singleRecipe;
+    }
+
+    // Get name
+    public String getRecipeName(Recipe recipe) {
+       recipe.getName();
+       return mRecipeName;
     }
 
     // Set Ingredients
-    public void setRecipeIngredients (LiveData<List<Ingredient>> ingredients) {
-        mObservableIngredientsList = ingredients;
+    public void setRecipeIngredients (List<Ingredient> ingredients) {
+        mIngredientsList = ingredients;
     }
 
 

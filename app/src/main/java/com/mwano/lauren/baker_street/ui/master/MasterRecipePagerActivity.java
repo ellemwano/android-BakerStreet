@@ -1,6 +1,7 @@
 package com.mwano.lauren.baker_street.ui.master;
 
 import android.arch.lifecycle.LiveData;
+import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.os.Bundle;
@@ -11,6 +12,7 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 
 import com.mwano.lauren.baker_street.R;
 import com.mwano.lauren.baker_street.data.local.IngredientStepViewModel;
@@ -42,12 +44,13 @@ public class MasterRecipePagerActivity extends AppCompatActivity {
     private Recipe mCurrentRecipe;
     private int mRecipeId;
     private String mRecipeName;
-   // private List<Ingredient> mIngredients = new ArrayList<>();
-    private LiveData<List<Ingredient>> mIngredients;
+    private List<Ingredient> mIngredients = new ArrayList<>();
+    //private List<Ingredient> mIngredients;
     private List<Step> mSteps = new ArrayList<>();
 
     private static final String SELECTED_RECIPE = "recipe selected";
     private static final String RECIPE_NAME = "recipe name";
+    private static final String TAG = MasterRecipePagerActivity.class.getSimpleName();
 
 
     @Override
@@ -65,7 +68,7 @@ public class MasterRecipePagerActivity extends AppCompatActivity {
         //// Get the selected recipe from the intent
         // Get the selected Recipe id from the intent
         if (savedInstanceState == null) {
-            final Intent intentReceivedMainMaster = getIntent();
+            //final Intent intentReceivedMainMaster = getIntent();
 //            if(intentReceivedMainMaster.hasExtra(RECIPE)) {
 //                mCurrentRecipe = intentReceivedMainMaster.getParcelableExtra(RECIPE);
 //                // Get the ingredients arrayList from the intent extra
@@ -75,20 +78,38 @@ public class MasterRecipePagerActivity extends AppCompatActivity {
 //                // Get Recipe name
 //                mRecipeName = mCurrentRecipe.getName();
 //            }
-            if (intentReceivedMainMaster.hasExtra(RECIPE_ID)) {
+            //if (intentReceivedMainMaster.hasExtra(RECIPE_ID)) {
                 // Get Recipe name and id from intent
-                mRecipeId = intentReceivedMainMaster.getParcelableExtra(RECIPE_ID);
-                mRecipeName = intentReceivedMainMaster.getParcelableExtra(RECIPE_NAME);
+            Bundle receivedBundle = getIntent().getExtras();
+            mRecipeId = receivedBundle.getInt(RECIPE_ID);
+            //mRecipeName = receivedBundle.getString(RECIPE_NAME);
+            //mRecipeId = intentReceivedMainMaster.getIntExtra(RECIPE_ID, -1);
+                //mRecipeName = intentReceivedMainMaster.getStringExtra(RECIPE_NAME);
+                //Log.d(TAG, "Received Recipe id = " + mRecipeId + " and RecipeName = " + mRecipeName);
+            Log.d(TAG, "Received Recipe id = " + mRecipeId );
+            // OK - ID correct
+            // DB instance created
 
-                IngredientStepViewModelFactory factory =
+
+            IngredientStepViewModelFactory factory =
                         new IngredientStepViewModelFactory(getApplication(), mRecipeId);
                 IngredientStepViewModel viewModel =
                         ViewModelProviders.of(this, factory).get(IngredientStepViewModel.class);
-                // Get the ingredients arrayList from the intent extra
-                mIngredients = viewModel.getRecipeIngredients(mRecipeId);
+                // Get the selected recipe from the ID from the intent
+                mCurrentRecipe = viewModel.getSingleRecipe();
+                Log.d(TAG, "Current Recipe from DB = " + mCurrentRecipe);
+                // Recipe null
+                // Get the recipe name
+                //mRecipeName = viewModel.getRecipeName(mCurrentRecipe);
+                mRecipeName = mCurrentRecipe.getName();
+            Log.d(TAG, "Received Recipe name = " + mRecipeName );
+            // NOt logging - Name null
+
+            // Get the ingredients arrayList from the intent extra
+                mIngredients = viewModel.getIngredientsList(mCurrentRecipe);
                 // Get the steps arrayList from the intent extra
                 // TODO Add steps
-            }
+            //}
         } else {
             mCurrentRecipe = savedInstanceState.getParcelable(SELECTED_RECIPE);
             mRecipeName = savedInstanceState.getString(RECIPE_NAME);

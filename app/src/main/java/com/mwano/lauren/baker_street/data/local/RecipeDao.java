@@ -32,7 +32,7 @@ public interface RecipeDao {
 
     // Get single recipe by id
     @Query("SELECT * FROM recipe WHERE recipeId = :id")
-    Recipe loadRecipeById(int id);
+    Recipe getRecipeById(int id);
 
     // Get all recipes
     @Query("SELECT * FROM recipe")
@@ -42,7 +42,7 @@ public interface RecipeDao {
     @Query("DELETE FROM recipe")
     void deleteAllRecipes();
 
-    // Get ingredient list for selected recipe
-    @Query("SELECT ingredients_list FROM recipe WHERE recipeId = :id")
-    List<Ingredient> loadRecipeIngredients(int id);
+//    // Get ingredient list for selected recipe
+//    @Query("SELECT ingredients_list FROM recipe WHERE recipeId = :id")
+//    List<Ingredient> loadRecipeIngredients(int id);
 }

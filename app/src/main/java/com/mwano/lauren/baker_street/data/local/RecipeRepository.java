@@ -23,10 +23,10 @@ import retrofit2.Response;
 public class RecipeRepository {
 
     private RecipeDao mRecipeDao;
-    private LiveData<List<Recipe>> mAllRecipes;
-    private LiveData<Recipe> mRecipe;
+    private LiveData<List<Recipe>> mRecipes;
+    private Recipe mRecipe;
     private LiveData<List<Ingredient>> mIngredientsList;
-    // add single recipe by id?
+
     private static final String TAG = RecipeRepository.class.getSimpleName();
 
     // Constructor
@@ -100,6 +100,18 @@ public class RecipeRepository {
         }.execute();
     }
 
+
+    public Recipe loadSingleRecipeById (final int id) {
+        AppExecutors.getInstance().diskIO().execute(new Runnable() {
+            @Override
+            public void run() {
+                mRecipe = mRecipeDao.getRecipeById(id);
+                Log.d(TAG, "recipe by id " + mRecipe);
+            }
+        });
+        return mRecipe;
+    }
+
     // Fetch all Recipes, from Network or DB, according to internet connection.
     public LiveData<List<Recipe>> getRecipeList(boolean internetState) {
         if (internetState) {
@@ -108,46 +120,6 @@ public class RecipeRepository {
             return getRecipesFromDb();
         }
     }
-
-
-    // Load single recipe by its id
-    @SuppressLint("StaticFieldLeak")
-    public LiveData<Recipe> loadRecipeById(final int id){
-        new AsyncTask<Void, Void, Recipe>() {
-            final MutableLiveData<Recipe> mRecipe = new MutableLiveData<>();
-            @Override
-            protected Recipe doInBackground(Void... params) {
-                return mRecipeDao.loadRecipeById(id);
-            }
-            @Override
-            protected void onPostExecute(Recipe recipe) {
-                //Log.d("", "recipe by id "+ recipe.getName());
-                mRecipe.setValue(recipe);
-            }
-        }.execute();
-        return mRecipe;
-    }
-
-
-    // Load Ingredient list per recipe
-    @SuppressLint("StaticFieldLeak")
-    public LiveData<List<Ingredient>> loadIngredientsForRecipe(final int id){
-        new AsyncTask<Void, Void, List<Ingredient>>() {
-            final MutableLiveData<List<Ingredient>> mIngredientsList = new MutableLiveData<>();
-            @Override
-            protected List<Ingredient> doInBackground(Void... params) {
-                return mRecipeDao.loadRecipeIngredients(id);
-            }
-            @Override
-            protected void onPostExecute(List<Ingredient> ingredients) {
-                mIngredientsList.setValue(ingredients);
-            }
-        }.execute();
-        return mIngredientsList;
-    }
-
-
-
 
     // Delete all recipes
     public void deleteAllRecipesFromDb() {

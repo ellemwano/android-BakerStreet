@@ -28,12 +28,12 @@ public class Recipe implements Parcelable {
     @Expose
     @TypeConverters(DataConverter.class)
     @ColumnInfo(name = "ingredients_list")
-    private List<Ingredient> ingredients = null;
+    private List<Ingredient> ingredients;
     @SerializedName("steps")
     @Expose
     @TypeConverters(DataConverter.class)
     @ColumnInfo(name = "steps_list")
-    private List<Step> steps = null;
+    private List<Step> steps;
     @SerializedName("servings")
     @Expose
     private int servings;
@@ -103,11 +103,11 @@ public class Recipe implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeValue(this.recipeId);
+        dest.writeInt(this.recipeId);
         dest.writeString(this.name);
         dest.writeTypedList(this.ingredients);
         dest.writeTypedList(this.steps);
-        dest.writeValue(this.servings);
+        dest.writeInt(this.servings);
         dest.writeString(this.image);
     }
 
