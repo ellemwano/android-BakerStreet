@@ -22,7 +22,7 @@ public class IngredientStepViewModel  extends AndroidViewModel {
     // Reference to the repository
     private RecipeRepository mRepository;
     // Variable to cache the selected Recipe
-    private Recipe mSingleRecipe;
+    private LiveData<Recipe> mSingleRecipe;
     // Cache Ingredients list
     private List<Ingredient> mIngredientsList;
     private String mRecipeName;
@@ -39,7 +39,7 @@ public class IngredientStepViewModel  extends AndroidViewModel {
     }
 
     // Get single Recipe by its id
-    public Recipe getSingleRecipe() {
+    public LiveData<Recipe> getSingleRecipe() {
         return mSingleRecipe;
     }
 
@@ -56,7 +56,7 @@ public class IngredientStepViewModel  extends AndroidViewModel {
     }
 
     // Set Recipe
-    public void setSingleRecipe(Recipe singleRecipe) {
+    public void setSingleRecipe(LiveData<Recipe> singleRecipe) {
         mSingleRecipe = singleRecipe;
     }
 

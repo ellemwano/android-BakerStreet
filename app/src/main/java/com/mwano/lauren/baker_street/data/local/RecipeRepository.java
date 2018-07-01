@@ -24,7 +24,7 @@ public class RecipeRepository {
 
     private RecipeDao mRecipeDao;
     private LiveData<List<Recipe>> mRecipes;
-    private Recipe mRecipe;
+    private LiveData<Recipe> mRecipe;
     private LiveData<List<Ingredient>> mIngredientsList;
 
     private static final String TAG = RecipeRepository.class.getSimpleName();
@@ -101,7 +101,7 @@ public class RecipeRepository {
     }
 
 
-    public Recipe loadSingleRecipeById (final int id) {
+    public LiveData<Recipe> loadSingleRecipeById (final int id) {
         AppExecutors.getInstance().diskIO().execute(new Runnable() {
             @Override
             public void run() {

@@ -2,9 +2,11 @@ package com.mwano.lauren.baker_street.ui.master;
 
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
+import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -20,6 +22,7 @@ import com.mwano.lauren.baker_street.data.local.IngredientStepViewModelFactory;
 import com.mwano.lauren.baker_street.model.Ingredient;
 import com.mwano.lauren.baker_street.model.Recipe;
 import com.mwano.lauren.baker_street.model.Step;
+import com.mwano.lauren.baker_street.ui.main.MainActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -93,20 +96,36 @@ public class MasterRecipePagerActivity extends AppCompatActivity {
 
             IngredientStepViewModelFactory factory =
                         new IngredientStepViewModelFactory(getApplication(), mRecipeId);
-                IngredientStepViewModel viewModel =
+                final IngredientStepViewModel viewModel =
                         ViewModelProviders.of(this, factory).get(IngredientStepViewModel.class);
-                // Get the selected recipe from the ID from the intent
-                mCurrentRecipe = viewModel.getSingleRecipe();
-                Log.d(TAG, "Current Recipe from DB = " + mCurrentRecipe);
-                // Recipe null
-                // Get the recipe name
-                //mRecipeName = viewModel.getRecipeName(mCurrentRecipe);
-                mRecipeName = mCurrentRecipe.getName();
+
+            // Get the selected recipe from the ID from the intent
+            viewModel.getSingleRecipe().observe(MasterRecipePagerActivity.this, new Observer<Recipe>() {
+                @Override
+                public void onChanged(@Nullable Recipe recipe) {
+                    mCurrentRecipe = recipe;
+                    Log.d(TAG, "Current Recipe from DB = " + mCurrentRecipe);
+                    // Recipe null
+                }
+            });
+            // Get the recipe name
+            //mRecipeName = viewModel.getRecipeName(mCurrentRecipe);
+            mRecipeName = viewModel.getRecipeName(mCurrentRecipe);
             Log.d(TAG, "Received Recipe name = " + mRecipeName );
             // NOt logging - Name null
 
+//                // Get the selected recipe from the ID from the intent
+//                mCurrentRecipe = viewModel.getSingleRecipe();
+//                Log.d(TAG, "Current Recipe from DB = " + mCurrentRecipe);
+//                // Recipe null
+//                // Get the recipe name
+//                //mRecipeName = viewModel.getRecipeName(mCurrentRecipe);
+//                mRecipeName = mCurrentRecipe.getName();
+//            Log.d(TAG, "Received Recipe name = " + mRecipeName );
+//            // NOt logging - Name null
+
             // Get the ingredients arrayList from the intent extra
-                mIngredients = viewModel.getIngredientsList(mCurrentRecipe);
+                //mIngredients = viewModel.getIngredientsList(mCurrentRecipe);
                 // Get the steps arrayList from the intent extra
                 // TODO Add steps
             //}
@@ -172,7 +191,7 @@ public class MasterRecipePagerActivity extends AppCompatActivity {
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putParcelable(SELECTED_RECIPE, mCurrentRecipe);
+        //outState.putParcelable(SELECTED_RECIPE, mCurrentRecipe);
         outState.putString(RECIPE_NAME, mRecipeName);
     }
 }

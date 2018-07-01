@@ -32,7 +32,7 @@ public interface RecipeDao {
 
     // Get single recipe by id
     @Query("SELECT * FROM recipe WHERE recipeId = :id")
-    Recipe getRecipeById(int id);
+    LiveData<Recipe> getRecipeById(int id);
 
     // Get all recipes
     @Query("SELECT * FROM recipe")
