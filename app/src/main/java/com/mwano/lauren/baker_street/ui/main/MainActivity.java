@@ -23,8 +23,7 @@ import com.facebook.stetho.Stetho;
 import com.mwano.lauren.baker_street.R;
 import com.mwano.lauren.baker_street.data.local.RecipeRepository;
 import com.mwano.lauren.baker_street.data.local.RecipeViewModel;
-import com.mwano.lauren.baker_street.data.network.ApiClient;
-import com.mwano.lauren.baker_street.data.network.ApiInterface;
+import com.mwano.lauren.baker_street.data.local.RecipeViewModelFactory;
 import com.mwano.lauren.baker_street.model.Ingredient;
 import com.mwano.lauren.baker_street.model.Recipe;
 import com.mwano.lauren.baker_street.ui.twoPane.MasterDetailActivity;
@@ -78,6 +77,7 @@ public class MainActivity extends AppCompatActivity
     private List<Ingredient> mIngredients;
     private String mRecipeName;
     private RecipeViewModel recipeViewModel;
+    private RecipeRepository mRecipeRepository;
     private boolean hasNetworkConnection = false;
 
     public static final String RECIPE = "recipe";
@@ -104,7 +104,10 @@ public class MainActivity extends AppCompatActivity
         mRecyclerView.setAdapter(mMainRecipeAdapter);
 
         // ViewModel
-        recipeViewModel = ViewModelProviders.of(this).get(RecipeViewModel.class);
+        RecipeViewModelFactory factory =
+                new RecipeViewModelFactory(mRecipeRepository);
+        final RecipeViewModel recipeViewModel =
+                ViewModelProviders.of(this, factory).get(RecipeViewModel.class);
         isNetworkConnected();
         recipeViewModel.getRecipeList().observe(MainActivity.this, new Observer<List<Recipe>>() {
             @Override

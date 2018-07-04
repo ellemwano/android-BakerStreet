@@ -4,6 +4,7 @@ import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -19,6 +20,7 @@ import android.util.Log;
 import com.mwano.lauren.baker_street.R;
 import com.mwano.lauren.baker_street.data.local.IngredientStepViewModel;
 import com.mwano.lauren.baker_street.data.local.IngredientStepViewModelFactory;
+import com.mwano.lauren.baker_street.data.local.RecipeRepository;
 import com.mwano.lauren.baker_street.model.Ingredient;
 import com.mwano.lauren.baker_street.model.Recipe;
 import com.mwano.lauren.baker_street.model.Step;
@@ -44,6 +46,7 @@ public class MasterRecipePagerActivity extends AppCompatActivity {
     @BindView(R.id.toolbar) Toolbar toolbar;
     @BindView(R.id.viewpager) ViewPager viewPager;
     @BindView(R.id.tabs) TabLayout tabs;
+    private RecipeRepository mRecipeRepository;
     private Recipe mCurrentRecipe;
     private int mRecipeId;
     private String mRecipeName;
@@ -88,7 +91,7 @@ public class MasterRecipePagerActivity extends AppCompatActivity {
             // DB instance created
 
             IngredientStepViewModelFactory factory =
-                        new IngredientStepViewModelFactory(getApplication(), mRecipeId);
+                        new IngredientStepViewModelFactory(mRecipeRepository, mRecipeId);
                 final IngredientStepViewModel viewModel =
                         ViewModelProviders.of(this, factory).get(IngredientStepViewModel.class);
 

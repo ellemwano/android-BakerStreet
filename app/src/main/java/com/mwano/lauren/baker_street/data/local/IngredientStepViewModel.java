@@ -18,7 +18,7 @@ import java.util.List;
 
 import static android.support.constraint.Constraints.TAG;
 
-public class IngredientStepViewModel  extends AndroidViewModel {
+public class IngredientStepViewModel  extends ViewModel {
 
     // Reference to the repository
     private RecipeRepository mRepository;
@@ -34,9 +34,8 @@ public class IngredientStepViewModel  extends AndroidViewModel {
     private static final String TAG = IngredientStepViewModel.class.getSimpleName();
 
     // Constructor with a reference to the repository, getting the Selected recipe from the repository
-    public IngredientStepViewModel(@NonNull Application application, int recipeId) {
-        super(application);
-        mRepository = new RecipeRepository(application);
+    public IngredientStepViewModel(RecipeRepository repository, int recipeId) {
+        mRepository = repository;
         mSingleRecipe = mRepository.loadSingleRecipeById(recipeId);
         Log.d(TAG, "Single Recipe is: " + mSingleRecipe);
         // Single Recipe is null

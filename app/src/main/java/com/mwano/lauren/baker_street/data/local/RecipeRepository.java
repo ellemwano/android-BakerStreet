@@ -22,7 +22,10 @@ import retrofit2.Response;
 
 public class RecipeRepository {
 
+    private static final Object LOCK = new Object();
+    private static RecipeRepository sInstance;
     private RecipeDao mRecipeDao;
+    private RecipeDatabase mRecipeDatabase;
     private LiveData<List<Recipe>> mRecipes;
     private LiveData<Recipe> mRecipe;
     private LiveData<List<Ingredient>> mIngredientsList;
@@ -30,9 +33,20 @@ public class RecipeRepository {
     private static final String TAG = RecipeRepository.class.getSimpleName();
 
     // Constructor
-    RecipeRepository(Application application) {
-        RecipeDatabase db = RecipeDatabase.getDatabase(application);
-        mRecipeDao = db.recipeDao();
+    private RecipeRepository(RecipeDatabase recipeDatabase, RecipeDao recipeDao) {
+        mRecipeDatabase = recipeDatabase;
+        mRecipeDao = recipeDao;
+    }
+
+    // Build a singleton of the RecipeDatabase
+    public synchronized static RecipeRepository getRepositoryInstance(RecipeDatabase database, RecipeDao dao) {
+        if (sInstance == null) {
+            synchronized (LOCK) {
+                sInstance = new RecipeRepository(database, dao);
+                Log.d(TAG, "Made new repository");
+            }
+        }
+        return sInstance;
     }
 
     /**

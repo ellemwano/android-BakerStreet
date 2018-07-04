@@ -5,6 +5,7 @@ import android.app.Application;
 import android.arch.lifecycle.AndroidViewModel;
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MediatorLiveData;
+import android.arch.lifecycle.ViewModel;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -14,7 +15,7 @@ import com.mwano.lauren.baker_street.model.Recipe;
 
 import java.util.List;
 
-public class RecipeViewModel extends AndroidViewModel {
+public class RecipeViewModel extends ViewModel {
 
     // Reference to the repository
     private RecipeRepository mRepository;
@@ -24,9 +25,8 @@ public class RecipeViewModel extends AndroidViewModel {
 
 
     // Constructor with a reference to the repository, getting the list of recipes from the repository
-    public RecipeViewModel(@NonNull Application application) {
-        super(application);
-        mRepository = new RecipeRepository(application);
+    public RecipeViewModel(RecipeRepository repository) {
+        mRepository = repository;
         mObservableRecipes = mRepository.getRecipeList(internetState);
     }
 
