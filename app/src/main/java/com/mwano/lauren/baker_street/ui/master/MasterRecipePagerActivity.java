@@ -48,10 +48,9 @@ public class MasterRecipePagerActivity extends AppCompatActivity {
     private int mRecipeId;
     private String mRecipeName;
     private List<Ingredient> mIngredients = new ArrayList<>();
-    //private List<Ingredient> mIngredients;
     private List<Step> mSteps = new ArrayList<>();
 
-    private static final String SELECTED_RECIPE = "recipe selected";
+    private static final String SELECTED_RECIPE_ID = "recipe selected";
     private static final String RECIPE_NAME = "recipe name";
     private static final String TAG = MasterRecipePagerActivity.class.getSimpleName();
 
@@ -81,18 +80,12 @@ public class MasterRecipePagerActivity extends AppCompatActivity {
 //                // Get Recipe name
 //                mRecipeName = mCurrentRecipe.getName();
 //            }
-            //if (intentReceivedMainMaster.hasExtra(RECIPE_ID)) {
-                // Get Recipe name and id from intent
+            // Get Recipe id from the intent
             Bundle receivedBundle = getIntent().getExtras();
             mRecipeId = receivedBundle.getInt(RECIPE_ID);
-            //mRecipeName = receivedBundle.getString(RECIPE_NAME);
-            //mRecipeId = intentReceivedMainMaster.getIntExtra(RECIPE_ID, -1);
-                //mRecipeName = intentReceivedMainMaster.getStringExtra(RECIPE_NAME);
-                //Log.d(TAG, "Received Recipe id = " + mRecipeId + " and RecipeName = " + mRecipeName);
             Log.d(TAG, "Received Recipe id = " + mRecipeId );
             // OK - ID correct
             // DB instance created
-
 
             IngredientStepViewModelFactory factory =
                         new IngredientStepViewModelFactory(getApplication(), mRecipeId);
@@ -105,32 +98,17 @@ public class MasterRecipePagerActivity extends AppCompatActivity {
                 public void onChanged(@Nullable Recipe recipe) {
                     mCurrentRecipe = recipe;
                     Log.d(TAG, "Current Recipe from DB = " + mCurrentRecipe);
-                    // Recipe null
+                    // Get the recipe name from the db
+                    mRecipeName = viewModel.getRecipeName(mCurrentRecipe);
+                    Log.d(TAG, "Received Recipe name = " + mRecipeName );
+                    // Get the ingredients list from the db
+                    mIngredients = viewModel.getRecipeIngredients(mCurrentRecipe);
+                    // Get the steps list from the db
+                    mSteps = viewModel.getRecipeSteps(mCurrentRecipe);
                 }
             });
-            // Get the recipe name
-            //mRecipeName = viewModel.getRecipeName(mCurrentRecipe);
-            mRecipeName = viewModel.getRecipeName(mCurrentRecipe);
-            Log.d(TAG, "Received Recipe name = " + mRecipeName );
-            // NOt logging - Name null
-
-//                // Get the selected recipe from the ID from the intent
-//                mCurrentRecipe = viewModel.getSingleRecipe();
-//                Log.d(TAG, "Current Recipe from DB = " + mCurrentRecipe);
-//                // Recipe null
-//                // Get the recipe name
-//                //mRecipeName = viewModel.getRecipeName(mCurrentRecipe);
-//                mRecipeName = mCurrentRecipe.getName();
-//            Log.d(TAG, "Received Recipe name = " + mRecipeName );
-//            // NOt logging - Name null
-
-            // Get the ingredients arrayList from the intent extra
-                //mIngredients = viewModel.getIngredientsList(mCurrentRecipe);
-                // Get the steps arrayList from the intent extra
-                // TODO Add steps
-            //}
         } else {
-            mCurrentRecipe = savedInstanceState.getParcelable(SELECTED_RECIPE);
+            mRecipeId = savedInstanceState.getInt(SELECTED_RECIPE_ID);
             mRecipeName = savedInstanceState.getString(RECIPE_NAME);
         }
         // Set Recipe name on toolbar
@@ -147,7 +125,7 @@ public class MasterRecipePagerActivity extends AppCompatActivity {
         Adapter adapter = new Adapter(getSupportFragmentManager());
         // Create instance of the ingredients fragment and add it to activity
         MasterIngredientsPageFragment ingredientFragment =
-                MasterIngredientsPageFragment.newIngredientsInstance((List<Ingredient>) mIngredients);
+                MasterIngredientsPageFragment.newIngredientsInstance(mIngredients);
         adapter.addFragment(ingredientFragment, "Ingredients");
         // Create instance of the steps fragment and add it to activity
         MasterStepsPageFragment stepFragment =
@@ -191,7 +169,7 @@ public class MasterRecipePagerActivity extends AppCompatActivity {
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        //outState.putParcelable(SELECTED_RECIPE, mCurrentRecipe);
+        outState.putInt(SELECTED_RECIPE_ID, mRecipeId);
         outState.putString(RECIPE_NAME, mRecipeName);
     }
 }

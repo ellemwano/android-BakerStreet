@@ -36,7 +36,7 @@ public interface RecipeDao {
 
     // Get all recipes
     @Query("SELECT * FROM recipe")
-    List<Recipe> getAllRecipes();
+    LiveData<List<Recipe>> getAllRecipes();
 
     // Delete all Recipes
     @Query("DELETE FROM recipe")

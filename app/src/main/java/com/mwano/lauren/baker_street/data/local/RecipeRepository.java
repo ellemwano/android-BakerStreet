@@ -67,20 +67,11 @@ public class RecipeRepository {
      *
      * @return the List of Recipes
      */
-    @SuppressLint("StaticFieldLeak")
+    //@SuppressLint("StaticFieldLeak")
     public LiveData<List<Recipe>> getRecipesFromDb() {
-        final MutableLiveData<List<Recipe>> mRecipes = new MutableLiveData<>();
-        new AsyncTask<Void, Void, List<Recipe>>() {
-            @Override
-            protected List<Recipe> doInBackground(Void... params) {
-                return mRecipeDao.getAllRecipes();
-            }
-
-            @Override
-            protected void onPostExecute(List<Recipe> recipes) {
-                mRecipes.setValue(recipes);
-            }
-        }.execute();
+        //final MutableLiveData<List<Recipe>> mRecipes = new MutableLiveData<>();
+        mRecipes = mRecipeDao.getAllRecipes();
+        //mRecipes.setValue(recipes);
         return mRecipes;
     }
 
@@ -102,13 +93,7 @@ public class RecipeRepository {
 
 
     public LiveData<Recipe> loadSingleRecipeById (final int id) {
-        AppExecutors.getInstance().diskIO().execute(new Runnable() {
-            @Override
-            public void run() {
-                mRecipe = mRecipeDao.getRecipeById(id);
-                Log.d(TAG, "recipe by id " + mRecipe);
-            }
-        });
+        mRecipe = mRecipeDao.getRecipeById(id);
         return mRecipe;
     }
 

@@ -29,8 +29,8 @@ public class MasterIngredientsPageFragment extends Fragment {
     @BindView(R.id.rv_ingredients)
     RecyclerView mIngredientsRecyclerView;
     // Recipe includes a List of Ingredients
-    //public List<Ingredient> mIngredients = new ArrayList<>();
-    public List<Ingredient> mIngredients;
+    public List<Ingredient> mIngredients = new ArrayList<>();
+    //public List<Ingredient> mIngredients;
     LinearLayoutManager mLayoutManager;
 
     public static final String INGREDIENTS_LIST = "ingredients";
