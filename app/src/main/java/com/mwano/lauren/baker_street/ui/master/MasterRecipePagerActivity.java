@@ -20,6 +20,7 @@ import android.util.Log;
 import com.mwano.lauren.baker_street.R;
 import com.mwano.lauren.baker_street.data.local.IngredientStepViewModel;
 import com.mwano.lauren.baker_street.data.local.IngredientStepViewModelFactory;
+import com.mwano.lauren.baker_street.data.local.RecipeDatabase;
 import com.mwano.lauren.baker_street.data.local.RecipeRepository;
 import com.mwano.lauren.baker_street.model.Ingredient;
 import com.mwano.lauren.baker_street.model.Recipe;
@@ -47,6 +48,7 @@ public class MasterRecipePagerActivity extends AppCompatActivity {
     @BindView(R.id.viewpager) ViewPager viewPager;
     @BindView(R.id.tabs) TabLayout tabs;
     private RecipeRepository mRecipeRepository;
+    private RecipeDatabase mRecipeDatabase;
     private Recipe mCurrentRecipe;
     private int mRecipeId;
     private String mRecipeName;
@@ -66,9 +68,6 @@ public class MasterRecipePagerActivity extends AppCompatActivity {
         ButterKnife.bind(this);
         // Adding Toolbar to Main screen
         setSupportActionBar(toolbar);
-
-        // TODO set ViewModel
-
 
         //// Get the selected recipe from the intent
         // Get the selected Recipe id from the intent
@@ -90,26 +89,26 @@ public class MasterRecipePagerActivity extends AppCompatActivity {
             // OK - ID correct
             // DB instance created
 
+            // Instantiate Database
+            mRecipeDatabase = RecipeDatabase.getDatabase(this);
+            // Instantiate Repository
+            mRecipeRepository = RecipeRepository.getRepositoryInstance(mRecipeDatabase, mRecipeDatabase.recipeDao());
+            // ViewModel
             IngredientStepViewModelFactory factory =
                         new IngredientStepViewModelFactory(mRecipeRepository, mRecipeId);
                 final IngredientStepViewModel viewModel =
                         ViewModelProviders.of(this, factory).get(IngredientStepViewModel.class);
-
             // Get the selected recipe from the ID from the intent
-            viewModel.getSingleRecipe().observe(MasterRecipePagerActivity.this, new Observer<Recipe>() {
+            viewModel.getSingleRecipe().observe(this, new Observer<Recipe>() {
                 @Override
                 public void onChanged(@Nullable Recipe recipe) {
                     mCurrentRecipe = recipe;
                     Log.d(TAG, "Current Recipe from DB = " + mCurrentRecipe);
-                    // Get the recipe name from the db
+                    //viewModel.setSingleRecipe(mCurrentRecipe);
                     mRecipeName = viewModel.getRecipeName(mCurrentRecipe);
-                    Log.d(TAG, "Received Recipe name = " + mRecipeName );
-                    // Get the ingredients list from the db
-                    mIngredients = viewModel.getRecipeIngredients(mCurrentRecipe);
-                    // Get the steps list from the db
-                    mSteps = viewModel.getRecipeSteps(mCurrentRecipe);
                 }
             });
+
         } else {
             mRecipeId = savedInstanceState.getInt(SELECTED_RECIPE_ID);
             mRecipeName = savedInstanceState.getString(RECIPE_NAME);

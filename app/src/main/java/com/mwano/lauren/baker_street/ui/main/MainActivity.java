@@ -21,6 +21,7 @@ import android.widget.Toast;
 
 import com.facebook.stetho.Stetho;
 import com.mwano.lauren.baker_street.R;
+import com.mwano.lauren.baker_street.data.local.RecipeDatabase;
 import com.mwano.lauren.baker_street.data.local.RecipeRepository;
 import com.mwano.lauren.baker_street.data.local.RecipeViewModel;
 import com.mwano.lauren.baker_street.data.local.RecipeViewModelFactory;
@@ -76,8 +77,9 @@ public class MainActivity extends AppCompatActivity
     private int mCurrentRecipeId;
     private List<Ingredient> mIngredients;
     private String mRecipeName;
-    private RecipeViewModel recipeViewModel;
+    private RecipeViewModel mRecipeViewModel;
     private RecipeRepository mRecipeRepository;
+    private RecipeDatabase mRecipeDatabase;
     private boolean hasNetworkConnection = false;
 
     public static final String RECIPE = "recipe";
@@ -102,14 +104,19 @@ public class MainActivity extends AppCompatActivity
         // Adapter
         mMainRecipeAdapter = new MainRecipeAdapter(this, mRecipes, this);
         mRecyclerView.setAdapter(mMainRecipeAdapter);
+        // Instantiate Database
+        mRecipeDatabase = RecipeDatabase.getDatabase(this);
+        // Instantiate Repository
+        mRecipeRepository = RecipeRepository.getRepositoryInstance(mRecipeDatabase, mRecipeDatabase.recipeDao());
+
 
         // ViewModel
         RecipeViewModelFactory factory =
                 new RecipeViewModelFactory(mRecipeRepository);
-        final RecipeViewModel recipeViewModel =
+        mRecipeViewModel =
                 ViewModelProviders.of(this, factory).get(RecipeViewModel.class);
         isNetworkConnected();
-        recipeViewModel.getRecipeList().observe(MainActivity.this, new Observer<List<Recipe>>() {
+        mRecipeViewModel.getRecipeList().observe(MainActivity.this, new Observer<List<Recipe>>() {
             @Override
             public void onChanged(@Nullable List<Recipe> recipes) {
                 mMainRecipeAdapter.setRecipeData(recipes);
@@ -215,7 +222,7 @@ public class MainActivity extends AppCompatActivity
         // get Connectivity Manager to get network status
         ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
-        recipeViewModel.setInternetState(activeNetwork != null && activeNetwork.isConnectedOrConnecting());
+        mRecipeViewModel.setInternetState(activeNetwork != null && activeNetwork.isConnectedOrConnecting());
     }
 
     @Override
