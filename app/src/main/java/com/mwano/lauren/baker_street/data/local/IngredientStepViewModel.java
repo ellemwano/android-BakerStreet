@@ -18,10 +18,6 @@ public class IngredientStepViewModel  extends ViewModel {
     private RecipeRepository mRepository;
     // Cache selected Recipe
     public LiveData<Recipe> mSingleRecipe;
-    // Cache Ingredients list
-    private List<Ingredient> mIngredientsList;
-    // Cache Steps list
-    private LiveData<List<Step>> mStepsList;
     // Cache Recipe name
     private String mRecipeName;
     private int mRecipeId;
@@ -34,8 +30,6 @@ public class IngredientStepViewModel  extends ViewModel {
         mRepository = repository;
         mSingleRecipe = mRepository.loadSingleRecipeById(mRecipeId);
         Log.d(TAG, "Single Recipe is: " + mSingleRecipe);
-        //mRecipeName.getValue();
-        mStepsList = new MutableLiveData<>();
     }
 
     // Get single Recipe by its id
@@ -48,13 +42,9 @@ public class IngredientStepViewModel  extends ViewModel {
         mSingleRecipe = recipe;
     }
 
-    // Get name
+    // Get Recipe name
     public String getRecipeName(Recipe recipe) {
         mRecipeName = recipe.getName();
         return mRecipeName;
     }
-
-
-
-
 }

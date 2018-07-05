@@ -132,17 +132,6 @@ public class MainActivity extends AppCompatActivity
                 // Set welcome screen
                 mainTabletLayout.setVisibility(View.GONE);
                 defaultTabletLayout.setVisibility(View.VISIBLE);
-//                if(mRecipes != null) {
-//                    mRecipeId = 0;
-//                    mCurrentRecipe = mRecipes.get(mRecipeId);
-//                    //Log.d(TAG, "Default recipe is: " + mCurrentRecipe.getName());
-//                    FragmentManager fragmentManager = getSupportFragmentManager();
-//                    MasterIngredientsPageFragment ingredientsFragment = MasterIngredientsPageFragment
-//                            .newIngredientsInstance((ArrayList<Ingredient>) mCurrentRecipe.getIngredients());
-//                    fragmentManager.beginTransaction()
-//                            .add(R.id.main_ingredients_container, ingredientsFragment)
-//                            .commit();
-//                }
             } else {
                 defaultTabletLayout.setVisibility(View.GONE);
                 mainTabletLayout.setVisibility(View.VISIBLE);

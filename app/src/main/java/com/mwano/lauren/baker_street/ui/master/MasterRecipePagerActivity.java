@@ -44,16 +44,20 @@ import static com.mwano.lauren.baker_street.ui.main.MainActivity.RECIPE_ID;
 
 public class MasterRecipePagerActivity extends AppCompatActivity {
 
-    @BindView(R.id.toolbar) Toolbar toolbar;
-    @BindView(R.id.viewpager) ViewPager viewPager;
-    @BindView(R.id.tabs) TabLayout tabs;
+    @BindView(R.id.toolbar)
+    Toolbar toolbar;
+    @BindView(R.id.viewpager)
+    ViewPager viewPager;
+    @BindView(R.id.tabs)
+    TabLayout tabs;
     private RecipeRepository mRecipeRepository;
     private RecipeDatabase mRecipeDatabase;
     private Recipe mCurrentRecipe;
-    private int mRecipeId;
+    public int mRecipeId;
     private String mRecipeName;
     private List<Ingredient> mIngredients = new ArrayList<>();
     private List<Step> mSteps = new ArrayList<>();
+    private IngredientStepViewModel mViewModel;
 
     private static final String SELECTED_RECIPE_ID = "recipe selected";
     private static final String RECIPE_NAME = "recipe name";
@@ -69,55 +73,46 @@ public class MasterRecipePagerActivity extends AppCompatActivity {
         // Adding Toolbar to Main screen
         setSupportActionBar(toolbar);
 
-        //// Get the selected recipe from the intent
-        // Get the selected Recipe id from the intent
-        if (savedInstanceState == null) {
-            //final Intent intentReceivedMainMaster = getIntent();
-//            if(intentReceivedMainMaster.hasExtra(RECIPE)) {
-//                mCurrentRecipe = intentReceivedMainMaster.getParcelableExtra(RECIPE);
-//                // Get the ingredients arrayList from the intent extra
-//                mIngredients = mCurrentRecipe.getIngredients();
-//                // Get the steps arrayList from the intent extra
-//                mSteps = mCurrentRecipe.getSteps();
-//                // Get Recipe name
-//                mRecipeName = mCurrentRecipe.getName();
-//            }
-            // Get Recipe id from the intent
+        // Instantiate Database
+        mRecipeDatabase = RecipeDatabase.getDatabase(this);
+        // Instantiate Repository
+        mRecipeRepository = RecipeRepository.getRepositoryInstance(mRecipeDatabase, mRecipeDatabase.recipeDao());
+
+        if (savedInstanceState != null) {
+            mRecipeId = savedInstanceState.getInt(SELECTED_RECIPE_ID);
+            mRecipeName = savedInstanceState.getString(RECIPE_NAME);
+        } else {
+            // Get the selected Recipe id from the intent
             Bundle receivedBundle = getIntent().getExtras();
             mRecipeId = receivedBundle.getInt(RECIPE_ID);
             Log.d(TAG, "Received Recipe id = " + mRecipeId );
             // OK - ID correct
-            // DB instance created
-
-            // Instantiate Database
-            mRecipeDatabase = RecipeDatabase.getDatabase(this);
-            // Instantiate Repository
-            mRecipeRepository = RecipeRepository.getRepositoryInstance(mRecipeDatabase, mRecipeDatabase.recipeDao());
-            // ViewModel
-            IngredientStepViewModelFactory factory =
-                        new IngredientStepViewModelFactory(mRecipeRepository, mRecipeId);
-                final IngredientStepViewModel viewModel =
-                        ViewModelProviders.of(this, factory).get(IngredientStepViewModel.class);
-            // Get the selected recipe from the ID from the intent
-            viewModel.getSingleRecipe().observe(this, new Observer<Recipe>() {
-                @Override
-                public void onChanged(@Nullable Recipe recipe) {
-                    mCurrentRecipe = recipe;
-                    Log.d(TAG, "Current Recipe from DB = " + mCurrentRecipe);
-                    mRecipeName = viewModel.getRecipeName(mCurrentRecipe);
-                }
-            });
-
-        } else {
-            mRecipeId = savedInstanceState.getInt(SELECTED_RECIPE_ID);
-            mRecipeName = savedInstanceState.getString(RECIPE_NAME);
         }
-        // Set Recipe name on toolbar
-        setTitle(mRecipeName);
-        // Setting ViewPager for each Tabs
-        setupViewPager(viewPager);
-        // Add tabs
-        tabs.setupWithViewPager(viewPager);
+        // ViewModel
+        IngredientStepViewModelFactory factory =
+                new IngredientStepViewModelFactory(mRecipeRepository, mRecipeId);
+        mViewModel = ViewModelProviders.of(this, factory).get(IngredientStepViewModel.class);
+        // Get the selected recipe from the ID from the intent
+        mViewModel.getSingleRecipe().observe(this, new Observer<Recipe>() {
+            @Override
+            public void onChanged(@Nullable Recipe recipe) {
+                mCurrentRecipe = recipe;
+                Log.d(TAG, "Current Recipe from DB = " + mCurrentRecipe);
+                //
+                mRecipeName = mViewModel.getRecipeName(mCurrentRecipe);
+                Log.d(TAG, "Current RecipeName from DB = " + mCurrentRecipe.getName());
+                //
+                mIngredients = mCurrentRecipe.getIngredients();
+                mSteps = mCurrentRecipe.getSteps();
+
+                // Set Recipe name on toolbar
+                setTitle(mRecipeName);
+                // Setting ViewPager for each Tabs
+                setupViewPager(viewPager);
+                // Add tabs
+                tabs.setupWithViewPager(viewPager);
+            }
+        });
     }
 
     // TODO create strings for tabs title
@@ -126,7 +121,7 @@ public class MasterRecipePagerActivity extends AppCompatActivity {
         Adapter adapter = new Adapter(getSupportFragmentManager());
         // Create instance of the ingredients fragment and add it to activity
         MasterIngredientsPageFragment ingredientFragment =
-                MasterIngredientsPageFragment.newIngredientsInstance(mIngredients);
+                MasterIngredientsPageFragment.newIngredientsInstance((ArrayList<Ingredient>) mIngredients);
         adapter.addFragment(ingredientFragment, "Ingredients");
         // Create instance of the steps fragment and add it to activity
         MasterStepsPageFragment stepFragment =

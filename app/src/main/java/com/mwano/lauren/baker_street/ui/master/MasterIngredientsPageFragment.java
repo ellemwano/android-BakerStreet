@@ -41,10 +41,6 @@ public class MasterIngredientsPageFragment extends Fragment {
     public List<Ingredient> mIngredients = new ArrayList<>();
     //public List<Ingredient> mIngredients;
     LinearLayoutManager mLayoutManager;
-    private RecipeDatabase mRecipeDatabase;
-    private RecipeRepository mRecipeRepository;
-    private int mRecipeId;
-    private Recipe mCurrentRecipe;
 
     public static final String INGREDIENTS_LIST = "ingredients";
     public static final String TAG = MasterIngredientsPageFragment.class.getSimpleName();
@@ -56,9 +52,9 @@ public class MasterIngredientsPageFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-       // if(getArguments() != null && getArguments().containsKey(INGREDIENTS_LIST)) {
-        //    mIngredients = getArguments().getParcelableArrayList(INGREDIENTS_LIST);
-        //}
+        if(getArguments() != null && getArguments().containsKey(INGREDIENTS_LIST)) {
+            mIngredients = getArguments().getParcelableArrayList(INGREDIENTS_LIST);
+        }
     }
 
     @Nullable
@@ -78,29 +74,8 @@ public class MasterIngredientsPageFragment extends Fragment {
         mIngredientsRecyclerView.setAdapter(ingredientsAdapter);
         //ingredientsAdapter.setIngredientData(mIngredients);
 
-        // ViewModel
-        // Instantiate Database
-        mRecipeDatabase = RecipeDatabase.getDatabase(getActivity());
-        // Instantiate Repository
-        mRecipeRepository = RecipeRepository.getRepositoryInstance(mRecipeDatabase, mRecipeDatabase.recipeDao());
-       IngredientStepViewModelFactory factory =
-                new IngredientStepViewModelFactory(mRecipeRepository, mRecipeId);
-        final IngredientStepViewModel viewModel =
-                ViewModelProviders.of(this, factory).get(IngredientStepViewModel.class);
-        // Get the selected recipe from the ID from the intent
-        viewModel.getSingleRecipe().observe(getActivity(), new Observer<Recipe>() {
-            @Override
-            public void onChanged(@Nullable Recipe recipe) {
-                mCurrentRecipe = recipe;
-                Log.d(TAG, "Current Recipe from fragment = " + mCurrentRecipe);
-                mIngredients = mCurrentRecipe.getIngredients();
-            }
-        });
-
-
         return rootView;
     }
-
 
     /**
      * This method sets up a bundle for the arguments to pass
@@ -109,12 +84,12 @@ public class MasterIngredientsPageFragment extends Fragment {
      * @param ingredients ArrayList of Ingredient objects of selected recipe in recipe list
      * @return fragment
      */
-    public static MasterIngredientsPageFragment newIngredientsInstance(List<Ingredient> ingredients) {
+    public static MasterIngredientsPageFragment newIngredientsInstance(ArrayList<Ingredient> ingredients) {
         MasterIngredientsPageFragment ingredientFragment = new MasterIngredientsPageFragment();
-        // Set the bundle arguments for the fragment.
-        //Bundle arguments = new Bundle();
-        //arguments.putParcelableArrayList(INGREDIENTS_LIST, new ArrayList<>(ingredients));
-        //ingredientFragment.setArguments(arguments);
+        //Set the bundle arguments for the fragment.
+        Bundle arguments = new Bundle();
+        arguments.putParcelableArrayList(INGREDIENTS_LIST, ingredients);
+        ingredientFragment.setArguments(arguments);
         return ingredientFragment;
     }
 }
