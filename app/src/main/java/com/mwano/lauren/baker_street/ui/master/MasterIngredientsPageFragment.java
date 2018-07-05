@@ -83,10 +83,19 @@ public class MasterIngredientsPageFragment extends Fragment {
         mRecipeDatabase = RecipeDatabase.getDatabase(getActivity());
         // Instantiate Repository
         mRecipeRepository = RecipeRepository.getRepositoryInstance(mRecipeDatabase, mRecipeDatabase.recipeDao());
-        IngredientStepViewModelFactory factory =
+       IngredientStepViewModelFactory factory =
                 new IngredientStepViewModelFactory(mRecipeRepository, mRecipeId);
         final IngredientStepViewModel viewModel =
                 ViewModelProviders.of(this, factory).get(IngredientStepViewModel.class);
+        // Get the selected recipe from the ID from the intent
+        viewModel.getSingleRecipe().observe(getActivity(), new Observer<Recipe>() {
+            @Override
+            public void onChanged(@Nullable Recipe recipe) {
+                mCurrentRecipe = recipe;
+                Log.d(TAG, "Current Recipe from fragment = " + mCurrentRecipe);
+                mIngredients = mCurrentRecipe.getIngredients();
+            }
+        });
 
 
         return rootView;

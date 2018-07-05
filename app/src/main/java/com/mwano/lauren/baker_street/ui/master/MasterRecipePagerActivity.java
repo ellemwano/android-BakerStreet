@@ -104,7 +104,6 @@ public class MasterRecipePagerActivity extends AppCompatActivity {
                 public void onChanged(@Nullable Recipe recipe) {
                     mCurrentRecipe = recipe;
                     Log.d(TAG, "Current Recipe from DB = " + mCurrentRecipe);
-                    //viewModel.setSingleRecipe(mCurrentRecipe);
                     mRecipeName = viewModel.getRecipeName(mCurrentRecipe);
                 }
             });
