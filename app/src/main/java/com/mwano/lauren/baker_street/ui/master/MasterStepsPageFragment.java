@@ -7,9 +7,11 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.WebView;
 
 import com.mwano.lauren.baker_street.R;
 import com.mwano.lauren.baker_street.model.Step;
@@ -27,13 +29,17 @@ import butterknife.ButterKnife;
 public class MasterStepsPageFragment extends Fragment
         implements MasterStepsAdapter.StepAdapterOnClickHandler {
 
+    @BindView(R.id.rv_steps)
+    RecyclerView mStepsRecyclerView;
     // Recipe includes a List of Ingredients
     public List<Step> mSteps = new ArrayList<Step>();
-    @BindView(R.id.rv_steps) RecyclerView mStepsRecyclerView;
+    private int mRecipeId;
 
     public static final String STEPS_LIST = "steps";
-    public static final String STEP_SELECTED = "selected step";
+    public static final String CURRENT_STEP = "current step";
+    private static final String RECIPE_ID = "recipe id";
 
+    private static final String TAG = MasterStepsPageFragment.class.getSimpleName();
     // Constructor
     public MasterStepsPageFragment() {
     }
@@ -41,8 +47,15 @@ public class MasterStepsPageFragment extends Fragment
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if(getArguments() != null && getArguments().containsKey(STEPS_LIST)) {
-            mSteps = getArguments().getParcelableArrayList(STEPS_LIST);
+        if(getArguments() != null) {
+            if (getArguments().containsKey(STEPS_LIST)) {
+                mSteps = getArguments().getParcelableArrayList(STEPS_LIST);
+            }
+//            if (getArguments().containsKey(RECIPE_ID)) {
+//                mRecipeId = getArguments().getInt(RECIPE_ID);
+//                Log.d(TAG, "Received Recipe id in master Steps Fragment : " + mRecipeId);
+//                //
+//            }
         }
     }
 
@@ -83,8 +96,16 @@ public class MasterStepsPageFragment extends Fragment
 
     @Override
     public void onClick(Step currentStep, ArrayList<Step> steps) {
+        //int stepId = currentStep.getId();
         Intent intentDetailStep = new Intent(getActivity(), DetailStepPagerActivity.class);
-        intentDetailStep.putExtra(STEP_SELECTED, currentStep);
+//        Bundle masterBundle = new Bundle();
+//        masterBundle.putInt(STEP_ID, stepId);
+//        //masterBundle.putParcelableArrayList(STEPS_LIST, steps);
+//        masterBundle.putInt(RECIPE_ID, mRecipeId);
+//        Log.d(TAG, "onClick Recipe id is : " + mRecipeId);
+        //intentDetailStep.putExtras(masterBundle);
+        intentDetailStep.putExtra(CURRENT_STEP, currentStep);
+        //intentDetailStep.putExtra(STEP_ID, stepId);
         intentDetailStep.putExtra(STEPS_LIST, steps);
         startActivity(intentDetailStep);
     }

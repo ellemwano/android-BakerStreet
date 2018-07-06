@@ -17,7 +17,7 @@ public class Step implements Parcelable {
     @SerializedName("id")
     @Expose
     @PrimaryKey
-    protected int stepId;
+    public int stepId;
     @SerializedName("shortDescription")
     @Expose
     private String shortDescription;
@@ -85,7 +85,7 @@ public class Step implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeValue(this.stepId);
+        dest.writeInt(this.stepId);
         dest.writeString(this.shortDescription);
         dest.writeString(this.description);
         dest.writeString(this.videoURL);

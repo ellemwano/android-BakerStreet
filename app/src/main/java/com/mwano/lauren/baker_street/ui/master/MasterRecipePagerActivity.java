@@ -59,7 +59,7 @@ public class MasterRecipePagerActivity extends AppCompatActivity {
     private List<Step> mSteps = new ArrayList<>();
     private IngredientStepViewModel mViewModel;
 
-    private static final String SELECTED_RECIPE_ID = "recipe selected";
+    private static final String RECIPE_ID = "recipe id";
     private static final String RECIPE_NAME = "recipe name";
     private static final String TAG = MasterRecipePagerActivity.class.getSimpleName();
 
@@ -79,7 +79,7 @@ public class MasterRecipePagerActivity extends AppCompatActivity {
         mRecipeRepository = RecipeRepository.getRepositoryInstance(mRecipeDatabase, mRecipeDatabase.recipeDao());
 
         if (savedInstanceState != null) {
-            mRecipeId = savedInstanceState.getInt(SELECTED_RECIPE_ID);
+            mRecipeId = savedInstanceState.getInt(RECIPE_ID);
             mRecipeName = savedInstanceState.getString(RECIPE_NAME);
         } else {
             // Get the selected Recipe id from the intent
@@ -88,6 +88,7 @@ public class MasterRecipePagerActivity extends AppCompatActivity {
             Log.d(TAG, "Received Recipe id = " + mRecipeId );
             // OK - ID correct
         }
+
         // ViewModel
         IngredientStepViewModelFactory factory =
                 new IngredientStepViewModelFactory(mRecipeRepository, mRecipeId);
@@ -113,20 +114,29 @@ public class MasterRecipePagerActivity extends AppCompatActivity {
                 tabs.setupWithViewPager(viewPager);
             }
         });
+
+        // Sending the Recipe ID to Steps and Ingredients fragments
+        Bundle IdArgument = new Bundle();
+        IdArgument.putInt(RECIPE_ID, mRecipeId);
+        Log.d(TAG, "Sent Recipe id from Master Activity : " + mRecipeId);
+        //
+        MasterIngredientsPageFragment ingredientFragment = new MasterIngredientsPageFragment();
+        ingredientFragment.setArguments(IdArgument);
+        MasterStepsPageFragment stepFragment = new MasterStepsPageFragment();
+        stepFragment.setArguments(IdArgument);
     }
 
-    // TODO create strings for tabs title
     // Add Fragments to Tabs
     private void setupViewPager(ViewPager viewPager) {
         Adapter adapter = new Adapter(getSupportFragmentManager());
         // Create instance of the ingredients fragment and add it to activity
         MasterIngredientsPageFragment ingredientFragment =
                 MasterIngredientsPageFragment.newIngredientsInstance((ArrayList<Ingredient>) mIngredients);
-        adapter.addFragment(ingredientFragment, "Ingredients");
+        adapter.addFragment(ingredientFragment, getResources().getString(R.string.viewpager_ingredients_tab));
         // Create instance of the steps fragment and add it to activity
         MasterStepsPageFragment stepFragment =
                 MasterStepsPageFragment.newStepsInstance((ArrayList<Step>) mSteps);
-        adapter.addFragment(stepFragment, "Steps");
+        adapter.addFragment(stepFragment, getResources().getString(R.string.viewpager_steps_tab));
         viewPager.setAdapter(adapter);
     }
 
@@ -165,7 +175,7 @@ public class MasterRecipePagerActivity extends AppCompatActivity {
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putInt(SELECTED_RECIPE_ID, mRecipeId);
+        outState.putInt(RECIPE_ID, mRecipeId);
         outState.putString(RECIPE_NAME, mRecipeName);
     }
 }
