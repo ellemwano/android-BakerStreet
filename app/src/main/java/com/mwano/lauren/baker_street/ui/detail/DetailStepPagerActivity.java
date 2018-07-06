@@ -43,9 +43,7 @@ public class DetailStepPagerActivity extends AppCompatActivity {
     private static final String STEP_LIST = "step list";
     private static final String STEP_ID = "step id";
     private static final String STEP_DESCRIPTION = "step description";
-    private static final String STEP_VIDEO_URL = "step video url";
 
-    // TODO Add page indicator
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -60,9 +58,6 @@ public class DetailStepPagerActivity extends AppCompatActivity {
                 mSteps = intentMasterDetailStep.getParcelableArrayListExtra(STEPS_LIST);
                 mCurrentStep = intentMasterDetailStep.getParcelableExtra(CURRENT_STEP);
             }
-//            Bundle receivedBundle = getIntent().getExtras();
-//            mStepId = receivedBundle.getInt(STEP_ID);
-//            mSteps = receivedBundle.getParcelableArrayList(STEP_LIST);
         }
         if (savedInstanceState != null) {
             mCurrentStep = savedInstanceState.getParcelable(CURRENT_STEP);
@@ -72,8 +67,6 @@ public class DetailStepPagerActivity extends AppCompatActivity {
         }
         // Get the id of the selected step from the intent
         mStepId = mCurrentStep.getId();
-        // Get the current step from the id
-        //mCurrentStep = mSteps.get(mStepId);
         // Get the ingredients List from the intent extra
         mDescription = mCurrentStep.getDescription();
         // Set Recipe name on toolbar
@@ -83,8 +76,6 @@ public class DetailStepPagerActivity extends AppCompatActivity {
         mStepPager.setAdapter(mPagerAdapter);
         mStepPager.setCurrentItem(mStepId);
     }
-
-
 
 
     /**

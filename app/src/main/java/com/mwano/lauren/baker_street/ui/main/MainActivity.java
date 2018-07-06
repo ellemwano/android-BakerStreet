@@ -194,13 +194,9 @@ public class MainActivity extends AppCompatActivity
 
         } else {
             Intent intentSentMainMaster = new Intent(this, MasterRecipePagerActivity.class);
-            //intentSentMainMaster.putExtra(RECIPE, currentRecipe);
             Bundle mainBundle = new Bundle();
             mainBundle.putInt(RECIPE_ID, mCurrentRecipeId);
-            //mainBundle.putString(RECIPE_NAME, mRecipeName);
             intentSentMainMaster.putExtras(mainBundle);
-            //intentSentMainMaster.putExtra(RECIPE_ID, mCurrentRecipeId);
-            //intentSentMainMaster.putExtra(RECIPE_NAME, mRecipeName);
             Log.d(TAG, "Selected Recipe id: " + mCurrentRecipeId);
             startActivity(intentSentMainMaster);
         }
