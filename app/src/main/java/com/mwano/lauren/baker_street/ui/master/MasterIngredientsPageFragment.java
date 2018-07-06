@@ -1,17 +1,27 @@
 package com.mwano.lauren.baker_street.ui.master;
 
+import android.arch.lifecycle.Observer;
+import android.arch.lifecycle.ViewModelProviders;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.mwano.lauren.baker_street.R;
+import com.mwano.lauren.baker_street.data.local.IngredientStepViewModel;
+import com.mwano.lauren.baker_street.data.local.IngredientStepViewModelFactory;
+import com.mwano.lauren.baker_street.data.local.RecipeDatabase;
+import com.mwano.lauren.baker_street.data.local.RecipeRepository;
 import com.mwano.lauren.baker_street.model.Ingredient;
+import com.mwano.lauren.baker_street.model.Recipe;
+import com.mwano.lauren.baker_street.ui.main.MainActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,12 +35,15 @@ import butterknife.ButterKnife;
  */
 public class MasterIngredientsPageFragment extends Fragment {
 
+    @BindView(R.id.rv_ingredients)
+    RecyclerView mIngredientsRecyclerView;
     // Recipe includes a List of Ingredients
-    public List<Ingredient> mIngredients = new ArrayList<Ingredient>();
-    @BindView(R.id.rv_ingredients) RecyclerView mIngredientsRecyclerView;
+    public List<Ingredient> mIngredients = new ArrayList<>();
+    //public List<Ingredient> mIngredients;
     LinearLayoutManager mLayoutManager;
 
     public static final String INGREDIENTS_LIST = "ingredients";
+    public static final String TAG = MasterIngredientsPageFragment.class.getSimpleName();
 
     // Constructor
     public MasterIngredientsPageFragment() {
@@ -60,9 +73,9 @@ public class MasterIngredientsPageFragment extends Fragment {
                 new MasterIngredientsAdapter(getContext(), mIngredients);
         mIngredientsRecyclerView.setAdapter(ingredientsAdapter);
         //ingredientsAdapter.setIngredientData(mIngredients);
+
         return rootView;
     }
-
 
     /**
      * This method sets up a bundle for the arguments to pass
@@ -73,7 +86,7 @@ public class MasterIngredientsPageFragment extends Fragment {
      */
     public static MasterIngredientsPageFragment newIngredientsInstance(ArrayList<Ingredient> ingredients) {
         MasterIngredientsPageFragment ingredientFragment = new MasterIngredientsPageFragment();
-        // Set the bundle arguments for the fragment.
+        //Set the bundle arguments for the fragment.
         Bundle arguments = new Bundle();
         arguments.putParcelableArrayList(INGREDIENTS_LIST, ingredients);
         ingredientFragment.setArguments(arguments);

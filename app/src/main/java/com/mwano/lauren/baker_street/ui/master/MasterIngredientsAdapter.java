@@ -21,7 +21,7 @@ import android.widget.TextView;
 
 import com.mwano.lauren.baker_street.R;
 import com.mwano.lauren.baker_street.model.Ingredient;
-import com.mwano.lauren.baker_street.Utils;
+import com.mwano.lauren.baker_street.utils.Utils;
 
 
 import java.util.List;

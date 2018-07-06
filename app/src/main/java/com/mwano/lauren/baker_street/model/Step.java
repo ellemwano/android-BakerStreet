@@ -1,18 +1,23 @@
 package com.mwano.lauren.baker_street.model;
 
+import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.PrimaryKey;
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.support.annotation.NonNull;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.ArrayList;
 
+@Entity
 public class Step implements Parcelable {
 
     @SerializedName("id")
     @Expose
-    private Integer stepId;
+    @PrimaryKey
+    public int stepId;
     @SerializedName("shortDescription")
     @Expose
     private String shortDescription;
@@ -31,11 +36,11 @@ public class Step implements Parcelable {
     }
 
     // Getters and Setters
-    public Integer getId() {
+    public int getId() {
         return stepId;
     }
 
-    public void setId(Integer stepId) {
+    public void setId(int stepId) {
         this.stepId = stepId;
     }
 
@@ -80,7 +85,7 @@ public class Step implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeValue(this.stepId);
+        dest.writeInt(this.stepId);
         dest.writeString(this.shortDescription);
         dest.writeString(this.description);
         dest.writeString(this.videoURL);
@@ -88,7 +93,7 @@ public class Step implements Parcelable {
     }
 
     protected Step(Parcel in) {
-        this.stepId = (Integer) in.readValue(Integer.class.getClassLoader());
+        this.stepId = in.readInt();
         this.shortDescription = in.readString();
         this.description = in.readString();
         this.videoURL = in.readString();

@@ -1,8 +1,11 @@
 package com.mwano.lauren.baker_street.ui.main;
 
-import android.app.ProgressDialog;
+import android.arch.lifecycle.Observer;
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
@@ -12,19 +15,22 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.facebook.stetho.Stetho;
 import com.mwano.lauren.baker_street.R;
-import com.mwano.lauren.baker_street.json.ApiClient;
-import com.mwano.lauren.baker_street.json.ApiInterface;
+import com.mwano.lauren.baker_street.data.local.RecipeDatabase;
+import com.mwano.lauren.baker_street.data.local.RecipeRepository;
+import com.mwano.lauren.baker_street.data.local.RecipeViewModel;
+import com.mwano.lauren.baker_street.data.local.RecipeViewModelFactory;
 import com.mwano.lauren.baker_street.model.Ingredient;
 import com.mwano.lauren.baker_street.model.Recipe;
 import com.mwano.lauren.baker_street.ui.twoPane.MasterDetailActivity;
 import com.mwano.lauren.baker_street.ui.master.MasterIngredientsPageFragment;
 import com.mwano.lauren.baker_street.ui.master.MasterRecipePagerActivity;
+import com.mwano.lauren.baker_street.utils.Utils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,6 +41,13 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+
+    /**
+    Code source for Retrofit
+    https://www.androidhive.info/2016/05/android-working-with-retrofit-http-library/
+//    and the use of APIManager:
+//    http://codingsonata.com/retrofit-tutorial-android-part-1-introduction/
+    */
 public class MainActivity extends AppCompatActivity
         implements MainRecipeAdapter.RecipeAdapterOnClickHandler{
 
@@ -61,30 +74,54 @@ public class MainActivity extends AppCompatActivity
     private Boolean mTwoPane;
     private List<Recipe> mRecipes;
     private Recipe mCurrentRecipe;
-    private int mRecipeId;
+    private int mCurrentRecipeId;
     private List<Ingredient> mIngredients;
     private String mRecipeName;
+    private RecipeViewModel mRecipeViewModel;
+    private RecipeRepository mRecipeRepository;
+    private RecipeDatabase mRecipeDatabase;
+    private boolean hasNetworkConnection = false;
 
     public static final String RECIPE = "recipe";
+    public static final String RECIPE_ID = "recipe id";
+    public static final String RECIPE_NAME = "recipe_name";
     private final String TAG = MainActivity.class.getSimpleName();
 
-    /*
-    Code source for Retrofit
-    https://www.androidhive.info/2016/05/android-working-with-retrofit-http-library/
-//    and the use of APIManager:
-//    http://codingsonata.com/retrofit-tutorial-android-part-1-introduction/
-    */
 
+    // TODO Add splash screen
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        // TODO Remove Stetho ?
+        Stetho.initializeWithDefaults(this);
         // Adding Toolbar to Main screen
         setSupportActionBar(toolbar);
         ButterKnife.bind(this);
         // Set app name to toolbar
         toolbar.setTitle(R.string.app_name);
-        loadRecipes();
+
+        // Adapter
+        mMainRecipeAdapter = new MainRecipeAdapter(this, mRecipes, this);
+        mRecyclerView.setAdapter(mMainRecipeAdapter);
+        // Instantiate Database
+        mRecipeDatabase = RecipeDatabase.getDatabase(this);
+        // Instantiate Repository
+        mRecipeRepository = RecipeRepository.getRepositoryInstance(mRecipeDatabase, mRecipeDatabase.recipeDao());
+
+
+        // ViewModel
+        RecipeViewModelFactory factory =
+                new RecipeViewModelFactory(mRecipeRepository);
+        mRecipeViewModel =
+                ViewModelProviders.of(this, factory).get(RecipeViewModel.class);
+        isNetworkConnected();
+        mRecipeViewModel.getRecipeList().observe(MainActivity.this, new Observer<List<Recipe>>() {
+            @Override
+            public void onChanged(@Nullable List<Recipe> recipes) {
+                mMainRecipeAdapter.setRecipeData(recipes);
+            }
+        });
 
         // Check if 2-pane layout
         if(findViewById(R.id.main_tablet_layout) != null) {
@@ -95,17 +132,6 @@ public class MainActivity extends AppCompatActivity
                 // Set welcome screen
                 mainTabletLayout.setVisibility(View.GONE);
                 defaultTabletLayout.setVisibility(View.VISIBLE);
-//                if(mRecipes != null) {
-//                    mRecipeId = 0;
-//                    mCurrentRecipe = mRecipes.get(mRecipeId);
-//                    //Log.d(TAG, "Default recipe is: " + mCurrentRecipe.getName());
-//                    FragmentManager fragmentManager = getSupportFragmentManager();
-//                    MasterIngredientsPageFragment ingredientsFragment = MasterIngredientsPageFragment
-//                            .newIngredientsInstance((ArrayList<Ingredient>) mCurrentRecipe.getIngredients());
-//                    fragmentManager.beginTransaction()
-//                            .add(R.id.main_ingredients_container, ingredientsFragment)
-//                            .commit();
-//                }
             } else {
                 defaultTabletLayout.setVisibility(View.GONE);
                 mainTabletLayout.setVisibility(View.VISIBLE);
@@ -133,53 +159,27 @@ public class MainActivity extends AppCompatActivity
             // Set number of columns in portrait or landscape mode
             mColumnsNumber = (int) getResources().getInteger(R.integer.num_of_columns);
         }
-        populateUi();
         // Set Recipe name on toolbar
         if(mCurrentRecipe != null) {
             mRecipeName = mCurrentRecipe.getName();
             setTitle(mRecipeName);
         }
-    }
 
-    private void populateUi() {
         mGridLayoutManager = new GridLayoutManager(this, mColumnsNumber);
         // RecyclerView
         mRecyclerView.setLayoutManager(mGridLayoutManager);
         mRecyclerView.setHasFixedSize(true);
-        // Adapter
-        mMainRecipeAdapter = new MainRecipeAdapter(this, mRecipes, this);
-        mRecyclerView.setAdapter(mMainRecipeAdapter);
-//        // Display recipes
-//        loadRecipes();
     }
 
     // TODO add no Connection error
-    public void loadRecipes() {
-        ApiInterface request = ApiClient.getClient().create(ApiInterface.class);
-        Call<List<Recipe>> call = request.getRecipes();
 
-        // Asynchronous request
-        call.enqueue(new Callback<List<Recipe>>() {
-            @Override
-            public void onResponse(Call<List<Recipe>> call,
-                                   Response<List<Recipe>> response) {
-                mRecipes = response.body();
-                Log.d(TAG, "Number of recipes :" + mRecipes.size());
-                mMainRecipeAdapter.setRecipeData(mRecipes);
-            }
-            @Override
-            public void onFailure(Call<List<Recipe>> call, Throwable t) {
-                Toast.makeText
-                        (MainActivity.this, "error message", Toast.LENGTH_LONG).show();
-                Log.d(TAG, t.getMessage());
-            }
-        });
-    }
-
+    // TODO Change intent for 2-pane
     // On two-pane, create Ingredients fragment for selected Recipe
     // On single-pane, open MasterRecipePagerActivity, passing in selected Recipe
     @Override
     public void onClick(Recipe currentRecipe) {
+        mCurrentRecipeId = currentRecipe.getRecipeId();
+        //mRecipeName = currentRecipe.getName();
         if(mTwoPane) {
             defaultTabletLayout.setVisibility(View.GONE);
             mainTabletLayout.setVisibility(View.VISIBLE);
@@ -194,10 +194,20 @@ public class MainActivity extends AppCompatActivity
 
         } else {
             Intent intentSentMainMaster = new Intent(this, MasterRecipePagerActivity.class);
-            intentSentMainMaster.putExtra(RECIPE, currentRecipe);
+            Bundle mainBundle = new Bundle();
+            mainBundle.putInt(RECIPE_ID, mCurrentRecipeId);
+            intentSentMainMaster.putExtras(mainBundle);
+            Log.d(TAG, "Selected Recipe id: " + mCurrentRecipeId);
             startActivity(intentSentMainMaster);
-            // Log.d(TAG, "Selected Recipe; " + currentRecipe.getName());
         }
+    }
+
+    //
+    private void isNetworkConnected() {
+        // get Connectivity Manager to get network status
+        ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
+        mRecipeViewModel.setInternetState(activeNetwork != null && activeNetwork.isConnectedOrConnecting());
     }
 
     @Override

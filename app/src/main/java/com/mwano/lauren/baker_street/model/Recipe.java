@@ -1,29 +1,42 @@
 package com.mwano.lauren.baker_street.model;
 
+import android.arch.persistence.room.ColumnInfo;
+import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.Ignore;
+import android.arch.persistence.room.PrimaryKey;
+import android.arch.persistence.room.TypeConverters;
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.support.annotation.NonNull;
 
 import java.util.List;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+import com.mwano.lauren.baker_street.data.local.DataConverter;
 
+@Entity(tableName = "recipe")
 public class Recipe implements Parcelable {
 
-    @SerializedName("recipeId")
+    @SerializedName("id")
     @Expose
-    private Integer recipeId;
+    @PrimaryKey
+    private int recipeId;
     @SerializedName("name")
     @Expose
     private String name;
     @SerializedName("ingredients")
     @Expose
-    private List<Ingredient> ingredients = null;
+    @TypeConverters(DataConverter.class)
+    @ColumnInfo(name = "ingredients_list")
+    private List<Ingredient> ingredients;
     @SerializedName("steps")
     @Expose
-    private List<Step> steps = null;
+    @TypeConverters(DataConverter.class)
+    @ColumnInfo(name = "steps_list")
+    private List<Step> steps;
     @SerializedName("servings")
     @Expose
-    private Integer servings;
+    private int servings;
     @SerializedName("image")
     @Expose
     private String image;
@@ -33,11 +46,11 @@ public class Recipe implements Parcelable {
     }
 
     // Getters and Setters
-    public Integer getRecipeId() {
+    public int getRecipeId() {
         return recipeId;
     }
 
-    public void setRecipeId(Integer recipeId) {
+    public void setRecipeId(int recipeId) {
         this.recipeId = recipeId;
     }
 
@@ -65,11 +78,11 @@ public class Recipe implements Parcelable {
         this.steps = steps;
     }
 
-    public Integer getServings() {
+    public int getServings() {
         return servings;
     }
 
-    public void setServings(Integer servings) {
+    public void setServings(int servings) {
         this.servings = servings;
     }
 
@@ -90,20 +103,20 @@ public class Recipe implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeValue(this.recipeId);
+        dest.writeInt(this.recipeId);
         dest.writeString(this.name);
         dest.writeTypedList(this.ingredients);
         dest.writeTypedList(this.steps);
-        dest.writeValue(this.servings);
+        dest.writeInt(this.servings);
         dest.writeString(this.image);
     }
 
     protected Recipe(Parcel in) {
-        this.recipeId = (Integer) in.readValue(Integer.class.getClassLoader());
+        this.recipeId = in.readInt();
         this.name = in.readString();
         this.ingredients = in.createTypedArrayList(Ingredient.CREATOR);
         this.steps = in.createTypedArrayList(Step.CREATOR);
-        this.servings = (Integer) in.readValue(Integer.class.getClassLoader());
+        this.servings = in.readInt();
         this.image = in.readString();
     }
 

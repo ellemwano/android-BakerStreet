@@ -1,31 +1,25 @@
 package com.mwano.lauren.baker_street.ui.detail;
 
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
-import android.view.View;
-import android.widget.Button;
 
 import com.mwano.lauren.baker_street.R;
 import com.mwano.lauren.baker_street.model.Step;
 import com.rd.PageIndicatorView;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
 import static com.mwano.lauren.baker_street.ui.master.MasterStepsPageFragment.STEPS_LIST;
-import static com.mwano.lauren.baker_street.ui.master.MasterStepsPageFragment.STEP_SELECTED;
 
 
 /**
@@ -52,9 +46,7 @@ public class DetailStepPagerActivity extends AppCompatActivity {
     private static final String STEP_LIST = "step list";
     private static final String STEP_ID = "step id";
     private static final String STEP_DESCRIPTION = "step description";
-    private static final String STEP_VIDEO_URL = "step video url";
 
-    // TODO Add page indicator
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -62,12 +54,12 @@ public class DetailStepPagerActivity extends AppCompatActivity {
         ButterKnife.bind(this);
 
         if (savedInstanceState == null) {
-            // Get the selected recipe from the intent
+            // Get the selected step from the intent
             final Intent intentMasterDetailStep = getIntent();
-            if (intentMasterDetailStep.hasExtra(STEP_SELECTED)
+            if (intentMasterDetailStep.hasExtra(CURRENT_STEP)
                     && intentMasterDetailStep.hasExtra(STEPS_LIST)) {
                 mSteps = intentMasterDetailStep.getParcelableArrayListExtra(STEPS_LIST);
-                mCurrentStep = intentMasterDetailStep.getParcelableExtra(STEP_SELECTED);
+                mCurrentStep = intentMasterDetailStep.getParcelableExtra(CURRENT_STEP);
             }
         }
         if (savedInstanceState != null) {
@@ -92,8 +84,6 @@ public class DetailStepPagerActivity extends AppCompatActivity {
         mPageIndicatorView.setViewPager(mStepPager);
         mPageIndicatorView.setSelection(mStepId);
     }
-
-
 
 
     /**
