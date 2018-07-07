@@ -77,6 +77,7 @@ public class DetailStepPageFragment extends Fragment {
         super.onCreate(savedInstanceState);
     }
 
+    // TODO Fix saved state (playing position) and video for SDK > 23
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {

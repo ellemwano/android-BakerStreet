@@ -59,7 +59,7 @@ public class MasterDetailActivity extends AppCompatActivity
         setSupportActionBar(toolbar);
         ButterKnife.bind(this);
 
-
+        // TODO Observe ViewModel's recipe by Id
         if (savedInstanceState == null) {
             final Intent intentReceivedMainMasterDetail = getIntent();
             if (intentReceivedMainMasterDetail.hasExtra(RECIPE)) {
