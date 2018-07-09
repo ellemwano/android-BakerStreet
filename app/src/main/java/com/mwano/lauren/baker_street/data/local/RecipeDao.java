@@ -34,6 +34,12 @@ public interface RecipeDao {
     @Query("SELECT * FROM recipe WHERE recipeId = :id")
     LiveData<Recipe> getRecipeById(int id);
 
+    // Get single recipe by id for the widget (no live data)
+    @Query("SELECT * FROM recipe WHERE recipeId = :id")
+    Recipe getRecipeByIdForWidget(int id);
+
+
+
     // Get all recipes
     @Query("SELECT * FROM recipe")
     LiveData<List<Recipe>> getAllRecipes();

@@ -28,7 +28,6 @@ public class RecipeRepository {
     private RecipeDatabase mRecipeDatabase;
     private LiveData<List<Recipe>> mRecipes;
     private LiveData<Recipe> mRecipe;
-    private LiveData<List<Ingredient>> mIngredientsList;
 
     private static final String TAG = RecipeRepository.class.getSimpleName();
 
@@ -38,7 +37,12 @@ public class RecipeRepository {
         mRecipeDao = recipeDao;
     }
 
-    // Build a singleton of the RecipeDatabase
+    /**
+     * Build a singleton of the RecipeDatabase
+     * @param database
+     * @param dao
+     * @return a RecipeDatabase instance, sInstance
+     */
     public synchronized static RecipeRepository getRepositoryInstance(RecipeDatabase database, RecipeDao dao) {
         if (sInstance == null) {
             synchronized (LOCK) {
@@ -77,15 +81,11 @@ public class RecipeRepository {
     }
 
     /**
-     * Get all recipes from the database
-     *
+     * Get all the recipes from the database
      * @return the List of Recipes
      */
-    //@SuppressLint("StaticFieldLeak")
     public LiveData<List<Recipe>> getRecipesFromDb() {
-        //final MutableLiveData<List<Recipe>> mRecipes = new MutableLiveData<>();
         mRecipes = mRecipeDao.getAllRecipes();
-        //mRecipes.setValue(recipes);
         return mRecipes;
     }
 
@@ -106,12 +106,31 @@ public class RecipeRepository {
     }
 
 
+    /**
+     * Query a Recipe by a given id.
+     * @param id
+     * @return A LiveData Recipe object
+     */
     public LiveData<Recipe> loadSingleRecipeById (final int id) {
         mRecipe = mRecipeDao.getRecipeById(id);
         return mRecipe;
     }
 
-    // Fetch all Recipes, from Network or DB, according to internet connection.
+    /**
+     * Query a Recipe by a given id, for the widget
+     * @param id
+     * @return a Recipe object (not LiveData)
+     */
+    public Recipe getSingleRecipeForWidget (final int id) {
+        return mRecipeDao.getRecipeByIdForWidget(id);
+    }
+
+    /**
+     * Check the internet state
+     * and decide whether to fetch the recipe List from the network or the database
+     * @param internetState
+     * @return a network or db getter according to the internet state
+     */
     public LiveData<List<Recipe>> getRecipeList(boolean internetState) {
         if (internetState) {
             return getRecipesFromNetwork();
@@ -120,11 +139,14 @@ public class RecipeRepository {
         }
     }
 
-    // Delete all recipes
+    /**
+     * Delete all recipes from the database
+     */
     public void deleteAllRecipesFromDb() {
         mRecipeDao.deleteAllRecipes();
     }
 }
+
 
 
 

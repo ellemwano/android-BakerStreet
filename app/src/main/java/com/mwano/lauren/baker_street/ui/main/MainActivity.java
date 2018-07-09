@@ -4,6 +4,7 @@ import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.support.annotation.Nullable;
@@ -108,7 +109,6 @@ public class MainActivity extends AppCompatActivity
         mRecipeDatabase = RecipeDatabase.getDatabase(this);
         // Instantiate Repository
         mRecipeRepository = RecipeRepository.getRepositoryInstance(mRecipeDatabase, mRecipeDatabase.recipeDao());
-
 
         // ViewModel
         RecipeViewModelFactory factory =

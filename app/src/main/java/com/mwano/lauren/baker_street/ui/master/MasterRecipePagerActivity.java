@@ -6,6 +6,7 @@ import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
@@ -50,6 +51,9 @@ public class MasterRecipePagerActivity extends AppCompatActivity {
     ViewPager viewPager;
     @BindView(R.id.tabs)
     TabLayout tabs;
+
+    // Shared Preferences object
+    private SharedPreferences mPreferences;
     private RecipeRepository mRecipeRepository;
     private RecipeDatabase mRecipeDatabase;
     private Recipe mCurrentRecipe;
@@ -59,8 +63,11 @@ public class MasterRecipePagerActivity extends AppCompatActivity {
     private List<Step> mSteps = new ArrayList<>();
     private IngredientStepViewModel mViewModel;
 
-    private static final String RECIPE_ID = "recipe id";
-    private static final String RECIPE_NAME = "recipe name";
+    public static final String RECIPE_ID = "recipe id";
+    public static final String RECIPE_NAME = "recipe name";
+    // Name of Shared Preferences file
+    public static final String SHARED_PREFS = "com.mwano.lauren.baker_street.preferences";
+
     private static final String TAG = MasterRecipePagerActivity.class.getSimpleName();
 
 
@@ -73,14 +80,19 @@ public class MasterRecipePagerActivity extends AppCompatActivity {
         // Adding Toolbar to Main screen
         setSupportActionBar(toolbar);
 
+        // Initialise SharedPreferences
+        mPreferences = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
+
         // Instantiate Database
         mRecipeDatabase = RecipeDatabase.getDatabase(this);
         // Instantiate Repository
         mRecipeRepository = RecipeRepository.getRepositoryInstance(mRecipeDatabase, mRecipeDatabase.recipeDao());
 
         if (savedInstanceState != null) {
-            mRecipeId = savedInstanceState.getInt(RECIPE_ID);
-            mRecipeName = savedInstanceState.getString(RECIPE_NAME);
+            //mRecipeId = savedInstanceState.getInt(RECIPE_ID);
+            //mRecipeName = savedInstanceState.getString(RECIPE_NAME);
+            mRecipeId = mPreferences.getInt(RECIPE_ID, 1);
+            mRecipeName = mPreferences.getString(RECIPE_NAME,"Nutella Pie");
         } else {
             // Get the selected Recipe id from the intent
             Bundle receivedBundle = getIntent().getExtras();
@@ -106,7 +118,11 @@ public class MasterRecipePagerActivity extends AppCompatActivity {
                 mIngredients = mCurrentRecipe.getIngredients();
                 // Get the steps arrayList from the intent extra
                 mSteps = mCurrentRecipe.getSteps();
-
+                // Add the Recipe id and name to SharedPreferences
+                SharedPreferences.Editor preferencesEditor = mPreferences.edit();
+                preferencesEditor.putInt(RECIPE_ID, mRecipeId);
+                preferencesEditor.putString(RECIPE_NAME, mRecipeName);
+                preferencesEditor.apply();
                 // Set Recipe name on toolbar
                 setTitle(mRecipeName);
                 // Setting ViewPager for each Tabs
@@ -116,6 +132,7 @@ public class MasterRecipePagerActivity extends AppCompatActivity {
             }
         });
 
+        // TODO check
         // Sending the Recipe ID to Steps and Ingredients fragments
         Bundle IdArgument = new Bundle();
         IdArgument.putInt(RECIPE_ID, mRecipeId);
@@ -173,10 +190,10 @@ public class MasterRecipePagerActivity extends AppCompatActivity {
         }
     }
 
-    @Override
-    protected void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-        outState.putInt(RECIPE_ID, mRecipeId);
-        outState.putString(RECIPE_NAME, mRecipeName);
-    }
+//    @Override
+//    protected void onSaveInstanceState(Bundle outState) {
+//        super.onSaveInstanceState(outState);
+//        outState.putInt(RECIPE_ID, mRecipeId);
+//        outState.putString(RECIPE_NAME, mRecipeName);
+//    }
 }

@@ -8,7 +8,11 @@ import android.support.annotation.NonNull;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
+/**
+ * Source code: "Architecture Components" lesson app, Udacity Android Developer ND.
+ */
 public class AppExecutors {
+
     // For Singleton instantiation
     private static final Object LOCK = new Object();
     private static AppExecutors sInstance;

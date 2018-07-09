@@ -3,4 +3,6 @@
     <!-- Master ViewPager tab names -->
     <string name="viewpager_ingredients_tab">Ingredients</string>
     <string name="viewpager_steps_tab">Steps</string>
+    <string name="appwidget_text">EXAMPLE</string>
+    <string name="add_widget">Add widget</string>
 </resources>

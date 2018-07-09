@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/tv_widget_ingredient"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="4"
+        android:gravity="start"
+        android:padding="8dp"
+        android:textSize="17sp"
+        android:textColor="@color/textColorPrimary"
+        tools:text="@tools:sample/lorem"/>
+
+    <TextView
+        android:id="@+id/tv_widget_quantity"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="end"
+        android:padding="8dp"
+        android:paddingBottom="8dp"
+        android:textColor="@color/textColorPrimary"
+        android:textSize="17sp"
+        tools:text="@tools:sample/lorem" />
+
+    <TextView
+        android:id="@+id/tv_widget_measure"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="end"
+        android:padding="8dp"
+        android:textSize="17sp"
+        android:textColor="@color/textColorPrimary"
+        tools:text="@tools:sample/lorem"/>
+
+</LinearLayout>
