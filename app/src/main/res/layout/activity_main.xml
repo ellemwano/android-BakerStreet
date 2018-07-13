@@ -30,8 +30,23 @@
         android:scrollbars="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:visibility="visible"
         app:layout_behavior="@string/appbar_scrolling_view_behavior" >
     </android.support.v7.widget.RecyclerView>
+
+    <TextView
+        android:id="@+id/tv_recipes_error"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="16dp"
+        android:background="@color/colorPrimary"
+        android:text="@string/no_internet_recipes"
+        android:textColor="@color/textColorPrimary"
+        android:textSize="18sp"
+        android:visibility="gone"
+        android:textAlignment="gravity"
+        android:gravity="center_vertical|center_horizontal"
+        android:layout_gravity="center_vertical|center_horizontal"/>
 
 </android.support.design.widget.CoordinatorLayout>
 

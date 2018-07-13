@@ -4,7 +4,6 @@ import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.support.annotation.Nullable;
@@ -18,17 +17,16 @@ import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.facebook.stetho.Stetho;
 import com.mwano.lauren.baker_street.R;
 import com.mwano.lauren.baker_street.data.local.RecipeDatabase;
 import com.mwano.lauren.baker_street.data.local.RecipeRepository;
-import com.mwano.lauren.baker_street.data.local.RecipeViewModel;
-import com.mwano.lauren.baker_street.data.local.RecipeViewModelFactory;
+import com.mwano.lauren.baker_street.data.local.viewmodel.RecipeViewModel;
+import com.mwano.lauren.baker_street.data.local.viewmodel.RecipeViewModelFactory;
 import com.mwano.lauren.baker_street.model.Ingredient;
 import com.mwano.lauren.baker_street.model.Recipe;
-import com.mwano.lauren.baker_street.ui.twoPane.MasterDetailActivity;
+import com.mwano.lauren.baker_street.ui.twoPane.MasterDetailTwoPaneActivity;
 import com.mwano.lauren.baker_street.ui.master.MasterIngredientsPageFragment;
 import com.mwano.lauren.baker_street.ui.master.MasterRecipePagerActivity;
 import com.mwano.lauren.baker_street.utils.Utils;
@@ -38,12 +36,9 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 
-    /**
+/**
     Code source for Retrofit
     https://www.androidhive.info/2016/05/android-working-with-retrofit-http-library/
 //    and the use of APIManager:
@@ -56,6 +51,10 @@ public class MainActivity extends AppCompatActivity
     RecyclerView mRecyclerView;
     @BindView(R.id.toolbar)
     Toolbar toolbar;
+    @Nullable
+    @BindView(R.id.tv_recipes_error)
+    TextView mRecipesError;
+
     @Nullable
     @BindView(R.id.tv_recipe_name_main)
     TextView recipeNameMainTextView;
@@ -81,27 +80,25 @@ public class MainActivity extends AppCompatActivity
     private RecipeViewModel mRecipeViewModel;
     private RecipeRepository mRecipeRepository;
     private RecipeDatabase mRecipeDatabase;
+    private Context mContext;
     private boolean hasNetworkConnection = false;
 
     public static final String RECIPE = "recipe";
     public static final String RECIPE_ID = "recipe id";
-    public static final String RECIPE_NAME = "recipe_name";
     private final String TAG = MainActivity.class.getSimpleName();
 
-
-    // TODO Add splash screen
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         // TODO Remove Stetho ?
         Stetho.initializeWithDefaults(this);
+        mContext = getApplicationContext();
         // Adding Toolbar to Main screen
         setSupportActionBar(toolbar);
         ButterKnife.bind(this);
         // Set app name to toolbar
         toolbar.setTitle(R.string.app_name);
-
         // Adapter
         mMainRecipeAdapter = new MainRecipeAdapter(this, mRecipes, this);
         mRecyclerView.setAdapter(mMainRecipeAdapter);
@@ -109,13 +106,16 @@ public class MainActivity extends AppCompatActivity
         mRecipeDatabase = RecipeDatabase.getDatabase(this);
         // Instantiate Repository
         mRecipeRepository = RecipeRepository.getRepositoryInstance(mRecipeDatabase, mRecipeDatabase.recipeDao());
-
         // ViewModel
         RecipeViewModelFactory factory =
                 new RecipeViewModelFactory(mRecipeRepository);
         mRecipeViewModel =
                 ViewModelProviders.of(this, factory).get(RecipeViewModel.class);
         isNetworkConnected();
+        // If no internet connection, show message prompting user to check connection
+        if (!Utils.isNetworkConnected(mContext)) {
+            showNoRecipesError();
+        }
         mRecipeViewModel.getRecipeList().observe(MainActivity.this, new Observer<List<Recipe>>() {
             @Override
             public void onChanged(@Nullable List<Recipe> recipes) {
@@ -126,7 +126,7 @@ public class MainActivity extends AppCompatActivity
         // Check if 2-pane layout
         if(findViewById(R.id.main_tablet_layout) != null) {
             mTwoPane = true;
-            mColumnsNumber = 3;
+            //mColumnsNumber = (int) getResources().getInteger(R.integer.num_of_columns);
 
             if (savedInstanceState == null) {
                 // Set welcome screen
@@ -148,16 +148,19 @@ public class MainActivity extends AppCompatActivity
             toStepsTextView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    final Intent intentSentMainMasterDetail = new Intent(MainActivity.this, MasterDetailActivity.class);
-                    intentSentMainMasterDetail.putExtra(RECIPE, mCurrentRecipe);
-                    startActivity(intentSentMainMasterDetail);
+                    mCurrentRecipeId = mCurrentRecipe.getRecipeId();
+                    Intent intentSentMainMasterTwoPane = new Intent(MainActivity.this, MasterDetailTwoPaneActivity.class);
+                    Bundle mainTwoPaneBundle = new Bundle();
+                    mainTwoPaneBundle.putInt(RECIPE_ID, mCurrentRecipeId);
+                    intentSentMainMasterTwoPane.putExtras(mainTwoPaneBundle);
+                    Log.d(TAG, "Selected Recipe id: " + mCurrentRecipeId);
+                    //
+                    startActivity(intentSentMainMasterTwoPane);
                 }
             });
         } else {
             // We're in a single-pane mode, displaying fragments on a phone, in different activities
             mTwoPane = false;
-            // Set number of columns in portrait or landscape mode
-            mColumnsNumber = (int) getResources().getInteger(R.integer.num_of_columns);
         }
         // Set Recipe name on toolbar
         if(mCurrentRecipe != null) {
@@ -165,22 +168,20 @@ public class MainActivity extends AppCompatActivity
             setTitle(mRecipeName);
         }
 
+        // Set different number of columns for phone-port, phone-land or tablet-land modes
+        mColumnsNumber = (int) getResources().getInteger(R.integer.num_of_columns);
+        // GridLayout
         mGridLayoutManager = new GridLayoutManager(this, mColumnsNumber);
         // RecyclerView
         mRecyclerView.setLayoutManager(mGridLayoutManager);
         mRecyclerView.setHasFixedSize(true);
     }
 
-    // TODO add no Connection error
-
-    // TODO Change intent for 2-pane
-    // On two-pane, create Ingredients fragment for selected Recipe
-    // On single-pane, open MasterRecipePagerActivity, passing in selected Recipe
     @Override
     public void onClick(Recipe currentRecipe) {
         mCurrentRecipeId = currentRecipe.getRecipeId();
-        //mRecipeName = currentRecipe.getName();
         if(mTwoPane) {
+            // On two-pane, create Ingredients fragment for selected Recipe
             defaultTabletLayout.setVisibility(View.GONE);
             mainTabletLayout.setVisibility(View.VISIBLE);
             mCurrentRecipe = currentRecipe;
@@ -193,6 +194,7 @@ public class MainActivity extends AppCompatActivity
                     .commit();
 
         } else {
+            // On single-pane, open MasterRecipePagerActivity, passing in selected Recipe id
             Intent intentSentMainMaster = new Intent(this, MasterRecipePagerActivity.class);
             Bundle mainBundle = new Bundle();
             mainBundle.putInt(RECIPE_ID, mCurrentRecipeId);
@@ -202,12 +204,16 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
-    //
     private void isNetworkConnected() {
         // get Connectivity Manager to get network status
         ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
         mRecipeViewModel.setInternetState(activeNetwork != null && activeNetwork.isConnectedOrConnecting());
+    }
+
+    public void showNoRecipesError() {
+        mRecyclerView.setVisibility(View.GONE);
+        mRecipesError.setVisibility(View.VISIBLE);
     }
 
     @Override

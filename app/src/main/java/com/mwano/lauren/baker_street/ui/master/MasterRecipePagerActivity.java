@@ -1,11 +1,7 @@
 package com.mwano.lauren.baker_street.ui.master;
 
-import android.arch.lifecycle.LiveData;
-import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
-import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -19,14 +15,13 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 
 import com.mwano.lauren.baker_street.R;
-import com.mwano.lauren.baker_street.data.local.IngredientStepViewModel;
-import com.mwano.lauren.baker_street.data.local.IngredientStepViewModelFactory;
+import com.mwano.lauren.baker_street.data.local.viewmodel.IngredientStepViewModel;
+import com.mwano.lauren.baker_street.data.local.viewmodel.IngredientStepViewModelFactory;
 import com.mwano.lauren.baker_street.data.local.RecipeDatabase;
 import com.mwano.lauren.baker_street.data.local.RecipeRepository;
 import com.mwano.lauren.baker_street.model.Ingredient;
 import com.mwano.lauren.baker_street.model.Recipe;
 import com.mwano.lauren.baker_street.model.Step;
-import com.mwano.lauren.baker_street.ui.main.MainActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,12 +29,9 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-import static com.mwano.lauren.baker_street.ui.main.MainActivity.RECIPE;
-import static com.mwano.lauren.baker_street.ui.main.MainActivity.RECIPE_ID;
-
 
 /**
- * Code source for ViewPager (java + xml) - Codelab:
+ * Code source help for ViewPager (java + xml) - Codelab:
  * https://codelabs.developers.google.com/codelabs/material-design-style/index.html?index=..%2F..%2Findex#3
  */
 
@@ -57,7 +49,7 @@ public class MasterRecipePagerActivity extends AppCompatActivity {
     private RecipeRepository mRecipeRepository;
     private RecipeDatabase mRecipeDatabase;
     private Recipe mCurrentRecipe;
-    public int mRecipeId;
+    private int mRecipeId;
     private String mRecipeName;
     private List<Ingredient> mIngredients = new ArrayList<>();
     private List<Step> mSteps = new ArrayList<>();
@@ -79,10 +71,8 @@ public class MasterRecipePagerActivity extends AppCompatActivity {
         ButterKnife.bind(this);
         // Adding Toolbar to Main screen
         setSupportActionBar(toolbar);
-
         // Initialise SharedPreferences
         mPreferences = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
-
         // Instantiate Database
         mRecipeDatabase = RecipeDatabase.getDatabase(this);
         // Instantiate Repository
@@ -92,12 +82,12 @@ public class MasterRecipePagerActivity extends AppCompatActivity {
             //mRecipeId = savedInstanceState.getInt(RECIPE_ID);
             //mRecipeName = savedInstanceState.getString(RECIPE_NAME);
             mRecipeId = mPreferences.getInt(RECIPE_ID, 1);
-            mRecipeName = mPreferences.getString(RECIPE_NAME,"Nutella Pie");
+            mRecipeName = mPreferences.getString(RECIPE_NAME, "Nutella Pie");
         } else {
             // Get the selected Recipe id from the intent
             Bundle receivedBundle = getIntent().getExtras();
             mRecipeId = receivedBundle.getInt(RECIPE_ID);
-            Log.d(TAG, "Received Recipe id = " + mRecipeId );
+            Log.d(TAG, "Received Recipe id = " + mRecipeId);
             // OK - ID correct
         }
 
@@ -133,18 +123,18 @@ public class MasterRecipePagerActivity extends AppCompatActivity {
         });
 
         // TODO check
-        // Sending the Recipe ID to Steps and Ingredients fragments
-        Bundle IdArgument = new Bundle();
-        IdArgument.putInt(RECIPE_ID, mRecipeId);
-        Log.d(TAG, "Sent Recipe id from Master Activity : " + mRecipeId);
-        //
-        MasterIngredientsPageFragment ingredientFragment = new MasterIngredientsPageFragment();
-        ingredientFragment.setArguments(IdArgument);
-        MasterStepsPageFragment stepFragment = new MasterStepsPageFragment();
-        stepFragment.setArguments(IdArgument);
+//        // Sending the Recipe ID to Steps and Ingredients fragments
+//        Bundle IdArgument = new Bundle();
+//        IdArgument.putInt(RECIPE_ID, mRecipeId);
+//        Log.d(TAG, "Sent Recipe id from Master Activity : " + mRecipeId);
+//        //
+//        MasterIngredientsPageFragment ingredientFragment = new MasterIngredientsPageFragment();
+//        ingredientFragment.setArguments(IdArgument);
+//        MasterStepsPageFragment stepFragment = new MasterStepsPageFragment();
+//        stepFragment.setArguments(IdArgument);
     }
 
-    // Add Fragments to Tabs
+    // Add fragments to ViewPager tabs
     private void setupViewPager(ViewPager viewPager) {
         Adapter adapter = new Adapter(getSupportFragmentManager());
         // Create instance of the ingredients fragment and add it to activity

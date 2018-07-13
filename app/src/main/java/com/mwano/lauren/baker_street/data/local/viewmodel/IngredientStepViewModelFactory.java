@@ -1,12 +1,13 @@
 
-package com.mwano.lauren.baker_street.data.local;
 
-import android.app.Application;
+package com.mwano.lauren.baker_street.data.local.viewmodel;
+
 import android.arch.lifecycle.ViewModel;
 import android.arch.lifecycle.ViewModelProvider;
 import android.support.annotation.NonNull;
 
-import com.mwano.lauren.baker_street.model.Recipe;
+import com.mwano.lauren.baker_street.data.local.RecipeRepository;
+import com.mwano.lauren.baker_street.data.local.viewmodel.IngredientStepViewModel;
 
 public class IngredientStepViewModelFactory extends ViewModelProvider.NewInstanceFactory{
 
@@ -22,6 +23,6 @@ public class IngredientStepViewModelFactory extends ViewModelProvider.NewInstanc
     @NonNull
     @Override
     public <T extends ViewModel> T create(@NonNull Class<T> modelClass) {
-        return (T) new IngredientStepViewModel (mRecipeRepository, mRecipeId);
+        return (T) new IngredientStepViewModel(mRecipeRepository, mRecipeId);
     }
 }

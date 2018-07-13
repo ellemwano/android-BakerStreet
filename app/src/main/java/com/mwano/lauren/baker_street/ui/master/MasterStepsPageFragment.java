@@ -1,6 +1,7 @@
 package com.mwano.lauren.baker_street.ui.master;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -23,6 +24,10 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+import static android.content.Context.MODE_PRIVATE;
+import static com.mwano.lauren.baker_street.ui.master.MasterRecipePagerActivity.RECIPE_NAME;
+import static com.mwano.lauren.baker_street.ui.master.MasterRecipePagerActivity.SHARED_PREFS;
+
 /**
  * Provides UI for the view with the Steps for the selected recipe
  */
@@ -31,9 +36,10 @@ public class MasterStepsPageFragment extends Fragment
 
     @BindView(R.id.rv_steps)
     RecyclerView mStepsRecyclerView;
-    // Recipe includes a List of Ingredients
+
     public List<Step> mSteps = new ArrayList<Step>();
     private int mRecipeId;
+    SharedPreferences mPreferences;
 
     public static final String STEPS_LIST = "steps";
     public static final String CURRENT_STEP = "current step";
@@ -52,6 +58,9 @@ public class MasterStepsPageFragment extends Fragment
                 mSteps = getArguments().getParcelableArrayList(STEPS_LIST);
             }
         }
+        // TODO New
+        mPreferences = getActivity().getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
+        mRecipeId = mPreferences.getInt(RECIPE_ID, 1);
     }
 
     @Nullable
@@ -89,11 +98,17 @@ public class MasterStepsPageFragment extends Fragment
         return stepFragment;
     }
 
+    /**
+     * On phone, opens a new Detail activity showing the selcted step info
+     * @param currentStep The selected step
+     * @param steps  the list of steps for the given recipe
+     */
     @Override
     public void onClick(Step currentStep, ArrayList<Step> steps) {
         Intent intentDetailStep = new Intent(getActivity(), DetailStepPagerActivity.class);
         intentDetailStep.putExtra(CURRENT_STEP, currentStep);
         intentDetailStep.putExtra(STEPS_LIST, steps);
+//        intentDetailStep.putExtra(RECIPE_ID, mRecipeId);
         startActivity(intentDetailStep);
     }
 }

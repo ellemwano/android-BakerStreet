@@ -1,27 +1,17 @@
 package com.mwano.lauren.baker_street.ui.master;
 
-import android.arch.lifecycle.Observer;
-import android.arch.lifecycle.ViewModelProviders;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.mwano.lauren.baker_street.R;
-import com.mwano.lauren.baker_street.data.local.IngredientStepViewModel;
-import com.mwano.lauren.baker_street.data.local.IngredientStepViewModelFactory;
-import com.mwano.lauren.baker_street.data.local.RecipeDatabase;
-import com.mwano.lauren.baker_street.data.local.RecipeRepository;
 import com.mwano.lauren.baker_street.model.Ingredient;
-import com.mwano.lauren.baker_street.model.Recipe;
-import com.mwano.lauren.baker_street.ui.main.MainActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,9 +27,8 @@ public class MasterIngredientsPageFragment extends Fragment {
 
     @BindView(R.id.rv_ingredients)
     RecyclerView mIngredientsRecyclerView;
-    // Recipe includes a List of Ingredients
+
     public List<Ingredient> mIngredients = new ArrayList<>();
-    //public List<Ingredient> mIngredients;
     LinearLayoutManager mLayoutManager;
 
     public static final String INGREDIENTS_LIST = "ingredients";

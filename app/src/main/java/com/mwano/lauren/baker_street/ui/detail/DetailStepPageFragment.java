@@ -28,6 +28,7 @@ import com.google.android.exoplayer2.upstream.DefaultHttpDataSourceFactory;
 import com.google.android.exoplayer2.util.Util;
 import com.mwano.lauren.baker_street.R;
 import com.mwano.lauren.baker_street.model.Step;
+import com.mwano.lauren.baker_street.utils.Utils;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -43,12 +44,15 @@ import butterknife.ButterKnife;
  */
 public class DetailStepPageFragment extends Fragment {
 
+    @Nullable
     @BindView(R.id.tv_detail_description)
     TextView mDescriptionTextView;
     @BindView(R.id.exoplayer)
     PlayerView mPlayerView;
     @BindView(R.id.iv_thumbnail)
     ImageView mThumbnailView;
+    @BindView(R.id.tv_step_error)
+    TextView mErrorView;
 
     private SimpleExoPlayer mExoPlayer;
 
@@ -96,18 +100,21 @@ public class DetailStepPageFragment extends Fragment {
                 mStepId = getArguments().getInt(STEP_ID);
             }
         }
+
+        // TODO Add tablet land with description (otherwise same as phone)
+        // Check scroling tablet land + set full screen here only for phone on land
         // Set content to views
-        if(mStep != null) {
+        if(mStep != null && mDescriptionTextView != null) {
             mDescriptionTextView.setText(mStep.getDescription());
         }
-        // Check if phone or tablet. If on phone and landscape, hide description
-        Configuration config = getActivity().getResources().getConfiguration();
-        // If on phone and landscape, hide description and full screen
-        if(config.smallestScreenWidthDp < 600
-                && config.orientation == Configuration.ORIENTATION_LANDSCAPE) {
-            mDescriptionTextView.setVisibility(View.GONE);
-            hideSystemUi();
-        }
+//        // Check if phone or tablet. If on phone and landscape, hide description
+//        Configuration config = getActivity().getResources().getConfiguration();
+//        // If on phone and landscape, hide description and full screen
+//        if(config.smallestScreenWidthDp < 600
+//                && config.orientation == Configuration.ORIENTATION_LANDSCAPE) {
+//            mDescriptionTextView.setVisibility(View.GONE);
+//            hideSystemUi();
+//        }
         return rootview;
     }
 
@@ -221,6 +228,10 @@ public class DetailStepPageFragment extends Fragment {
         // If there's a video, create a MediaSource
         if (mStep != null) {
             if (!TextUtils.isEmpty(mStep.getVideoURL())) {
+                // If no internet connection, show mesage prompting user to connect
+                if (!Utils.isNetworkConnected(getActivity())) {
+                    showConnectionError();
+                }
                 mVideoUri = Uri.parse(mStep.getVideoURL());
                 MediaSource mediaSource = buildMediaSource(mVideoUri);
                 mExoPlayer.prepare(mediaSource, false, false);
@@ -281,7 +292,7 @@ public class DetailStepPageFragment extends Fragment {
     }
 
     // TODO Check if needed
-    // ExoPlayer in full screen
+    // ExoPlayer in full screen for phone (landscape)
     @SuppressLint("InlinedApi")
     private void hideSystemUi() {
         Configuration config = getActivity().getResources().getConfiguration();
@@ -296,13 +307,21 @@ public class DetailStepPageFragment extends Fragment {
     }
 
     public void showExoPlayer() {
+        mErrorView.setVisibility(View.GONE);
         mThumbnailView.setVisibility(View.GONE);
         mPlayerView.setVisibility(View.VISIBLE);
     }
 
     public void showImageView() {
+        mErrorView.setVisibility(View.GONE);
         mPlayerView.setVisibility(View.GONE);
         mThumbnailView.setVisibility(View.VISIBLE);
+    }
+
+    public void showConnectionError() {
+        mPlayerView.setVisibility(View.GONE);
+        mThumbnailView.setVisibility(View.GONE);
+        mErrorView.setVisibility(View.VISIBLE);
     }
 
     @Override

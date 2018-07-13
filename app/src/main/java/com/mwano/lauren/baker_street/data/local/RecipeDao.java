@@ -38,8 +38,6 @@ public interface RecipeDao {
     @Query("SELECT * FROM recipe WHERE recipeId = :id")
     Recipe getRecipeByIdForWidget(int id);
 
-
-
     // Get all recipes
     @Query("SELECT * FROM recipe")
     LiveData<List<Recipe>> getAllRecipes();
@@ -47,8 +45,4 @@ public interface RecipeDao {
     // Delete all Recipes
     @Query("DELETE FROM recipe")
     void deleteAllRecipes();
-
-//    // Get ingredient list for selected recipe
-//    @Query("SELECT ingredients_list FROM recipe WHERE recipeId = :id")
-//    List<Ingredient> loadRecipeIngredients(int id);
 }

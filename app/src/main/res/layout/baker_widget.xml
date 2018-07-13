@@ -3,7 +3,7 @@
     android:layout_height="match_parent"
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
-    android:background="@color/colorPrimary"
+    android:background="@color/colorPrimaryDark"
     android:padding="@dimen/widget_margin">
 
     <TextView
@@ -15,9 +15,9 @@
         android:layout_margin="8dp"
         tools:text="@tools:sample/lorem"
         android:layout_gravity="center_horizontal"
-        android:textColor="@color/textColorPrimary"
+        android:textColor="@color/backgroundColor"
         android:textSize="24sp"
-        android:textStyle="bold|italic" />
+        android:textStyle="bold" />
 
     <ListView
         android:id="@+id/widget_listview"

@@ -21,7 +21,7 @@
         </activity>
         <activity android:name=".ui.master.MasterRecipePagerActivity" />
         <activity android:name=".ui.detail.DetailStepPagerActivity" />
-        <activity android:name=".ui.twoPane.MasterDetailActivity" />
+        <activity android:name=".ui.twoPane.MasterDetailTwoPaneActivity" />
 
         <receiver android:name=".widget.BakerWidget">
             <intent-filter>

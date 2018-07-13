@@ -1,16 +1,12 @@
 
-package com.mwano.lauren.baker_street.data.local;
+package com.mwano.lauren.baker_street.data.local.viewmodel;
 
 import android.arch.lifecycle.LiveData;
-import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.ViewModel;
 import android.util.Log;
 
-import com.mwano.lauren.baker_street.model.Ingredient;
+import com.mwano.lauren.baker_street.data.local.RecipeRepository;
 import com.mwano.lauren.baker_street.model.Recipe;
-import com.mwano.lauren.baker_street.model.Step;
-
-import java.util.List;
 
 public class IngredientStepViewModel  extends ViewModel {
 
