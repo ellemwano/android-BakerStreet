@@ -1,5 +1,12 @@
 <resources>
     <string name="app_name">Baker Street</string>
+    <!-- Recipe item layout -->
+    <string name="servings">Servings: </string>
+    <!-- Step item layout -->
+    <string name="step">Step</string>
+    <!-- Tablet layout - Ingredients fragment -->
+    <string name="button_steps">Baking steps</string>
+    <string name="ingredients_title">Ingredients</string>
     <!-- Master ViewPager tab names -->
     <string name="viewpager_ingredients_tab">Ingredients</string>
     <string name="viewpager_steps_tab">Steps</string>
@@ -9,4 +16,11 @@
     <string name="no_internet_video">Cannot load video.\nPlease check your internet connection.</string>
     <!-- No internet - recipes error message -->
     <string name="no_internet_recipes">Cannot load recipes.\nPlease check your internet connection.</string>
+    <!-- Content description - ExoPlayer buttons -->
+    <string name="previous_button">Player\'s previous button</string>
+    <string name="pause_button">Player\'s pause button</string>
+    <string name="play_button">Player\'s play button</string>
+    <!-- Placeholder image -->
+    <string name="donut_image">Image of a donut</string>
+
 </resources>

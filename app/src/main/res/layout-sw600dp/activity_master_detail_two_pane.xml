@@ -34,7 +34,7 @@
 
     <!-- Display the Steps fragment -->
     <FrameLayout
-        android:id="@+id/detail_steps_container"
+        android:id="@+id/two_pane_steps_container"
         android:layout_width="350dp"
         android:layout_height="match_parent">
 
@@ -53,7 +53,7 @@
 
     <!-- Display the Step Detail fragment -->
     <FrameLayout
-        android:id="@+id/tablet_detail_steps_container"
+        android:id="@+id/tablet_detail_step_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
 

@@ -1,6 +1,7 @@
 package com.mwano.lauren.baker_street.ui.detail;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.res.Configuration;
 import android.graphics.drawable.GradientDrawable;
 import android.net.Uri;
@@ -71,6 +72,7 @@ public class DetailStepPageFragment extends Fragment {
     private static final String CURRENT_STEP = "current step";
     private static final String START_PLAY = "start play when ready";
     private static final String TAG = DetailStepPageFragment.class.getSimpleName();
+
 
     // Constructor
     public DetailStepPageFragment() {

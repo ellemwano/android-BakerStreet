@@ -20,7 +20,7 @@ public class MasterStepsAdapter
         extends RecyclerView.Adapter<MasterStepsAdapter.MasterStepsViewHolder> {
 
     private Context mContext;
-    private List<Step> mSteps = new ArrayList<>();
+    private List<Step> mSteps;
     private final StepAdapterOnClickHandler mStepClickHandler;
 
     // OnClickHandler interface

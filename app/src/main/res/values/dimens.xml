@@ -1,8 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <resources>
+    <!-- Phone and Tablet default null margin -->
     <dimen name="activity_horizontal_margin">0dp</dimen>
     <dimen name="activity_vertical_margin">0dp</dimen>
+    <!-- Phone and Tablet extra small margin -->
+    <dimen name="extra_small_margin">4dp</dimen>
+    <dimen name="extra_small_horizontal_margin">4dp</dimen>
+    <dimen name="extra_small_vertical_margin">4dp</dimen>
+    <!-- Phone and Tablet small margin -->
+    <dimen name="small_margin">8dp</dimen>
+    <dimen name="small_horizontal_margin">8dp</dimen>
+    <dimen name="small_vertical_margin">8dp</dimen>
+    <!-- Phone and Tablet extra small padding -->
+    <dimen name="extra_small_horizontal_padding">4dp</dimen>
+    <dimen name="extra_small_vertical_padding">4dp</dimen>
+    <dimen name="extra_small_padding">4dp</dimen>
+    <!-- Phone and Tablet small padding -->
+    <dimen name="small_horizontal_padding">8dp</dimen>
+    <dimen name="small_vertical_padding">8dp</dimen>
+    <dimen name="small_padding">8dp</dimen>
+    <!-- Phone and Tablet large padding -->
+    <dimen name="large_horizontal_padding">16dp</dimen>
+    <dimen name="large_vertical_padding">16dp</dimen>
+    <dimen name="large_padding">16dp</dimen>
+    <!-- Phone and Tablet extra large padding -->
+    <dimen name="extra_large_horizontal_padding">32dp</dimen>
+    <dimen name="extra_large_vertical_padding">32dp</dimen>
+    <dimen name="extra_large_padding">32dp</dimen>
 
     <!--
 Refer to App Widget Documentation for margin information

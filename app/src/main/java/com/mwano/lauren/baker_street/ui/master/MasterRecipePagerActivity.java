@@ -2,8 +2,10 @@ package com.mwano.lauren.baker_street.ui.master;
 
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -22,7 +24,9 @@ import com.mwano.lauren.baker_street.data.local.RecipeRepository;
 import com.mwano.lauren.baker_street.model.Ingredient;
 import com.mwano.lauren.baker_street.model.Recipe;
 import com.mwano.lauren.baker_street.model.Step;
+import com.mwano.lauren.baker_street.ui.detail.DetailStepPagerActivity;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -35,7 +39,8 @@ import butterknife.ButterKnife;
  * https://codelabs.developers.google.com/codelabs/material-design-style/index.html?index=..%2F..%2Findex#3
  */
 
-public class MasterRecipePagerActivity extends AppCompatActivity {
+public class MasterRecipePagerActivity extends AppCompatActivity
+                implements MasterStepsPageFragment.OnStepClickListener {
 
     @BindView(R.id.toolbar)
     Toolbar toolbar;
@@ -57,6 +62,8 @@ public class MasterRecipePagerActivity extends AppCompatActivity {
 
     public static final String RECIPE_ID = "recipe id";
     public static final String RECIPE_NAME = "recipe name";
+    public static final String STEPS_LIST = "steps";
+    public static final String CURRENT_STEP = "current step";
     // Name of Shared Preferences file
     public static final String SHARED_PREFS = "com.mwano.lauren.baker_street.preferences";
 
@@ -79,8 +86,6 @@ public class MasterRecipePagerActivity extends AppCompatActivity {
         mRecipeRepository = RecipeRepository.getRepositoryInstance(mRecipeDatabase, mRecipeDatabase.recipeDao());
 
         if (savedInstanceState != null) {
-            //mRecipeId = savedInstanceState.getInt(RECIPE_ID);
-            //mRecipeName = savedInstanceState.getString(RECIPE_NAME);
             mRecipeId = mPreferences.getInt(RECIPE_ID, 1);
             mRecipeName = mPreferences.getString(RECIPE_NAME, "Nutella Pie");
         } else {
@@ -121,17 +126,6 @@ public class MasterRecipePagerActivity extends AppCompatActivity {
                 tabs.setupWithViewPager(viewPager);
             }
         });
-
-        // TODO check
-//        // Sending the Recipe ID to Steps and Ingredients fragments
-//        Bundle IdArgument = new Bundle();
-//        IdArgument.putInt(RECIPE_ID, mRecipeId);
-//        Log.d(TAG, "Sent Recipe id from Master Activity : " + mRecipeId);
-//        //
-//        MasterIngredientsPageFragment ingredientFragment = new MasterIngredientsPageFragment();
-//        ingredientFragment.setArguments(IdArgument);
-//        MasterStepsPageFragment stepFragment = new MasterStepsPageFragment();
-//        stepFragment.setArguments(IdArgument);
     }
 
     // Add fragments to ViewPager tabs
@@ -146,6 +140,15 @@ public class MasterRecipePagerActivity extends AppCompatActivity {
                 MasterStepsPageFragment.newStepsInstance((ArrayList<Step>) mSteps);
         adapter.addFragment(stepFragment, getResources().getString(R.string.viewpager_steps_tab));
         viewPager.setAdapter(adapter);
+    }
+
+    // On phone, clicking on a step opens the DetailStepPagerActivity for the selected step
+    @Override
+    public void onStepSelected(Step currentStep, ArrayList<Step> steps) {
+        Intent intentDetailStep = new Intent(this, DetailStepPagerActivity.class);
+        intentDetailStep.putExtra(CURRENT_STEP, currentStep);
+        intentDetailStep.putExtra(STEPS_LIST, steps);
+        startActivity(intentDetailStep);
     }
 
     /**
@@ -179,11 +182,4 @@ public class MasterRecipePagerActivity extends AppCompatActivity {
             return mFragmentTitleList.get(position);
         }
     }
-
-//    @Override
-//    protected void onSaveInstanceState(Bundle outState) {
-//        super.onSaveInstanceState(outState);
-//        outState.putInt(RECIPE_ID, mRecipeId);
-//        outState.putString(RECIPE_NAME, mRecipeName);
-//    }
 }

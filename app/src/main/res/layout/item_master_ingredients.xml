@@ -4,8 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:paddingTop="8dp"
-    android:paddingBottom="8dp">
+    android:paddingBottom="@dimen/small_vertical_padding"
+    android:paddingTop="@dimen/small_vertical_padding">
 
     <android.support.constraint.Guideline
         android:id="@+id/guideline_start"
@@ -18,13 +18,13 @@
         android:id="@+id/tv_ingredient"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
-        android:layout_marginRight="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginBottom="8dp"
+        android:layout_marginBottom="@dimen/small_vertical_margin"
+        android:layout_marginEnd="@dimen/small_horizontal_margin"
+        android:layout_marginRight="@dimen/small_horizontal_margin"
+        android:layout_marginTop="@dimen/small_vertical_margin"
         android:gravity="start"
-        android:textSize="16sp"
         android:textColor="@color/textColorPrimary"
+        android:textSize="16sp"
         app:layout_constraintEnd_toStartOf="@id/guideline_mid"
         app:layout_constraintStart_toStartOf="@id/guideline_start"
         tools:text="Graham Craker Crumbs" />
@@ -40,13 +40,13 @@
         android:id="@+id/tv_quantity"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
-        android:layout_marginRight="8dp"
-        android:layout_marginBottom="8dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginBottom="@dimen/small_vertical_margin"
+        android:layout_marginEnd="@dimen/small_horizontal_margin"
+        android:layout_marginRight="@dimen/small_horizontal_margin"
+        android:layout_marginTop="@dimen/small_vertical_margin"
         android:gravity="end"
-        android:textSize="16sp"
         android:textColor="@color/textColorPrimary"
+        android:textSize="16sp"
         app:layout_constraintEnd_toStartOf="@id/tv_measure"
         app:layout_constraintStart_toEndOf="@id/guideline_mid"
         tools:text="2" />
@@ -55,10 +55,10 @@
         android:id="@+id/tv_measure"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:textSize="16sp"
-        android:layout_marginBottom="8dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginBottom="@dimen/small_vertical_margin"
+        android:layout_marginTop="@dimen/small_vertical_margin"
         android:textColor="@color/textColorPrimary"
+        android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="@id/guideline_end"
         tools:text="CUP" />
 
@@ -72,11 +72,11 @@
     <View
         android:layout_width="0dp"
         android:layout_height="1dp"
+        android:layout_marginBottom="@dimen/small_vertical_margin"
+        android:layout_marginTop="@dimen/small_vertical_margin"
         android:background="@color/colorAccent"
-        android:layout_marginTop="8dp"
-        android:layout_marginBottom="8dp"
-        app:layout_constraintStart_toStartOf="@id/guideline_start"
         app:layout_constraintEnd_toEndOf="@id/guideline_end"
+        app:layout_constraintStart_toStartOf="@id/guideline_start"
         app:layout_constraintTop_toBottomOf="@id/tv_ingredient"/>
 
 </android.support.constraint.ConstraintLayout>

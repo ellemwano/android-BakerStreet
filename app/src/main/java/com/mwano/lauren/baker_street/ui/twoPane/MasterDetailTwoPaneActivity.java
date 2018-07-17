@@ -35,7 +35,7 @@ import static com.mwano.lauren.baker_street.ui.main.MainActivity.RECIPE;
 import static com.mwano.lauren.baker_street.ui.main.MainActivity.RECIPE_ID;
 
 public class MasterDetailTwoPaneActivity extends AppCompatActivity
-    implements MasterStepsAdapter.StepAdapterOnClickHandler {
+    implements MasterStepsPageFragment.OnStepClickListener {
 
     @BindView(R.id.toolbar)
     Toolbar toolbar;
@@ -91,7 +91,7 @@ public class MasterDetailTwoPaneActivity extends AppCompatActivity
                     MasterStepsPageFragment stepFragment =
                             MasterStepsPageFragment.newStepsInstance((ArrayList<Step>) mSteps);
                     getSupportFragmentManager().beginTransaction()
-                            .add(R.id.detail_steps_container, stepFragment)
+                            .add(R.id.two_pane_steps_container, stepFragment)
                             .commit();
 
                     // Set Detail Step fragment to Step 0 by default
@@ -100,26 +100,29 @@ public class MasterDetailTwoPaneActivity extends AppCompatActivity
                     DetailStepPageFragment detailFragment =
                             DetailStepPageFragment.newStepInstance(mCurrentStep, mStepId);
                     getSupportFragmentManager().beginTransaction()
-                            .add(R.id.tablet_detail_steps_container, detailFragment)
+                            .add(R.id.tablet_detail_step_container, detailFragment)
                             .commit();
+
+                    // Set recipe name to toolbar
+                    toolbar.setTitle(mRecipeName);
                 }
             });
         } else {
             mRecipeId = savedInstanceState.getInt(RECIPE_ID);
             mRecipeName = savedInstanceState.getString(RECIPE_NAME);
         }
-        // Set app name to toolbar
-        toolbar.setTitle(mRecipeName);
     }
 
-    // Open selected Detail fragment from Master (2-pane left) intent
+    // Display selected Detail fragment from Master (2-pane left) click
     @Override
-    public void onClick(Step currentStep, ArrayList<Step> steps) {
-        mStepId = currentStep.getId();
+    public void onStepSelected(Step currentStep, ArrayList<Step> steps) {
+        mCurrentStep = currentStep;
+        mSteps = steps;
+        mStepId = mCurrentStep.getId();
         DetailStepPageFragment detailFragment =
-                DetailStepPageFragment.newStepInstance(currentStep, mStepId);
+                DetailStepPageFragment.newStepInstance(mCurrentStep, mStepId);
         getSupportFragmentManager().beginTransaction()
-                .replace(R.id.tablet_detail_steps_container, detailFragment)
+                .replace(R.id.tablet_detail_step_container, detailFragment)
                 .commit();
     }
 
@@ -129,4 +132,5 @@ public class MasterDetailTwoPaneActivity extends AppCompatActivity
         outState.putInt(RECIPE_ID, mRecipeId);
         outState.putString(RECIPE_NAME, mRecipeName);
     }
+
 }

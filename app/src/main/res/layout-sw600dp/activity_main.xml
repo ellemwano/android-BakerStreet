@@ -1,12 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.design.widget.CoordinatorLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/backgroundColor"
-    android:backgroundTint="@color/backgroundColor"
     tools:context=".ui.main.MainActivity">
 
     <android.support.design.widget.AppBarLayout
@@ -25,7 +23,6 @@
             app:titleTextColor="@color/textColorPrimary" />
     </android.support.design.widget.AppBarLayout>
 
-    <!-- TODO ConstraintLayout -->
     <LinearLayout
         android:id="@+id/main_tablet_layout"
         android:layout_width="match_parent"
@@ -62,8 +59,8 @@
                 android:layout_height="wrap_content"
                 android:background="@color/colorPrimary"
                 android:gravity="center_horizontal"
-                android:paddingBottom="8dp"
-                android:paddingTop="8dp"
+                android:paddingBottom="@dimen/large_vertical_padding"
+                android:paddingTop="@dimen/small_vertical_padding"
                 android:textColor="@color/backgroundColor"
                 android:textSize="24sp"
                 android:textStyle="bold"
@@ -75,10 +72,11 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="end"
                 android:background="@color/colorAccent"
+                android:drawableEnd="@drawable/ic_arrow_forward"
                 android:drawableRight="@drawable/ic_arrow_forward"
                 android:gravity="end"
-                android:padding="8dp"
-                android:text="Baking Steps"
+                android:padding="@dimen/small_padding"
+                android:text="@string/button_steps"
                 android:textColor="@color/backgroundColor"
                 android:textSize="16sp"
                 android:textStyle="bold" />
@@ -88,9 +86,11 @@
                 android:layout_height="wrap_content"
                 android:background="@color/backgroundColor"
                 android:gravity="start"
-                android:paddingLeft="8dp"
-                android:paddingTop="8dp"
-                android:text="INGREDIENTS"
+                android:paddingLeft="@dimen/small_horizontal_padding"
+                android:paddingRight="@dimen/small_horizontal_padding"
+                android:paddingTop="@dimen/small_vertical_padding"
+                android:text="@string/ingredients_title"
+                android:textAllCaps="true"
                 android:textColor="@color/textColorPrimary"
                 android:textSize="16sp"
                 android:textStyle="bold" />
@@ -99,7 +99,7 @@
                 android:id="@+id/rv_ingredients"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:scrollbars="vertical"/>
+                android:scrollbars="vertical" />
 
         </LinearLayout>
 
@@ -116,7 +116,7 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:paddingBottom="32dp"
+                android:paddingBottom="@dimen/extra_large_vertical_padding"
                 android:src="@drawable/app_name_two_lines" />
 
         </LinearLayout>

@@ -10,9 +10,9 @@
         android:id="@+id/card_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="8dp"
-        app:cardCornerRadius="0dp"
-        app:cardBackgroundColor="@color/backgroundColor">
+        android:layout_margin="@dimen/small_horizontal_margin"
+        app:cardBackgroundColor="@color/backgroundColor"
+        app:cardCornerRadius="0dp">
 
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
@@ -32,16 +32,16 @@
             android:id="@+id/recipe_name_tv"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="8dp"
-            android:layout_marginLeft="8dp"
-            android:layout_marginRight="8dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
-            android:paddingTop="8dp"
-            android:paddingBottom="8dp"
+            android:layout_marginEnd="@dimen/small_horizontal_margin"
+            android:layout_marginLeft="@dimen/small_horizontal_margin"
+            android:layout_marginRight="@dimen/small_horizontal_margin"
+            android:layout_marginStart="@dimen/small_horizontal_margin"
+            android:layout_marginTop="@dimen/small_vertical_padding"
+            android:paddingBottom="@dimen/small_vertical_padding"
+            android:paddingTop="@dimen/small_vertical_padding"
+            android:textColor="@color/textColorPrimary"
             android:textSize="20sp"
             android:textStyle="bold"
-            android:textColor="@color/textColorPrimary"
             card_view:layout_constraintEnd_toStartOf="@+id/servings_label_tv"
             card_view:layout_constraintStart_toStartOf="parent"
             card_view:layout_constraintTop_toBottomOf="@+id/recipe_iv"
@@ -51,25 +51,25 @@
             android:id="@+id/servings_label_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Servings: "
-            android:textSize="17sp"
+            android:text="@string/servings"
             android:textColor="#FF875E56"
+            android:textSize="17sp"
             card_view:layout_constraintBaseline_toBaselineOf="@+id/recipe_name_tv"
-            card_view:layout_constraintTop_toBottomOf="@+id/recipe_iv"
             card_view:layout_constraintBottom_toBottomOf="parent"
-            card_view:layout_constraintEnd_toStartOf="@id/servings_tv" />
+            card_view:layout_constraintEnd_toStartOf="@id/servings_tv"
+            card_view:layout_constraintTop_toBottomOf="@+id/recipe_iv" />
 
         <TextView
             android:id="@+id/servings_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="8dp"
-            android:layout_marginRight="8dp"
-            android:textSize="17sp"
+            android:layout_marginEnd="@dimen/small_horizontal_margin"
+            android:layout_marginRight="@dimen/small_horizontal_margin"
             android:textColor="#FF875E56"
+            android:textSize="17sp"
             card_view:layout_constraintBaseline_toBaselineOf="@+id/servings_label_tv"
-            card_view:layout_constraintTop_toBottomOf="@+id/recipe_iv"
             card_view:layout_constraintEnd_toEndOf="parent"
+            card_view:layout_constraintTop_toBottomOf="@+id/recipe_iv"
             tools:text="8" />
 
 

@@ -24,19 +24,20 @@
         android:id="@+id/exoplayer"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        app:show_timeout="7000"
+        android:background="@android:color/black"
         android:paddingBottom="8dp"
         android:visibility="visible"
-        android:background="@android:color/black"
         app:layout_constraintDimensionRatio="16:9"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:show_timeout="7000" />
 
     <ImageView
         android:id="@+id/iv_thumbnail"
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:contentDescription="@string/donut_image"
         android:paddingBottom="8dp"
         android:visibility="gone"
         app:layout_constraintDimensionRatio="16:9"
@@ -49,18 +50,18 @@
         android:id="@+id/tv_step_error"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:paddingTop="8dp"
-        android:textColor="@color/colorPrimary"
         android:background="@color/textColorPrimary"
+        android:gravity="center_horizontal|center_vertical"
+        android:paddingTop="8dp"
+        android:text="@string/no_internet_video"
+        android:textAlignment="gravity"
+        android:textColor="@color/colorPrimary"
         android:textSize="18sp"
         android:visibility="gone"
         app:layout_constraintDimensionRatio="16:9"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:text="@string/no_internet_video"
-        tools:Text="Please check your internet connection"
-        android:textAlignment="gravity"
-        android:gravity="center_horizontal|center_vertical"/>
+        tools:Text="Please check your internet connection"/>
 
 </android.support.constraint.ConstraintLayout>
