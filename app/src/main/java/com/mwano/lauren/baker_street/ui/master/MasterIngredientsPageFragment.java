@@ -29,10 +29,9 @@ public class MasterIngredientsPageFragment extends Fragment {
     RecyclerView mIngredientsRecyclerView;
 
     public List<Ingredient> mIngredients = new ArrayList<>();
-    LinearLayoutManager mLayoutManager;
+    private LinearLayoutManager mLayoutManager;
 
-    public static final String INGREDIENTS_LIST = "ingredients";
-    public static final String TAG = MasterIngredientsPageFragment.class.getSimpleName();
+    private static final String INGREDIENTS_LIST = "ingredients";
 
     // Constructor
     public MasterIngredientsPageFragment() {

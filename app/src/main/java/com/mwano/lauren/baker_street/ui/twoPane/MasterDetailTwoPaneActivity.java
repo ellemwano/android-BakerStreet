@@ -42,7 +42,7 @@ public class MasterDetailTwoPaneActivity extends AppCompatActivity
     private RecipeRepository mRecipeRepository;
     private IngredientStepViewModel mViewModel;
 
-    public static final String RECIPE_NAME = "recipe_name";
+    private static final String RECIPE_NAME = "recipe_name";
     private static final String TAG = MasterDetailTwoPaneActivity.class.getSimpleName();
 
 

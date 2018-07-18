@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <string name="app_name">Baker Street</string>
     <!-- Recipe item layout -->
     <string name="servings">Servings: </string>
@@ -10,8 +10,7 @@
     <!-- Master ViewPager tab names -->
     <string name="viewpager_ingredients_tab">Ingredients</string>
     <string name="viewpager_steps_tab">Steps</string>
-    <string name="appwidget_text">EXAMPLE</string>
-    <string name="add_widget">Add widget</string>
+    <string name="add_widget" tools:keep="@string/add_widget">Add widget</string>
     <!-- No internet - Video error message  -->
     <string name="no_internet_video">Cannot load video.\nPlease check your internet connection.</string>
     <!-- No internet - recipes error message -->

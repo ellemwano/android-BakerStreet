@@ -20,8 +20,7 @@ public class DataConverter {
         Gson  gson = new Gson();
         Type type = new TypeToken<List<Ingredient>>() {
         }.getType();
-        String json = gson.toJson(ingredients, type);
-        return json;
+        return gson.toJson(ingredients, type);
     }
 
     @TypeConverter
@@ -32,8 +31,7 @@ public class DataConverter {
         Gson  gson = new Gson();
         Type type = new TypeToken<List<Ingredient>>() {
         }.getType();
-        List<Ingredient> ingredients = gson.fromJson(ingredientsString, type);
-        return ingredients;
+        return gson.fromJson(ingredientsString, type);
     }
 
     @TypeConverter
@@ -44,8 +42,7 @@ public class DataConverter {
         Gson  gson = new Gson();
         Type type = new TypeToken<List<Step>>() {
         }.getType();
-        String json = gson.toJson(steps, type);
-        return json;
+        return gson.toJson(steps, type);
     }
 
     @TypeConverter
@@ -56,8 +53,7 @@ public class DataConverter {
         Gson  gson = new Gson();
         Type type = new TypeToken<List<Step>>() {
         }.getType();
-        List<Step> steps = gson.fromJson(stepsString, type);
-        return steps;
+        return gson.fromJson(stepsString, type);
     }
 
 

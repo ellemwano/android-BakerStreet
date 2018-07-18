@@ -7,6 +7,7 @@ import android.support.annotation.NonNull;
 import com.mwano.lauren.baker_street.data.local.RecipeRepository;
 import com.mwano.lauren.baker_street.data.local.viewmodel.IngredientStepViewModel;
 
+@SuppressWarnings("unchecked")
 public class IngredientStepViewModelFactory extends ViewModelProvider.NewInstanceFactory{
 
     private RecipeRepository mRecipeRepository;

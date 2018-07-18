@@ -1,9 +1,6 @@
 package com.mwano.lauren.baker_street.ui.detail;
 
 import android.annotation.SuppressLint;
-import android.content.Context;
-import android.content.res.Configuration;
-import android.graphics.drawable.GradientDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -32,11 +29,8 @@ import com.mwano.lauren.baker_street.model.Step;
 import com.mwano.lauren.baker_street.utils.Utils;
 import com.squareup.picasso.Picasso;
 
-import java.util.ArrayList;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
-
 
 /**
  * A Fragment subclass that displays the video and description for the selected step.
@@ -57,21 +51,20 @@ public class DetailStepPageFragment extends Fragment {
 
     private SimpleExoPlayer mExoPlayer;
 
-    public Step mStep;
-    public int mStepId;
+    private Step mStep;
+    private int mStepId;
     private Uri mVideoUri;
     private int mCurrentWindow;
     private long mPlaybackPosition;
     private boolean mPlayWhenReady = true;
     private boolean mTwoPane;
 
-    public static final String STEP = "step";
-    public static final String STEP_ID = "step id";
+    private static final String STEP = "step";
+    private static final String STEP_ID = "step id";
     private static final String CURRENT_WINDOW = "current window";
     private static final String PLAYBACK_POSITION = "playback position";
     private static final String CURRENT_STEP = "current step";
     private static final String START_PLAY = "start play when ready";
-    private static final String TAG = DetailStepPageFragment.class.getSimpleName();
 
 
     // Constructor
@@ -83,7 +76,6 @@ public class DetailStepPageFragment extends Fragment {
         super.onCreate(savedInstanceState);
     }
 
-    // TODO Fix saved state (playing position) and video for SDK > 23
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -145,15 +137,7 @@ public class DetailStepPageFragment extends Fragment {
             // Hide system toolbar only if on phone
             if(!mTwoPane) hideSystemUi();
             initialisePlayer();
-
-            // new
-//            if(!getUserVisibleHint()){
-//                onPause();
-//            }
-        } else {
-            onPause();
         }
-        Log.d(TAG, "This is onStart for: " + mStepId);
     }
 
     /**
@@ -170,24 +154,21 @@ public class DetailStepPageFragment extends Fragment {
             if(!mTwoPane)hideSystemUi();
             initialisePlayer();
         }
-//        if (!getUserVisibleHint()) {
-//            onPause();
-
-        Log.d(TAG, "This is onResume for: " + mStepId);
     }
 
     /**
      * Before API Level 24 there is no guarantee of onStop being called.
      * So we have to release the player as early as possible in onPause.
+     * Although, starting with API Level 24 (which brought multi and split window mode)
+     * onStop is guaranteed to be called and because in the paused mode our activity is eventually
+     * still visible, we should wait until onStop to release the Player, we will release it here too,
+     * in onPause. Otherwise, the state will not be saved, as onSavedInstanceState() is called before
+     * onStop.
      */
     @Override
     public void onPause() {
         super.onPause();
-        if (Util.SDK_INT <= 23) {
             releasePlayer();
-        }
-        Log.d(TAG, "This is onPause for :" + mStepId);
-
     }
 
     /**
@@ -198,20 +179,6 @@ public class DetailStepPageFragment extends Fragment {
     @Override
     public void onStop() {
         super.onStop();
-        if (Util.SDK_INT > 23) {
-            releasePlayer();
-        }
-        Log.d(TAG, "This is onStop for: " + mStepId);
-    }
-
-    /**
-     * Release the player when the activity is destroyed
-     */
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        releasePlayer();
-        Log.d(TAG, "This is onDestroy for: " + mStepId);
     }
 
     /**
@@ -293,11 +260,6 @@ public class DetailStepPageFragment extends Fragment {
         } else if (!visible && isResumed()) {
             onPause();
         }
-//        if (visible && isResumed()) {
-//            initialisePlayer();
-////        } else if (!visible && isResumed()) {
-////            onPause();
-//        }
     }
 
     // ExoPlayer in full screen for phone (landscape)
@@ -335,9 +297,9 @@ public class DetailStepPageFragment extends Fragment {
     public void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putParcelable(CURRENT_STEP, mStep);
-        outState.putInt(CURRENT_WINDOW, mCurrentWindow);
-        outState.putLong(PLAYBACK_POSITION, mPlaybackPosition);
-        outState.putBoolean(START_PLAY, mPlayWhenReady);
+            outState.putInt(CURRENT_WINDOW, mCurrentWindow);
+            outState.putLong(PLAYBACK_POSITION, mPlaybackPosition);
+            outState.putBoolean(START_PLAY, mPlayWhenReady);
     }
 }
 

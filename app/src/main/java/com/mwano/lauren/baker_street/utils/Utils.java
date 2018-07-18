@@ -12,7 +12,7 @@ public class Utils {
 
     /**
      * Format Double into String and remove the trailing .0
-     * @param doubleValue
+     * @param doubleValue the double value to be formatted into String
      * @return a String with the value of the Double without the .0 if no decimal
      */
     public static String doubleToStringFormat(double doubleValue) {
@@ -22,7 +22,7 @@ public class Utils {
 
     /**
      * Check whether there is a Network connection
-     * @param context
+     * @param context the context
      * @return a boolean, true for connection and false otherwise
      * Code source: https://stackoverflow.com/a/44773973/8691157
      */

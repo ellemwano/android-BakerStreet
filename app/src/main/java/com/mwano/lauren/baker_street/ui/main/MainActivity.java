@@ -83,7 +83,7 @@ public class MainActivity extends AppCompatActivity
     private Context mContext;
     private boolean hasNetworkConnection = false;
 
-    public static final String RECIPE = "recipe";
+    private static final String RECIPE = "recipe";
     public static final String RECIPE_ID = "recipe id";
     private final String TAG = MainActivity.class.getSimpleName();
 
@@ -169,7 +169,7 @@ public class MainActivity extends AppCompatActivity
         }
 
         // Set different number of columns for phone-port, phone-land or tablet-land modes
-        mColumnsNumber = (int) getResources().getInteger(R.integer.num_of_columns);
+        mColumnsNumber = getResources().getInteger(R.integer.num_of_columns);
         // GridLayout
         mGridLayoutManager = new GridLayoutManager(this, mColumnsNumber);
         // RecyclerView

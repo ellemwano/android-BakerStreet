@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?><!--suppress AndroidDomInspection -->
 <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -36,9 +36,24 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="3"
-            android:scrollbars="vertical">
+            android:scrollbars="vertical"
+            android:visibility="visible">
 
         </android.support.v7.widget.RecyclerView>
+
+        <TextView
+            android:id="@+id/tv_recipes_error"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical|center_horizontal"
+            android:background="@color/colorPrimary"
+            android:gravity="center_vertical|center_horizontal"
+            android:padding="@dimen/large_padding"
+            android:text="@string/no_internet_recipes"
+            android:textAlignment="gravity"
+            android:textColor="@color/textColorPrimary"
+            android:textSize="18sp"
+            android:visibility="gone" />
 
         <!-- A small divider -->
         <View
@@ -121,7 +136,7 @@
                 android:layout_height="wrap_content"
                 android:contentDescription="@string/app_name"
                 android:paddingBottom="@dimen/extra_large_vertical_padding"
-                android:src="@drawable/app_name_two_lines"/>
+                android:src="@drawable/app_name_two_lines" />
 
         </LinearLayout>
     </LinearLayout>

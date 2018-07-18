@@ -60,8 +60,8 @@ public class MasterRecipePagerActivity extends AppCompatActivity
 
     public static final String RECIPE_ID = "recipe id";
     public static final String RECIPE_NAME = "recipe name";
-    public static final String STEPS_LIST = "steps";
-    public static final String CURRENT_STEP = "current step";
+    private static final String STEPS_LIST = "steps";
+    private static final String CURRENT_STEP = "current step";
     // Name of Shared Preferences file
     public static final String SHARED_PREFS = "com.mwano.lauren.baker_street.preferences";
 

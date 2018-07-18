@@ -11,10 +11,6 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 
 import com.mwano.lauren.baker_street.R;
-import com.mwano.lauren.baker_street.data.local.database.RecipeDatabase;
-import com.mwano.lauren.baker_street.data.local.RecipeRepository;
-import com.mwano.lauren.baker_street.data.local.viewmodel.IngredientStepViewModel;
-import com.mwano.lauren.baker_street.model.Recipe;
 import com.mwano.lauren.baker_street.model.Step;
 import com.rd.PageIndicatorView;
 
@@ -41,8 +37,8 @@ public class DetailStepPagerActivity extends AppCompatActivity {
 
     private PagerAdapter mPagerAdapter;
     private int mRecipeId;
-    public ArrayList<Step> mSteps;
-    public Step mCurrentStep;
+    private ArrayList<Step> mSteps;
+    private Step mCurrentStep;
     private int mStepId;
     private String mDescription;
 

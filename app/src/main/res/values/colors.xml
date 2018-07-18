@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <color name="colorPrimary">#FEDBD0</color>
     <color name="colorPrimaryDark">#FBB8AC</color>
     <color name="colorAccent">#ca948a</color>
     <color name="textColorPrimary">#442C2E</color>
-    <color name="toolbarIconColor">@color/textColorPrimary</color>
+    <color name="toolbarIconColor" tools:keep="@color/toolbarIconColor">@color/textColorPrimary</color>
     <color name="backgroundColor">#FFFBFA</color>
 </resources>
 

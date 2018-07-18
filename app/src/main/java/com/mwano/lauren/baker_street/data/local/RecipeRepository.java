@@ -6,7 +6,6 @@ import android.arch.lifecycle.MutableLiveData;
 import android.os.AsyncTask;
 import android.support.annotation.NonNull;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.mwano.lauren.baker_street.data.local.database.RecipeDao;
 import com.mwano.lauren.baker_street.data.local.database.RecipeDatabase;
@@ -39,8 +38,8 @@ public class RecipeRepository {
 
     /**
      * Build a singleton of the RecipeDatabase
-     * @param database
-     * @param dao
+     * @param database the RecipeDatabase
+     * @param dao the RecipeDao
      * @return a RecipeDatabase instance, sInstance
      */
     public synchronized static RecipeRepository getRepositoryInstance(RecipeDatabase database, RecipeDao dao) {
@@ -106,7 +105,7 @@ public class RecipeRepository {
 
     /**
      * Query a Recipe by a given id.
-     * @param id
+     * @param id the id of the given Recipe
      * @return A LiveData Recipe object
      */
     public LiveData<Recipe> loadSingleRecipeById (final int id) {
@@ -116,7 +115,7 @@ public class RecipeRepository {
 
     /**
      * Query a Recipe by a given id, for the widget
-     * @param id
+     * @param id the id of the given Recipe
      * @return a Recipe object (not LiveData)
      */
     public Recipe getSingleRecipeForWidget (final int id) {
@@ -126,7 +125,7 @@ public class RecipeRepository {
     /**
      * Check the internet state
      * and decide whether to fetch the recipe List from the network or the database
-     * @param internetState
+     * @param internetState the network connection state: connected or not
      * @return a network or db getter according to the internet state
      */
     public LiveData<List<Recipe>> getRecipeList(boolean internetState) {

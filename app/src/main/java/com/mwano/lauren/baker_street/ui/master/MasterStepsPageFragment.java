@@ -1,8 +1,6 @@
 package com.mwano.lauren.baker_street.ui.master;
 
 import android.content.Context;
-import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -13,24 +11,15 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.webkit.WebView;
 
 import com.mwano.lauren.baker_street.R;
-import com.mwano.lauren.baker_street.model.Recipe;
 import com.mwano.lauren.baker_street.model.Step;
-import com.mwano.lauren.baker_street.ui.detail.DetailStepPageFragment;
-import com.mwano.lauren.baker_street.ui.detail.DetailStepPagerActivity;
-import com.mwano.lauren.baker_street.ui.twoPane.MasterDetailTwoPaneActivity;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-
-import static android.content.Context.MODE_PRIVATE;
-import static com.mwano.lauren.baker_street.ui.master.MasterRecipePagerActivity.RECIPE_NAME;
-import static com.mwano.lauren.baker_street.ui.master.MasterRecipePagerActivity.SHARED_PREFS;
 
 /**
  * Provides UI for the view with the Steps for the selected recipe
