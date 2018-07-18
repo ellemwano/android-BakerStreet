@@ -16,6 +16,7 @@ import android.view.ViewGroup;
 import android.webkit.WebView;
 
 import com.mwano.lauren.baker_street.R;
+import com.mwano.lauren.baker_street.model.Recipe;
 import com.mwano.lauren.baker_street.model.Step;
 import com.mwano.lauren.baker_street.ui.detail.DetailStepPageFragment;
 import com.mwano.lauren.baker_street.ui.detail.DetailStepPagerActivity;
@@ -37,16 +38,14 @@ import static com.mwano.lauren.baker_street.ui.master.MasterRecipePagerActivity.
 public class MasterStepsPageFragment extends Fragment
         implements MasterStepsAdapter.StepAdapterOnClickHandler {
 
-    public static final String STEPS_LIST = "steps";
-    public static final String CURRENT_STEP = "current step";
-    private static final String RECIPE_ID = "recipe id";
-    private static final String TAG = MasterStepsPageFragment.class.getSimpleName();
-    public List<Step> mSteps = new ArrayList<Step>();
     @BindView(R.id.rv_steps)
     RecyclerView mStepsRecyclerView;
-    SharedPreferences mPreferences;
-    private int mRecipeId;
-    private int mStepId;
+
+    public List<Step> mSteps = new ArrayList<>();
+
+    public static final String STEPS_LIST = "steps";
+    private static final String TAG = MasterStepsPageFragment.class.getSimpleName();
+
     // Constructor
     public MasterStepsPageFragment() {
     }
@@ -97,9 +96,6 @@ public class MasterStepsPageFragment extends Fragment
                 mSteps = getArguments().getParcelableArrayList(STEPS_LIST);
             }
         }
-        // get the Recipe Id from SharedPreferences
-        mPreferences = getActivity().getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
-        mRecipeId = mPreferences.getInt(RECIPE_ID, 1);
     }
 
     @Nullable
@@ -117,7 +113,6 @@ public class MasterStepsPageFragment extends Fragment
         MasterStepsAdapter stepsAdapter =
                 new MasterStepsAdapter(getContext(), (ArrayList<Step>) mSteps, this);
         mStepsRecyclerView.setAdapter(stepsAdapter);
-        //stepsAdapter.setStepData(mSteps);
 
         return rootView;
     }

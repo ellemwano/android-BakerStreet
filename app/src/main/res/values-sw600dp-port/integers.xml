@@ -2,5 +2,5 @@
 
 <resources>
     <!-- GridLayout tablet span count -->
-    <integer name="num_of_columns">2</integer>
+    <integer name="num_of_columns">1</integer>
 </resources>

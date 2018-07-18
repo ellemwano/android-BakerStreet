@@ -59,11 +59,11 @@ public class DetailStepPageFragment extends Fragment {
 
     public Step mStep;
     public int mStepId;
-    public ArrayList<Step> mStepList;
     private Uri mVideoUri;
     private int mCurrentWindow;
     private long mPlaybackPosition;
     private boolean mPlayWhenReady = true;
+    private boolean mTwoPane;
 
     public static final String STEP = "step";
     public static final String STEP_ID = "step id";
@@ -103,20 +103,15 @@ public class DetailStepPageFragment extends Fragment {
             }
         }
 
-        // TODO Add tablet land with description (otherwise same as phone)
-        // Check scroling tablet land + set full screen here only for phone on land
-        // Set content to views
+        // Set description content to view
         if(mStep != null && mDescriptionTextView != null) {
             mDescriptionTextView.setText(mStep.getDescription());
         }
-//        // Check if phone or tablet. If on phone and landscape, hide description
-//        Configuration config = getActivity().getResources().getConfiguration();
-//        // If on phone and landscape, hide description and full screen
-//        if(config.smallestScreenWidthDp < 600
-//                && config.orientation == Configuration.ORIENTATION_LANDSCAPE) {
-//            mDescriptionTextView.setVisibility(View.GONE);
-//            hideSystemUi();
-//        }
+
+        if(getActivity().findViewById(R.id.tablet_detail_step_container) != null) {
+            mTwoPane = true;
+        }
+
         return rootview;
     }
 
@@ -146,7 +141,17 @@ public class DetailStepPageFragment extends Fragment {
     public void onStart() {
         super.onStart();
         if (Util.SDK_INT > 23) {
+            if (!getUserVisibleHint()) return;
+            // Hide system toolbar only if on phone
+            if(!mTwoPane) hideSystemUi();
             initialisePlayer();
+
+            // new
+//            if(!getUserVisibleHint()){
+//                onPause();
+//            }
+        } else {
+            onPause();
         }
         Log.d(TAG, "This is onStart for: " + mStepId);
     }
@@ -159,18 +164,15 @@ public class DetailStepPageFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        // TODO maybe remove
-        // Hide system toolbar only if on phone
-        Configuration config = getActivity().getResources().getConfiguration();
-        if(config.smallestScreenWidthDp < 600) {
-            hideSystemUi();
-        }
-        if (!getUserVisibleHint()) {
-            return;
-        }
-        if ((Util.SDK_INT <= 23 || mExoPlayer == null)) {
+        if (Util.SDK_INT <= 23 || mExoPlayer == null) {
+            if (!getUserVisibleHint()) return;
+            // Hide system toolbar only if on phone
+            if(!mTwoPane)hideSystemUi();
             initialisePlayer();
         }
+//        if (!getUserVisibleHint()) {
+//            onPause();
+
         Log.d(TAG, "This is onResume for: " + mStepId);
     }
 
@@ -291,14 +293,17 @@ public class DetailStepPageFragment extends Fragment {
         } else if (!visible && isResumed()) {
             onPause();
         }
+//        if (visible && isResumed()) {
+//            initialisePlayer();
+////        } else if (!visible && isResumed()) {
+////            onPause();
+//        }
     }
 
-    // TODO Check if needed
     // ExoPlayer in full screen for phone (landscape)
     @SuppressLint("InlinedApi")
     private void hideSystemUi() {
-        Configuration config = getActivity().getResources().getConfiguration();
-        if(config.smallestScreenWidthDp < 600) {
+        if(!mTwoPane) {
             mPlayerView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LOW_PROFILE
                     | View.SYSTEM_UI_FLAG_FULLSCREEN
                     | View.SYSTEM_UI_FLAG_LAYOUT_STABLE

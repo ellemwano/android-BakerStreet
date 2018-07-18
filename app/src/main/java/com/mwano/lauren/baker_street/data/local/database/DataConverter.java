@@ -1,5 +1,4 @@
-
-package com.mwano.lauren.baker_street.data.local;
+package com.mwano.lauren.baker_street.data.local.database;
 
 import android.arch.persistence.room.TypeConverter;
 

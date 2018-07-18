@@ -1,9 +1,7 @@
-
 package com.mwano.lauren.baker_street.ui.twoPane;
 
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
@@ -11,18 +9,13 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 
 import com.mwano.lauren.baker_street.R;
-import com.mwano.lauren.baker_street.data.local.RecipeDatabase;
+import com.mwano.lauren.baker_street.data.local.database.RecipeDatabase;
 import com.mwano.lauren.baker_street.data.local.RecipeRepository;
 import com.mwano.lauren.baker_street.data.local.viewmodel.IngredientStepViewModel;
 import com.mwano.lauren.baker_street.data.local.viewmodel.IngredientStepViewModelFactory;
-import com.mwano.lauren.baker_street.data.local.viewmodel.RecipeViewModel;
-import com.mwano.lauren.baker_street.data.local.viewmodel.RecipeViewModelFactory;
-import com.mwano.lauren.baker_street.model.Ingredient;
 import com.mwano.lauren.baker_street.model.Recipe;
 import com.mwano.lauren.baker_street.model.Step;
 import com.mwano.lauren.baker_street.ui.detail.DetailStepPageFragment;
-import com.mwano.lauren.baker_street.ui.main.MainActivity;
-import com.mwano.lauren.baker_street.ui.master.MasterStepsAdapter;
 import com.mwano.lauren.baker_street.ui.master.MasterStepsPageFragment;
 
 import java.util.ArrayList;
@@ -31,7 +24,6 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-import static com.mwano.lauren.baker_street.ui.main.MainActivity.RECIPE;
 import static com.mwano.lauren.baker_street.ui.main.MainActivity.RECIPE_ID;
 
 public class MasterDetailTwoPaneActivity extends AppCompatActivity

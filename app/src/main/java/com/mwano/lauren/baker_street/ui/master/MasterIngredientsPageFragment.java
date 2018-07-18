@@ -61,7 +61,6 @@ public class MasterIngredientsPageFragment extends Fragment {
         MasterIngredientsAdapter ingredientsAdapter =
                 new MasterIngredientsAdapter(getContext(), mIngredients);
         mIngredientsRecyclerView.setAdapter(ingredientsAdapter);
-        //ingredientsAdapter.setIngredientData(mIngredients);
 
         return rootView;
     }

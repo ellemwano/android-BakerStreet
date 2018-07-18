@@ -1,4 +1,3 @@
-
 package com.mwano.lauren.baker_street.ui.master;
 
 import android.content.Context;
@@ -30,10 +29,8 @@ public class MasterIngredientsAdapter
         mIngredients = ingredients;
     }
 
-    // check
     @Override
     public MasterIngredientsViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        // mContext = parent.getContext();
         View mItemView = LayoutInflater.from(mContext)
                 .inflate(R.layout.item_master_ingredients, parent, false);
         return new MasterIngredientsViewHolder(mItemView);
@@ -41,7 +38,6 @@ public class MasterIngredientsAdapter
 
     @Override
     public void onBindViewHolder(MasterIngredientsViewHolder holder, int position) {
-        // mContext = holder.ingredientsTextView.getContext();
         Ingredient mIngredient = mIngredients.get(position);
         holder.ingredientsTextView.setText(mIngredient.getIngredient());
         holder.quantityTextView.setText(Utils.doubleToStringFormat(mIngredient.getQuantity()));

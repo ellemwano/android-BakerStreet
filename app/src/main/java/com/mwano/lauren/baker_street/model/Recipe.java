@@ -2,17 +2,15 @@ package com.mwano.lauren.baker_street.model;
 
 import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
-import android.arch.persistence.room.Ignore;
 import android.arch.persistence.room.PrimaryKey;
 import android.arch.persistence.room.TypeConverters;
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.support.annotation.NonNull;
 
 import java.util.List;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
-import com.mwano.lauren.baker_street.data.local.DataConverter;
+import com.mwano.lauren.baker_street.data.local.database.DataConverter;
 
 @Entity(tableName = "recipe")
 public class Recipe implements Parcelable {

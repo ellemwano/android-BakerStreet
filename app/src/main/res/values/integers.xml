@@ -2,4 +2,6 @@
 <resources>
     <!-- GridLayout portrait span count -->
     <integer name="num_of_columns">1</integer>
+    <!-- Shared Preferences - Default recipe id -->
+    <integer name="default_recipe_id">1</integer>
 </resources>

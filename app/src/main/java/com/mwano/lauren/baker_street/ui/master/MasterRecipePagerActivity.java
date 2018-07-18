@@ -5,7 +5,6 @@ import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -19,14 +18,13 @@ import android.util.Log;
 import com.mwano.lauren.baker_street.R;
 import com.mwano.lauren.baker_street.data.local.viewmodel.IngredientStepViewModel;
 import com.mwano.lauren.baker_street.data.local.viewmodel.IngredientStepViewModelFactory;
-import com.mwano.lauren.baker_street.data.local.RecipeDatabase;
+import com.mwano.lauren.baker_street.data.local.database.RecipeDatabase;
 import com.mwano.lauren.baker_street.data.local.RecipeRepository;
 import com.mwano.lauren.baker_street.model.Ingredient;
 import com.mwano.lauren.baker_street.model.Recipe;
 import com.mwano.lauren.baker_street.model.Step;
 import com.mwano.lauren.baker_street.ui.detail.DetailStepPagerActivity;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -86,14 +84,13 @@ public class MasterRecipePagerActivity extends AppCompatActivity
         mRecipeRepository = RecipeRepository.getRepositoryInstance(mRecipeDatabase, mRecipeDatabase.recipeDao());
 
         if (savedInstanceState != null) {
-            mRecipeId = mPreferences.getInt(RECIPE_ID, 1);
-            mRecipeName = mPreferences.getString(RECIPE_NAME, "Nutella Pie");
+            mRecipeId = mPreferences.getInt(RECIPE_ID, getResources().getInteger(R.integer.default_recipe_id));
+            mRecipeName = mPreferences.getString(RECIPE_NAME, getString(R.string.default_recipe_name_preferences));
         } else {
             // Get the selected Recipe id from the intent
             Bundle receivedBundle = getIntent().getExtras();
             mRecipeId = receivedBundle.getInt(RECIPE_ID);
             Log.d(TAG, "Received Recipe id = " + mRecipeId);
-            // OK - ID correct
         }
 
         // ViewModel
@@ -106,10 +103,8 @@ public class MasterRecipePagerActivity extends AppCompatActivity
             public void onChanged(@Nullable Recipe recipe) {
                 mCurrentRecipe = recipe;
                 Log.d(TAG, "Current Recipe from DB = " + mCurrentRecipe);
-                //
                 mRecipeName = mViewModel.getRecipeName(mCurrentRecipe);
                 Log.d(TAG, "Current RecipeName from DB = " + mCurrentRecipe.getName());
-                //
                 mIngredients = mCurrentRecipe.getIngredients();
                 // Get the steps arrayList from the intent extra
                 mSteps = mCurrentRecipe.getSteps();

@@ -1,17 +1,17 @@
-
 package com.mwano.lauren.baker_street.data.local;
 
 import android.annotation.SuppressLint;
-import android.app.Application;
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
 import android.os.AsyncTask;
 import android.support.annotation.NonNull;
 import android.util.Log;
+import android.widget.Toast;
 
+import com.mwano.lauren.baker_street.data.local.database.RecipeDao;
+import com.mwano.lauren.baker_street.data.local.database.RecipeDatabase;
 import com.mwano.lauren.baker_street.data.network.ApiClient;
 import com.mwano.lauren.baker_street.data.network.ApiInterface;
-import com.mwano.lauren.baker_street.model.Ingredient;
 import com.mwano.lauren.baker_street.model.Recipe;
 
 import java.util.List;
@@ -72,8 +72,6 @@ public class RecipeRepository {
 
             @Override
             public void onFailure(@NonNull Call<List<Recipe>> call, @NonNull Throwable t) {
-                //Toast.makeText
-                //(MainActivity.this, "error message", Toast.LENGTH_LONG).show();
                 Log.d(TAG, t.getMessage());
             }
         });

@@ -20,7 +20,12 @@
     <string name="previous_button">Player\'s previous button</string>
     <string name="pause_button">Player\'s pause button</string>
     <string name="play_button">Player\'s play button</string>
-    <!-- Placeholder image -->
+    <!-- Content description-->
     <string name="donut_image">Image of a donut</string>
+    <string name="cake_image">Picture of the cake</string>
+    <!-- Shared Preferences - Default recipe -->
+    <string name="default_recipe_name_preferences">Nutella Pie</string>
+
+
 
 </resources>

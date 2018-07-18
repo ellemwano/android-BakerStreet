@@ -1,10 +1,7 @@
 package com.mwano.lauren.baker_street.ui.detail;
 
-import android.arch.lifecycle.Observer;
-import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -14,17 +11,14 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 
 import com.mwano.lauren.baker_street.R;
-import com.mwano.lauren.baker_street.data.local.RecipeDatabase;
+import com.mwano.lauren.baker_street.data.local.database.RecipeDatabase;
 import com.mwano.lauren.baker_street.data.local.RecipeRepository;
 import com.mwano.lauren.baker_street.data.local.viewmodel.IngredientStepViewModel;
-import com.mwano.lauren.baker_street.data.local.viewmodel.IngredientStepViewModelFactory;
 import com.mwano.lauren.baker_street.model.Recipe;
 import com.mwano.lauren.baker_street.model.Step;
-import com.mwano.lauren.baker_street.ui.twoPane.MasterDetailTwoPaneActivity;
 import com.rd.PageIndicatorView;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -51,17 +45,11 @@ public class DetailStepPagerActivity extends AppCompatActivity {
     public Step mCurrentStep;
     private int mStepId;
     private String mDescription;
-    private IngredientStepViewModel mViewModel;
-    private RecipeDatabase mRecipeDatabase;
-    private RecipeRepository mRecipeRepository;
-    private Recipe mCurrentRecipe;
-
 
     private static final String CURRENT_STEP = "current step";
     private static final String STEP_LIST = "step list";
     private static final String STEP_ID = "step id";
     private static final String STEP_DESCRIPTION = "step description";
-    private static final String RECIPE_ID = "recipe id";
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -77,36 +65,6 @@ public class DetailStepPagerActivity extends AppCompatActivity {
                 mSteps = intentMasterDetailStep.getParcelableArrayListExtra(STEPS_LIST);
                 mCurrentStep = intentMasterDetailStep.getParcelableExtra(CURRENT_STEP);
             }
-//            if (intentMasterDetailStep.hasExtra(CURRENT_STEP)) {
-//                mCurrentStep = intentMasterDetailStep.getParcelableExtra(CURRENT_STEP);
-//                mRecipeId = intentMasterDetailStep.getParcelableExtra(RECIPE_ID);
-//            }
-//            // Instantiate Database
-//            mRecipeDatabase = RecipeDatabase.getDatabase(this);
-//            // Instantiate Repository
-//            mRecipeRepository = RecipeRepository.getRepositoryInstance(mRecipeDatabase, mRecipeDatabase.recipeDao());
-//            // ViewModel
-//            IngredientStepViewModelFactory factory =
-//                    new IngredientStepViewModelFactory(mRecipeRepository, mRecipeId);
-//            mViewModel =
-//                    ViewModelProviders.of(this, factory).get(IngredientStepViewModel.class);
-//            mViewModel.getSingleRecipe().observe(DetailStepPagerActivity.this, new Observer<Recipe>() {
-//                        @Override
-//                        public void onChanged(@Nullable Recipe recipe) {
-//                            mCurrentRecipe = recipe;
-//                            // Get list of steps
-//                            mSteps = mCurrentRecipe.getSteps();
-//                            // Get the id of the selected step from the intent
-//                            mStepId = mCurrentStep.getId();
-//                            // Get the ingredients List from the intent extra
-//                            mDescription = mCurrentStep.getDescription();
-//                            // Set Recipe name on toolbar
-//                            setTitle(mCurrentStep.getShortDescription());
-//                            mPagerAdapter = new DetailStepPagerAdapter(getSupportFragmentManager(), mCurrentStep);
-//                            mStepPager.setAdapter(mPagerAdapter);
-//                            mStepPager.setCurrentItem(mStepId);
-//                        }
-//            });
         }
         if (savedInstanceState != null) {
             mCurrentStep = savedInstanceState.getParcelable(CURRENT_STEP);

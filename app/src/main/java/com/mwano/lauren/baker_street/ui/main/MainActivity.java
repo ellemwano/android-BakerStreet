@@ -20,7 +20,7 @@ import android.widget.TextView;
 
 import com.facebook.stetho.Stetho;
 import com.mwano.lauren.baker_street.R;
-import com.mwano.lauren.baker_street.data.local.RecipeDatabase;
+import com.mwano.lauren.baker_street.data.local.database.RecipeDatabase;
 import com.mwano.lauren.baker_street.data.local.RecipeRepository;
 import com.mwano.lauren.baker_street.data.local.viewmodel.RecipeViewModel;
 import com.mwano.lauren.baker_street.data.local.viewmodel.RecipeViewModelFactory;
@@ -91,7 +91,7 @@ public class MainActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        // TODO Remove Stetho ?
+        // Set Stetho
         Stetho.initializeWithDefaults(this);
         mContext = getApplicationContext();
         // Adding Toolbar to Main screen

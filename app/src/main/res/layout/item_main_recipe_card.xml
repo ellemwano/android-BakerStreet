@@ -23,8 +23,9 @@
             android:id="@+id/recipe_iv"
             android:layout_width="wrap_content"
             android:layout_height="200dp"
+            android:contentDescription="@string/cake_image"
+            android:foregroundGravity="center"
             android:scaleType="centerCrop"
-
             card_view:layout_constraintStart_toStartOf="parent"
             card_view:layout_constraintTop_toTopOf="parent" />
 
