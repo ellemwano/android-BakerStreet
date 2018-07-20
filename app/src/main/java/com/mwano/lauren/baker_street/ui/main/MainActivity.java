@@ -216,9 +216,10 @@ public class MainActivity extends AppCompatActivity
         mRecipesError.setVisibility(View.VISIBLE);
     }
 
-//    @Override
-//    protected void onSaveInstanceState(Bundle outState) {
-//        super.onSaveInstanceState(outState);
-//    }
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putParcelable(RECIPE, mCurrentRecipe);
+    }
 
 }

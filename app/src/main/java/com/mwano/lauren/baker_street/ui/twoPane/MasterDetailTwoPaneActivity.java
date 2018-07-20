@@ -53,6 +53,7 @@ public class MasterDetailTwoPaneActivity extends AppCompatActivity
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_master_detail_two_pane);
+        ButterKnife.bind(this);
         // Adding Toolbar to Main screen
         setSupportActionBar(toolbar);
         // Set the action bar button to look like an up button
@@ -60,7 +61,6 @@ public class MasterDetailTwoPaneActivity extends AppCompatActivity
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
-        ButterKnife.bind(this);
 
         if (savedInstanceState == null) {
             // Get the selected Recipe id from the MainActivity (2-pane layout) intent
@@ -103,7 +103,7 @@ public class MasterDetailTwoPaneActivity extends AppCompatActivity
                             .commit();
 
                     // Set recipe name to toolbar
-                    //toolbar.setTitle(mRecipeName);
+                    toolbar.setTitle(mRecipeName);
                 }
             });
         } else {
