@@ -4,9 +4,12 @@ import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.NavUtils;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.MenuItem;
 
 import com.mwano.lauren.baker_street.R;
 import com.mwano.lauren.baker_street.data.local.database.RecipeDatabase;
@@ -52,6 +55,11 @@ public class MasterDetailTwoPaneActivity extends AppCompatActivity
         setContentView(R.layout.activity_master_detail_two_pane);
         // Adding Toolbar to Main screen
         setSupportActionBar(toolbar);
+        // Set the action bar button to look like an up button
+        ActionBar actionBar = this.getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setDisplayHomeAsUpEnabled(true);
+        }
         ButterKnife.bind(this);
 
         if (savedInstanceState == null) {
@@ -59,7 +67,6 @@ public class MasterDetailTwoPaneActivity extends AppCompatActivity
             Bundle receivedBundle = getIntent().getExtras();
             mRecipeId = receivedBundle.getInt(RECIPE_ID);
             Log.d(TAG, "Received Recipe id = " + mRecipeId);
-            //
 
             // Instantiate Database
             mRecipeDatabase = RecipeDatabase.getDatabase(this);
@@ -96,7 +103,7 @@ public class MasterDetailTwoPaneActivity extends AppCompatActivity
                             .commit();
 
                     // Set recipe name to toolbar
-                    toolbar.setTitle(mRecipeName);
+                    //toolbar.setTitle(mRecipeName);
                 }
             });
         } else {
@@ -116,6 +123,15 @@ public class MasterDetailTwoPaneActivity extends AppCompatActivity
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.tablet_detail_step_container, detailFragment)
                 .commit();
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        if (id == android.R.id.home) {
+            NavUtils.navigateUpFromSameTask(this);
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     @Override

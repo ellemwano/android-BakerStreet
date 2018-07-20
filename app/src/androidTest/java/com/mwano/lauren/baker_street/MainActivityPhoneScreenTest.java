@@ -46,8 +46,6 @@ public class MainActivityPhoneScreenTest {
         onView(ViewMatchers.withId(R.id.card_recycler_view))
                 .perform(RecyclerViewActions.actionOnItemAtPosition(1, click()));
 
-        //onView(withId(R.id.tv_recipe_name_main)).check(matches(withText(RECIPE_NAME)));
-
         // Check that the MasterRecipePagerActivity open with the correct recipe name
         // displayed on the toolbar
         onView(allOf(instanceOf(TextView.class), withParent(withId(R.id.toolbar))))

@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.os.Parcelable;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
@@ -39,13 +40,13 @@ import butterknife.ButterKnife;
 
 
 /**
-    Code source for Retrofit
-    https://www.androidhive.info/2016/05/android-working-with-retrofit-http-library/
-//    and the use of APIManager:
-//    http://codingsonata.com/retrofit-tutorial-android-part-1-introduction/
-    */
+ * Code source for Retrofit
+ * https://www.androidhive.info/2016/05/android-working-with-retrofit-http-library/
+ * //    and the use of APIManager:
+ * //    http://codingsonata.com/retrofit-tutorial-android-part-1-introduction/
+ */
 public class MainActivity extends AppCompatActivity
-        implements MainRecipeAdapter.RecipeAdapterOnClickHandler{
+        implements MainRecipeAdapter.RecipeAdapterOnClickHandler {
 
     @BindView(R.id.card_recycler_view)
     RecyclerView mRecyclerView;
@@ -54,7 +55,6 @@ public class MainActivity extends AppCompatActivity
     @Nullable
     @BindView(R.id.tv_recipes_error)
     TextView mRecipesError;
-
     @Nullable
     @BindView(R.id.tv_recipe_name_main)
     TextView recipeNameMainTextView;
@@ -72,7 +72,7 @@ public class MainActivity extends AppCompatActivity
     private GridLayoutManager mGridLayoutManager;
     private int mColumnsNumber;
     private Boolean mTwoPane;
-    private List<Recipe> mRecipes;
+    private List<Recipe> mRecipes = new ArrayList<>();
     private Recipe mCurrentRecipe;
     private int mCurrentRecipeId;
     private List<Ingredient> mIngredients;
@@ -83,8 +83,8 @@ public class MainActivity extends AppCompatActivity
     private Context mContext;
     private boolean hasNetworkConnection = false;
 
-    private static final String RECIPE = "recipe";
     public static final String RECIPE_ID = "recipe id";
+    private static final String RECIPE = "recipe";
     private final String TAG = MainActivity.class.getSimpleName();
 
     @Override
@@ -119,12 +119,13 @@ public class MainActivity extends AppCompatActivity
         mRecipeViewModel.getRecipeList().observe(MainActivity.this, new Observer<List<Recipe>>() {
             @Override
             public void onChanged(@Nullable List<Recipe> recipes) {
-                mMainRecipeAdapter.setRecipeData(recipes);
+                mRecipes = recipes;
+                mMainRecipeAdapter.setRecipeData(mRecipes);
             }
         });
 
         // Check if 2-pane layout
-        if(findViewById(R.id.main_tablet_layout) != null) {
+        if (findViewById(R.id.main_tablet_layout) != null) {
             mTwoPane = true;
             //mColumnsNumber = (int) getResources().getInteger(R.integer.num_of_columns);
 
@@ -143,6 +144,11 @@ public class MainActivity extends AppCompatActivity
                 fragmentManager.beginTransaction()
                         .add(R.id.main_ingredients_container, ingredientsFragment)
                         .commit();
+                // Set Recipe name on toolbar
+                if(mCurrentRecipe != null) {
+                    mRecipeName = mCurrentRecipe.getName();
+                    setTitle(mRecipeName);
+                }
             }
             // On two-pane, open MasterDetail activity for selected recipe via a button
             toStepsTextView.setOnClickListener(new View.OnClickListener() {
@@ -162,12 +168,6 @@ public class MainActivity extends AppCompatActivity
             // We're in a single-pane mode, displaying fragments on a phone, in different activities
             mTwoPane = false;
         }
-        // Set Recipe name on toolbar
-        if(mCurrentRecipe != null) {
-            mRecipeName = mCurrentRecipe.getName();
-            setTitle(mRecipeName);
-        }
-
         // Set different number of columns for phone-port, phone-land or tablet-land modes
         mColumnsNumber = getResources().getInteger(R.integer.num_of_columns);
         // GridLayout
@@ -180,7 +180,7 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void onClick(Recipe currentRecipe) {
         mCurrentRecipeId = currentRecipe.getRecipeId();
-        if(mTwoPane) {
+        if (mTwoPane) {
             // On two-pane, create Ingredients fragment for selected Recipe
             defaultTabletLayout.setVisibility(View.GONE);
             mainTabletLayout.setVisibility(View.VISIBLE);
@@ -216,9 +216,9 @@ public class MainActivity extends AppCompatActivity
         mRecipesError.setVisibility(View.VISIBLE);
     }
 
-    @Override
-    protected void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-        outState.putParcelable(RECIPE, mCurrentRecipe);
-    }
+//    @Override
+//    protected void onSaveInstanceState(Bundle outState) {
+//        super.onSaveInstanceState(outState);
+//    }
+
 }

@@ -42,4 +42,9 @@ public class IngredientStepViewModel  extends ViewModel {
         mRecipeName = recipe.getName();
         return mRecipeName;
     }
+
+    // Set Recipe name
+    public void setRecipeName(String name) {
+        mRecipeName = name;
+    }
 }

@@ -10,10 +10,13 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.app.NavUtils;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.MenuItem;
 
 import com.mwano.lauren.baker_street.R;
 import com.mwano.lauren.baker_street.data.local.viewmodel.IngredientStepViewModel;
@@ -76,6 +79,11 @@ public class MasterRecipePagerActivity extends AppCompatActivity
         ButterKnife.bind(this);
         // Adding Toolbar to Main screen
         setSupportActionBar(toolbar);
+        // Set the action bar button to look like an up button
+        ActionBar actionBar = this.getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setDisplayHomeAsUpEnabled(true);
+        }
         // Initialise SharedPreferences
         mPreferences = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
         // Instantiate Database
@@ -84,8 +92,10 @@ public class MasterRecipePagerActivity extends AppCompatActivity
         mRecipeRepository = RecipeRepository.getRepositoryInstance(mRecipeDatabase, mRecipeDatabase.recipeDao());
 
         if (savedInstanceState != null) {
-            mRecipeId = mPreferences.getInt(RECIPE_ID, getResources().getInteger(R.integer.default_recipe_id));
-            mRecipeName = mPreferences.getString(RECIPE_NAME, getString(R.string.default_recipe_name_preferences));
+//            mRecipeId = mPreferences.getInt(RECIPE_ID, getResources().getInteger(R.integer.default_recipe_id));
+//            mRecipeName = mPreferences.getString(RECIPE_NAME, getString(R.string.default_recipe_name_preferences));
+            mRecipeId = savedInstanceState.getInt(RECIPE_ID);
+            mRecipeName = savedInstanceState.getString(RECIPE_NAME);
         } else {
             // Get the selected Recipe id from the intent
             Bundle receivedBundle = getIntent().getExtras();
@@ -103,10 +113,11 @@ public class MasterRecipePagerActivity extends AppCompatActivity
             public void onChanged(@Nullable Recipe recipe) {
                 mCurrentRecipe = recipe;
                 Log.d(TAG, "Current Recipe from DB = " + mCurrentRecipe);
+                // Get the current recipe name
                 mRecipeName = mViewModel.getRecipeName(mCurrentRecipe);
-                Log.d(TAG, "Current RecipeName from DB = " + mCurrentRecipe.getName());
+                Log.d(TAG, "Current RecipeName from DB = " + mRecipeName);
                 mIngredients = mCurrentRecipe.getIngredients();
-                // Get the steps arrayList from the intent extra
+                // Get the steps arrayList for the current recipe
                 mSteps = mCurrentRecipe.getSteps();
                 // Add the Recipe id and name to SharedPreferences
                 SharedPreferences.Editor preferencesEditor = mPreferences.edit();
@@ -144,6 +155,22 @@ public class MasterRecipePagerActivity extends AppCompatActivity
         intentDetailStep.putExtra(CURRENT_STEP, currentStep);
         intentDetailStep.putExtra(STEPS_LIST, steps);
         startActivity(intentDetailStep);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        if (id == android.R.id.home) {
+            NavUtils.navigateUpFromSameTask(this);
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putInt(RECIPE_ID, mRecipeId);
+        outState.putString(RECIPE_NAME, mRecipeName);
     }
 
     /**
