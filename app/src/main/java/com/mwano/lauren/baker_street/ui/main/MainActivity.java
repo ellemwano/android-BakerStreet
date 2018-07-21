@@ -75,7 +75,6 @@ public class MainActivity extends AppCompatActivity
     private List<Recipe> mRecipes = new ArrayList<>();
     private Recipe mCurrentRecipe;
     private int mCurrentRecipeId;
-    private List<Ingredient> mIngredients;
     private String mRecipeName;
     private RecipeViewModel mRecipeViewModel;
     private RecipeRepository mRecipeRepository;
@@ -84,7 +83,7 @@ public class MainActivity extends AppCompatActivity
     private boolean hasNetworkConnection = false;
 
     public static final String RECIPE_ID = "recipe id";
-    private static final String RECIPE = "recipe";
+    private static final String RECIPE = " current recipe";
     private final String TAG = MainActivity.class.getSimpleName();
 
     @Override
@@ -124,16 +123,18 @@ public class MainActivity extends AppCompatActivity
             }
         });
 
-        // Check if 2-pane layout
-        if (findViewById(R.id.main_tablet_layout) != null) {
+        // Check if we're in a single-pane mode, displaying fragments on a phone, in different activities
+        if (findViewById(R.id.main_tablet_layout) == null) {
+            mTwoPane = false;
+        } else {
+        // Else, we're on 2-pane layout, displaying recipe list and ingredients side by side
             mTwoPane = true;
-            //mColumnsNumber = (int) getResources().getInteger(R.integer.num_of_columns);
-
             if (savedInstanceState == null) {
-                // Set welcome screen
+                // No recipe selected, so set a welcome screen in place of the ingredients fragment
                 mainTabletLayout.setVisibility(View.GONE);
                 defaultTabletLayout.setVisibility(View.VISIBLE);
             } else {
+                // Display the ingredients list of the selected recipe
                 defaultTabletLayout.setVisibility(View.GONE);
                 mainTabletLayout.setVisibility(View.VISIBLE);
                 mCurrentRecipe = savedInstanceState.getParcelable(RECIPE);
@@ -150,12 +151,14 @@ public class MainActivity extends AppCompatActivity
                     setTitle(mRecipeName);
                 }
             }
-            // On two-pane, open MasterDetail activity for selected recipe via a button
+            // On two-pane, open MasterDetail activity (displaying steps list and selected step
+            // details) for selected recipe via a button
             toStepsTextView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     mCurrentRecipeId = mCurrentRecipe.getRecipeId();
-                    Intent intentSentMainMasterTwoPane = new Intent(MainActivity.this, MasterDetailTwoPaneActivity.class);
+                    Intent intentSentMainMasterTwoPane = new Intent
+                            (MainActivity.this, MasterDetailTwoPaneActivity.class);
                     Bundle mainTwoPaneBundle = new Bundle();
                     mainTwoPaneBundle.putInt(RECIPE_ID, mCurrentRecipeId);
                     intentSentMainMasterTwoPane.putExtras(mainTwoPaneBundle);
@@ -164,9 +167,6 @@ public class MainActivity extends AppCompatActivity
                     startActivity(intentSentMainMasterTwoPane);
                 }
             });
-        } else {
-            // We're in a single-pane mode, displaying fragments on a phone, in different activities
-            mTwoPane = false;
         }
         // Set different number of columns for phone-port, phone-land or tablet-land modes
         mColumnsNumber = getResources().getInteger(R.integer.num_of_columns);
@@ -221,5 +221,4 @@ public class MainActivity extends AppCompatActivity
         super.onSaveInstanceState(outState);
         outState.putParcelable(RECIPE, mCurrentRecipe);
     }
-
 }

@@ -92,8 +92,6 @@ public class MasterRecipePagerActivity extends AppCompatActivity
         mRecipeRepository = RecipeRepository.getRepositoryInstance(mRecipeDatabase, mRecipeDatabase.recipeDao());
 
         if (savedInstanceState != null) {
-//            mRecipeId = mPreferences.getInt(RECIPE_ID, getResources().getInteger(R.integer.default_recipe_id));
-//            mRecipeName = mPreferences.getString(RECIPE_NAME, getString(R.string.default_recipe_name_preferences));
             mRecipeId = savedInstanceState.getInt(RECIPE_ID);
             mRecipeName = savedInstanceState.getString(RECIPE_NAME);
         } else {
@@ -107,7 +105,7 @@ public class MasterRecipePagerActivity extends AppCompatActivity
         IngredientStepViewModelFactory factory =
                 new IngredientStepViewModelFactory(mRecipeRepository, mRecipeId);
         mViewModel = ViewModelProviders.of(this, factory).get(IngredientStepViewModel.class);
-        // Get the selected recipe from the ID from the intent
+        // Get the selected recipe from the recipe ID
         mViewModel.getSingleRecipe().observe(this, new Observer<Recipe>() {
             @Override
             public void onChanged(@Nullable Recipe recipe) {
@@ -115,6 +113,7 @@ public class MasterRecipePagerActivity extends AppCompatActivity
                 Log.d(TAG, "Current Recipe from DB = " + mCurrentRecipe);
                 // Get the current recipe name
                 mRecipeName = mViewModel.getRecipeName(mCurrentRecipe);
+                //mRecipeName = mCurrentRecipe.getName();
                 Log.d(TAG, "Current RecipeName from DB = " + mRecipeName);
                 mIngredients = mCurrentRecipe.getIngredients();
                 // Get the steps arrayList for the current recipe
