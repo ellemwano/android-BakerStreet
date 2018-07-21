@@ -42,8 +42,6 @@ import butterknife.ButterKnife;
 /**
  * Code source for Retrofit
  * https://www.androidhive.info/2016/05/android-working-with-retrofit-http-library/
- * //    and the use of APIManager:
- * //    http://codingsonata.com/retrofit-tutorial-android-part-1-introduction/
  */
 public class MainActivity extends AppCompatActivity
         implements MainRecipeAdapter.RecipeAdapterOnClickHandler {
