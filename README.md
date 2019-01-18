@@ -24,11 +24,12 @@ Create an app that will allow a user to select a recipe and see video-guided ste
 
 
 ## Libraries used
-- Exoplayer 2.7.3
-- Picasso 2.71828
-- Butterknife 8.8.1
-- Retrofit 2.4.0
+- Exoplayer v2.7.3
+- Picasso v2.71828
+- Butterknife v8.8.1
+- Retrofit v2.4.0
 - Page Indicator 'com.romandanylyk:pageindicatorview:1.0.1@aar'
+- Stetho v1.5.0
 
 ## Architecture Components
 - Room
