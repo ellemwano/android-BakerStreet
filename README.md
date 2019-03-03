@@ -10,20 +10,49 @@ _Your call._
 ---
 
 # BakerStreet
-_Project #3 of Udacity's Android Developer Nanodegree_
+Projects #3 of the [Android Developer](https://eu.udacity.com/course/android-developer-nanodegree-by-google--nd801) Nanodegree by Udacity.
 
 ## Project Overview
 Create an app that will allow a user to select a recipe and see video-guided steps for how to complete it. This also involves finding and handling error cases, adding accessibility features, allowing for localization, adding a widget, and adding a library.
 
-### Requirements
-- Exoplayer to display videos.
+## Why this Project
+As a working Android developer, you often have to create and implement apps where you are responsible for designing and planning the steps you need to take to create a production-ready app. Unlike project #2 where we gave you an implementation guide, it will be up to you to figure things out for this app.
+
+## Learning Objectives
+- Use Exoplayer to display videos.
 - Handle error cases in Android.
 - Add a widget to your app experience.
 - Leverage a third-party library in your app.
 - Use Fragments to create a responsive design that works on phones and tablets.
 
+## Project Requirements
+- **General App Usage**
+  * Display recipes - App should display recipes from provided network resource.
+  * App Navigation - App should allow navigation between individual recipes and recipe steps.
+  * Utilization of RecyclerView - App uses RecyclerView and can handle recipe steps that include videos or images.
+  * App conforms to common standards found in the [Android Nanodegree General Project Guidelines](http://udacity.github.io/android-nanodegree-guidelines/core.html).
+- **Components and Libraries**
+  * Master Detail Flow and Fragments - Application uses Master Detail Flow to display recipe steps and navigation between them.
+  * Exoplayer to display videos - Application uses Exoplayer to display videos.
+  * Proper utilization of video assets - Application properly initializes and releases video assets when appropriate.
+  * Proper network asset utilization - Application should properly retrieve media assets from the provided network links. It should properly handle network requests.
+  * UI Testing - Application makes use of Espresso to test aspects of the UI.
+  * Third-party libraries - Application sensibly utilizes a third-party library to enhance the app's features. That could be helper library to interface with ContentProviders if you choose to store the recipes, a UI binding library to avoid writing findViewById a bunch of times, or something similar.
+  - **Homescreen Widget**
+    * Application has a companion homescreen widget - Application has a companion homescreen widget.
+    * Widget displays ingredient list for desired recipe - Widget displays ingredient list for desired recipe.
 
-## Libraries used
+## Completed Project
+### Android Framework        
+- Jetpack
+  * Fragments
+  * Room
+  * ViewModel and LiveData
+  * Repository
+- SQLite
+- Widgets
+
+### Libraries
 - Exoplayer v2.7.3
 - Picasso v2.71828
 - Butterknife v8.8.1
@@ -31,6 +60,4 @@ Create an app that will allow a user to select a recipe and see video-guided ste
 - Page Indicator 'com.romandanylyk:pageindicatorview:1.0.1@aar'
 - Stetho v1.5.0
 
-## Architecture Components
-- Room
-- Livedata and ViewModel
+
