@@ -12,10 +12,10 @@ import android.util.Log;
 import android.view.MenuItem;
 
 import com.mwano.lauren.baker_street.R;
-import com.mwano.lauren.baker_street.data.local.database.RecipeDatabase;
-import com.mwano.lauren.baker_street.data.local.RecipeRepository;
-import com.mwano.lauren.baker_street.data.local.viewmodel.IngredientStepViewModel;
-import com.mwano.lauren.baker_street.data.local.viewmodel.IngredientStepViewModelFactory;
+import com.mwano.lauren.baker_street.data.local.RecipeDatabase;
+import com.mwano.lauren.baker_street.repository.RecipeRepository;
+import com.mwano.lauren.baker_street.ui.master.IngredientStepViewModel;
+import com.mwano.lauren.baker_street.ui.master.IngredientStepViewModelFactory;
 import com.mwano.lauren.baker_street.model.Recipe;
 import com.mwano.lauren.baker_street.model.Step;
 import com.mwano.lauren.baker_street.ui.detail.DetailStepPageFragment;
@@ -140,5 +140,4 @@ public class MasterDetailTwoPaneActivity extends AppCompatActivity
         outState.putInt(RECIPE_ID, mRecipeId);
         outState.putString(RECIPE_NAME, mRecipeName);
     }
-
 }

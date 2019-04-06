@@ -1,6 +1,10 @@
 package com.mwano.lauren.baker_street.ui.detail;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
+import android.content.res.Configuration;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -26,6 +30,7 @@ import com.google.android.exoplayer2.upstream.DefaultHttpDataSourceFactory;
 import com.google.android.exoplayer2.util.Util;
 import com.mwano.lauren.baker_street.R;
 import com.mwano.lauren.baker_street.model.Step;
+import com.mwano.lauren.baker_street.ui.master.MasterRecipePagerActivity;
 import com.mwano.lauren.baker_street.utils.Utils;
 import com.squareup.picasso.Picasso;
 
@@ -48,7 +53,6 @@ public class DetailStepPageFragment extends Fragment {
     ImageView mThumbnailView;
     @BindView(R.id.tv_step_error)
     TextView mErrorView;
-
     private SimpleExoPlayer mExoPlayer;
 
     private Step mStep;
@@ -58,6 +62,7 @@ public class DetailStepPageFragment extends Fragment {
     private long mPlaybackPosition;
     private boolean mPlayWhenReady = true;
     private boolean mTwoPane;
+    private boolean isPortrait;
 
     private static final String STEP = "step";
     private static final String STEP_ID = "step id";
@@ -65,7 +70,6 @@ public class DetailStepPageFragment extends Fragment {
     private static final String PLAYBACK_POSITION = "playback position";
     private static final String CURRENT_STEP = "current step";
     private static final String START_PLAY = "start play when ready";
-
 
     // Constructor
     public DetailStepPageFragment() {
@@ -104,6 +108,8 @@ public class DetailStepPageFragment extends Fragment {
             mTwoPane = true;
         }
 
+        isPortrait = getActivity().getResources().getBoolean(R.bool.is_portrait);
+
         return rootview;
     }
 
@@ -134,8 +140,8 @@ public class DetailStepPageFragment extends Fragment {
         super.onStart();
         if (Util.SDK_INT > 23) {
             if (!getUserVisibleHint()) return;
-            // Hide system toolbar only if on phone
-            if(!mTwoPane) hideSystemUi();
+            // Hide system toolbar only if on phone and in landscape
+            if(!mTwoPane && !isPortrait) hideSystemUi();
             initialisePlayer();
         }
     }
@@ -150,8 +156,8 @@ public class DetailStepPageFragment extends Fragment {
         super.onResume();
         if (Util.SDK_INT <= 23 || mExoPlayer == null) {
             if (!getUserVisibleHint()) return;
-            // Hide system toolbar only if on phone
-            if(!mTwoPane)hideSystemUi();
+            // Hide system toolbar only if on phone and in landscape
+           if(!mTwoPane && !isPortrait) hideSystemUi();
             initialisePlayer();
         }
     }
@@ -199,7 +205,7 @@ public class DetailStepPageFragment extends Fragment {
         // If there's a video, create a MediaSource
         if (mStep != null) {
             if (!TextUtils.isEmpty(mStep.getVideoURL())) {
-                // If no internet connection, show mesage prompting user to connect
+                // If no internet connection, show message prompting user to connect
                 if (!Utils.isNetworkConnected(getActivity())) {
                     showConnectionError();
                 }
@@ -214,13 +220,16 @@ public class DetailStepPageFragment extends Fragment {
                 showImageView();
                 if (!TextUtils.isEmpty(mStep.getThumbnailURL())) {
                     mPicasso.load(mStep.getThumbnailURL())
-                            .placeholder(R.drawable.donut_169)
-                            .error(R.drawable.donut_169)
+                            .placeholder(R.drawable.ingred_169)
+                            .error(R.drawable.ingred_169)
                             .into(mThumbnailView);
                 }
                 // If no thumbnail either, show placeholder
                 showImageView();
-                mThumbnailView.setImageResource(R.drawable.donut_169);
+                mPicasso.load(R.drawable.ingred_169)
+                        .into(mThumbnailView);
+                // Add transparency to image
+               mThumbnailView.setAlpha(0.85f);
             }
         }
     }
@@ -265,7 +274,7 @@ public class DetailStepPageFragment extends Fragment {
     // ExoPlayer in full screen for phone (landscape)
     @SuppressLint("InlinedApi")
     private void hideSystemUi() {
-        if(!mTwoPane) {
+        if(!mTwoPane && !isPortrait) {
             mPlayerView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LOW_PROFILE
                     | View.SYSTEM_UI_FLAG_FULLSCREEN
                     | View.SYSTEM_UI_FLAG_LAYOUT_STABLE

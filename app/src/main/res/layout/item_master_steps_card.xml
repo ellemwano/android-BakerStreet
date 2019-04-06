@@ -10,7 +10,7 @@
     android:paddingBottom="@dimen/small_vertical_padding"
     android:paddingTop="@dimen/small_vertical_padding"
     app:cardBackgroundColor="@color/backgroundColor"
-    app:cardCornerRadius="0dp">
+    app:cardCornerRadius="8dp">
 
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
@@ -37,8 +37,9 @@
             android:textColor="#FF875E56"
             android:textSize="16sp"
             android:textStyle="bold"
-            app:layout_constraintEnd_toStartOf="@+id/tv_step_id"
-            app:layout_constraintStart_toStartOf="@id/guideline_start" />
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="@id/guideline_start"
+            app:layout_constraintEnd_toStartOf="@+id/tv_step_id"/>
 
         <TextView
             android:id="@+id/tv_step_id"
@@ -46,12 +47,13 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="@dimen/small_horizontal_margin"
             android:layout_marginRight="@dimen/small_horizontal_margin"
-            android:textColor="#FF875E56"
+            android:textColor="@color/textColourSecondary"
             android:textSize="16sp"
             android:textStyle="bold"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/tv_step_label"
             app:layout_constraintEnd_toStartOf="@+id/guideline_mid"
             app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toEndOf="@+id/tv_step_label"
             tools:text="1" />
 
         <android.support.constraint.Guideline
@@ -70,8 +72,9 @@
             android:gravity="start"
             android:textColor="@color/textColorPrimary"
             android:textSize="16sp"
-            app:layout_constraintEnd_toStartOf="@id/guideline_end"
+            app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toEndOf="@id/guideline_mid"
+            app:layout_constraintEnd_toStartOf="@id/guideline_end"
             tools:text="Press the crust into baking form" />
 
         <android.support.constraint.Guideline
@@ -79,7 +82,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            app:layout_constraintGuide_percent="0.9" />
+            app:layout_constraintGuide_percent="0.93" />
 
     </android.support.constraint.ConstraintLayout>
 </android.support.v7.widget.CardView>

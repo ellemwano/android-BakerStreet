@@ -10,7 +10,7 @@ import android.os.Parcelable;
 import java.util.List;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
-import com.mwano.lauren.baker_street.data.local.database.DataConverter;
+import com.mwano.lauren.baker_street.data.local.DataConverter;
 
 @Entity(tableName = "recipe")
 public class Recipe implements Parcelable {

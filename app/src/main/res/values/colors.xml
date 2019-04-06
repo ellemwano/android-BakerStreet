@@ -6,6 +6,7 @@
     <color name="textColorPrimary">#442C2E</color>
     <color name="toolbarIconColor" tools:keep="@color/toolbarIconColor">@color/textColorPrimary</color>
     <color name="backgroundColor">#FFFBFA</color>
+    <color name="textColourSecondary">#FF875E56</color>
 </resources>
 
 

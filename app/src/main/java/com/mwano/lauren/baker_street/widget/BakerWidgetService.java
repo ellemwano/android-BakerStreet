@@ -7,8 +7,8 @@ import android.widget.RemoteViews;
 import android.widget.RemoteViewsService;
 
 import com.mwano.lauren.baker_street.R;
-import com.mwano.lauren.baker_street.data.local.database.RecipeDatabase;
-import com.mwano.lauren.baker_street.data.local.RecipeRepository;
+import com.mwano.lauren.baker_street.data.local.RecipeDatabase;
+import com.mwano.lauren.baker_street.repository.RecipeRepository;
 import com.mwano.lauren.baker_street.model.Ingredient;
 import com.mwano.lauren.baker_street.model.Recipe;
 import com.mwano.lauren.baker_street.utils.Utils;

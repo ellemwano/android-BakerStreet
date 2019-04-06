@@ -41,7 +41,7 @@ public class MainRecipeAdapter extends RecyclerView.Adapter<MainRecipeAdapter.Re
     @Override
     public RecipeViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         mContext = parent.getContext();
-        View view = LayoutInflater.from(parent.getContext())
+        View view = LayoutInflater.from(mContext)
                 .inflate(R.layout.item_main_recipe_card,parent,false);
         return new RecipeViewHolder(view);
     }
@@ -57,15 +57,17 @@ public class MainRecipeAdapter extends RecyclerView.Adapter<MainRecipeAdapter.Re
         // Load recipe image if exists and non null, else load a placeholder
         if(!TextUtils.isEmpty(currentRecipe.getImage())){
             mPicasso.load(currentRecipe.getImage())
-                    .placeholder(R.drawable.donut)
-                    .error(R.drawable.donut)
+                    .placeholder(R.drawable.ingred)
+                    .error(R.drawable.ingred)
                     .into(holder.mRecipeImageView);
         } else {
-            mPicasso.load(R.drawable.donut)
-                    .placeholder(R.drawable.donut)
-                    .error(R.drawable.donut)
+            mPicasso.load(R.drawable.ingred)
+                    .placeholder(R.drawable.ingred)
+                    .error(R.drawable.ingred)
                     .into(holder.mRecipeImageView);
         }
+        // Add transparency to image
+        holder.mRecipeImageView.setAlpha(0.85f);
     }
 
     @Override

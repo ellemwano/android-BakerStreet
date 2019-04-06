@@ -19,10 +19,8 @@ import android.util.Log;
 import android.view.MenuItem;
 
 import com.mwano.lauren.baker_street.R;
-import com.mwano.lauren.baker_street.data.local.viewmodel.IngredientStepViewModel;
-import com.mwano.lauren.baker_street.data.local.viewmodel.IngredientStepViewModelFactory;
-import com.mwano.lauren.baker_street.data.local.database.RecipeDatabase;
-import com.mwano.lauren.baker_street.data.local.RecipeRepository;
+import com.mwano.lauren.baker_street.data.local.RecipeDatabase;
+import com.mwano.lauren.baker_street.repository.RecipeRepository;
 import com.mwano.lauren.baker_street.model.Ingredient;
 import com.mwano.lauren.baker_street.model.Recipe;
 import com.mwano.lauren.baker_street.model.Step;

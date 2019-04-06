@@ -6,7 +6,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.os.Parcelable;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
@@ -21,10 +20,8 @@ import android.widget.TextView;
 
 import com.facebook.stetho.Stetho;
 import com.mwano.lauren.baker_street.R;
-import com.mwano.lauren.baker_street.data.local.database.RecipeDatabase;
-import com.mwano.lauren.baker_street.data.local.RecipeRepository;
-import com.mwano.lauren.baker_street.data.local.viewmodel.RecipeViewModel;
-import com.mwano.lauren.baker_street.data.local.viewmodel.RecipeViewModelFactory;
+import com.mwano.lauren.baker_street.data.local.RecipeDatabase;
+import com.mwano.lauren.baker_street.repository.RecipeRepository;
 import com.mwano.lauren.baker_street.model.Ingredient;
 import com.mwano.lauren.baker_street.model.Recipe;
 import com.mwano.lauren.baker_street.ui.twoPane.MasterDetailTwoPaneActivity;
@@ -120,7 +117,6 @@ public class MainActivity extends AppCompatActivity
                 mMainRecipeAdapter.setRecipeData(mRecipes);
             }
         });
-
         // Check if we're in a single-pane mode, displaying fragments on a phone, in different activities
         if (findViewById(R.id.main_tablet_layout) == null) {
             mTwoPane = false;

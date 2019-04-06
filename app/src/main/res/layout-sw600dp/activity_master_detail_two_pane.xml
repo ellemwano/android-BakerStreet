@@ -8,7 +8,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/backgroundColor"
-    tools:context=".ui.twoPane.MasterDetailTwoPaneActivity">
+    tools:context=".ui.twoPane.MasterDetailTwoPaneActivity"
+    tools:ignore="MissingDefaultResource">
 
     <android.support.design.widget.AppBarLayout
         android:id="@+id/appbar"

@@ -9,6 +9,7 @@ import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 
 import com.mwano.lauren.baker_street.R;
 import com.mwano.lauren.baker_street.model.Step;
@@ -51,6 +52,7 @@ public class DetailStepPagerActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail_step_pager);
+
         ButterKnife.bind(this);
 
         if (savedInstanceState == null) {
