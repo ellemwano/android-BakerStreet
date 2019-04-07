@@ -25,6 +25,32 @@ As a working Android developer, you often have to create and implement apps wher
 - Leverage a third-party library in your app.
 - Use Fragments to create a responsive design that works on phones and tablets.
 
+## Completed Project - BakerStreet
+![](https://github.com/ellemwano/android-BakerStreet/blob/master/pics/portPack.png)
+![](https://github.com/ellemwano/android-BakerStreet/blob/master/pics/tabletPack.png)
+
+### Android Framework        
+- Fragments
+- Room
+- ViewModel and LiveData
+- Repository
+- SQLite
+- Widgets
+- Espresso
+
+### Libraries
+- [Exoplayer](https://github.com/google/ExoPlayer) v2.7.3
+- [Picasso](https://square.github.io/picasso/) v2.71828
+- [Butterknife](http://jakewharton.github.io/butterknife/) v8.8.1
+- [Retrofit](https://square.github.io/retrofit/) v2.4.0
+- [Page Indicator](https://github.com/romandanylyk/PageIndicatorView) 'com.romandanylyk:pageindicatorview:1.0.1@aar'
+- [Stetho](http://facebook.github.io/stetho/) v1.5.0
+
+Credits:
+- App icon: [icons8.com](https://icons8.com/icons/set/donut)
+- Baking placeholder photo: [freepik.com](https://www.freepik.com/free-photos-vectors/food) 
+
+
 ## Project Requirements
 - **General App Usage**
   * Display recipes - App should display recipes from provided network resource.
@@ -38,26 +64,6 @@ As a working Android developer, you often have to create and implement apps wher
   * Proper network asset utilization - Application should properly retrieve media assets from the provided network links. It should properly handle network requests.
   * UI Testing - Application makes use of Espresso to test aspects of the UI.
   * Third-party libraries - Application sensibly utilizes a third-party library to enhance the app's features. That could be helper library to interface with ContentProviders if you choose to store the recipes, a UI binding library to avoid writing findViewById a bunch of times, or something similar.
-  - **Homescreen Widget**
-    * Application has a companion homescreen widget - Application has a companion homescreen widget.
-    * Widget displays ingredient list for desired recipe - Widget displays ingredient list for desired recipe.
-
-## Completed Project
-### Android Framework        
-- Jetpack
-  * Fragments
-  * Room
-  * ViewModel and LiveData
-  * Repository
-- SQLite
-- Widgets
-
-### Libraries
-- Exoplayer v2.7.3
-- Picasso v2.71828
-- Butterknife v8.8.1
-- Retrofit v2.4.0
-- Page Indicator 'com.romandanylyk:pageindicatorview:1.0.1@aar'
-- Stetho v1.5.0
-
-
+- **Homescreen Widget**
+  * Application has a companion homescreen widget - Application has a companion homescreen widget.
+  * Widget displays ingredient list for desired recipe - Widget displays ingredient list for desired recipe.
